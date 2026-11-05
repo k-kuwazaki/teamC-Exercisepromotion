@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}運動管理アプリ{% endblock %}</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+            background: #f5f7fa;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .menu {
+            display: grid;
+            gap: 12px;
+        }
+
+        a {
+            display: block;
+            padding: 16px;
+            background: white;
+            color: #2563eb;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            text-decoration: none;
+        }
+
+        a:hover {
+            background: #eaf1ff;
+        }
+
+        .back {
+            margin-top: 24px;
+        }
+    </style>
+</head>
+
+<body>
+    {% block content %}{% endblock %}
+
+    <div class="back">
+        <a href="{{ url_for('home.index') }}">← トップページに戻る</a>
+    </div>
+</body>
+
+</html>

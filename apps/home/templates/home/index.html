@@ -1,0 +1,15 @@
+{% extends "home/base.html" %}
+
+{% block title %}トップページ{% endblock %}
+
+{% block content %}
+<h1>運動管理アプリ</h1>
+<p>利用する機能を選択してください。</p>
+
+<div class="menu">
+    <a href="{{ url_for('home.goal') }}">目標入力画面</a>
+    <a href="{{ url_for('home.chat') }}">AIチャット</a>
+    <a href="{{ url_for('home.history') }}">履歴機能</a>
+    <a href="{{ url_for('home.body_input') }}">身体情報入力・おなおし</a>
+</div>
+{% endblock %}

@@ -1,0 +1,13 @@
+{% extends "home/base.html" %}
+{% block content %}
+<h1>登録内容の確認</h1>
+
+<p>名前：{{ user.username }}</p>
+<p>メールアドレス：{{ user.email }}</p>
+<p>身長：{{ user.height }}</p>
+<p>体重：{{ user.weight }}</p>
+<p>年齢：{{ user.age }}</p>
+<p>運動習慣：{{ user.exercise_habit }}</p>
+<p>目標：{{ user.goal }}</p>
+<a href="{{ url_for('register.register') }}">登録ページへ戻る</a>
+{% endblock %}

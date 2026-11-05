@@ -1,0 +1,45 @@
+{% extends "home/base.html" %}
+{% block content %}
+<h1>ユーザー登録</h1>
+<form method="post">
+    <div>
+        <label for="name">名前</label>
+        <input type="text" id="name" name="name">
+    </div>
+    <div>
+        <label for="height">身長</label>
+        <input type="number" id="height" name="height" step="any">
+    </div>
+    <div>
+        <label for="weight">体重</label>
+        <input type="number" id="weight" name="weight" step="any">
+    </div>
+    <div>
+        <label for="age">年齢</label>
+        <input type="number" id="age" name="age">
+    </div>
+    <div>
+        <label for="email">メールアドレス</label>
+        <input type="email" id="email" name="email">
+    </div>
+
+    <div>
+        <label for="password">パスワード</label>
+        <input type="password" id="password" name="password">
+    </div>
+    <div>
+        <label for="exercise_habit">運動習慣</label>
+        <select id="exercise_habit" name="exercise_habit">
+            <option value="">選択してください</option>
+            <option value="rarely">ほとんどしない</option>
+            <option value="sometimes">週に1〜2回</option>
+            <option value="often">週に3回以上</option>
+        </select>
+    </div>
+    <div>
+        <label for="goal">目標</label>
+        <textarea id="goal" name="goal"></textarea>
+    </div>
+    <button type="submit">登録</button>
+</form>
+{% endblock %}
