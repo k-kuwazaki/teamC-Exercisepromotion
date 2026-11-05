@@ -1,0 +1,21 @@
+<!-- カスタムエラーページ 404用 -->
+
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>404 Not Found</title>
+</head>
+
+<body>
+    <h1>404 Not Found</h1>
+
+    <p>お探しのページは見つかりませんでした。</p>
+    <p>URLが間違っているか、ページが削除された可能性があります。</p>
+
+    <hr>
+    <a href="{{ url_for('auth.index') }}">トップページへ戻る</a>
+</body>
+
+</html>
