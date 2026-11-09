@@ -14,13 +14,10 @@ def index():
 @home.route("/goal")
 def goal():
     return render_template("home/goal.html")
-
-
-# AIチャット画面
-@home.route("/chat")
-def chat():
-    return render_template("home/chat.html")
-
+# チャット
+# @home.route("/chat")
+# def chat():
+#     return render_template("chat/chat.html")
 
 # 履歴機能
 @home.route("/history")
