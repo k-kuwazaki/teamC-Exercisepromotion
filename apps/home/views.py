@@ -32,3 +32,23 @@ def history():
 @home.route("/body-input")
 def body_input():
     return render_template("body_input/body_input.html")
+
+
+# フレンド機能
+@home.route("/friend")
+def friend():
+    return render_template("friend/friend.html")
+
+# 運動実施
+@home.route("/implementation")
+def implementation():
+    return render_template("implementation/implementation.html")
+
+# ヘルプ・使い方
+@home.route("/help")
+def help():
+    return render_template("help/help.html")
+
+@home.route("/register")
+def register():
+    return render_template("register/register.html")
