@@ -13,22 +13,22 @@ def index():
 # 目標入力画面
 @home.route("/goal")
 def goal():
-    return render_template("home/goal.html")
+    return render_template("goal/goal.html")
 
 
 # AIチャット画面
 @home.route("/chat")
 def chat():
-    return render_template("home/chat.html")
+    return render_template("chat/chat.html")
 
 
 # 履歴機能
 @home.route("/history")
 def history():
-    return render_template("home/history.html")
+    return render_template("history/history.html")
 
 
 # 身体情報入力・おなおし
 @home.route("/body-input")
 def body_input():
-    return render_template("home/body_input.html")
+    return render_template("body_input/body_input.html")
