@@ -21,10 +21,16 @@ def create_app():
     from apps.register.views import register_bp
     from apps.login.views import login_bp
     from apps.chat.views import chat
+    from apps.goal.views import goal
+    from apps.history.views import history
+    from apps.body_input.views import body_input
 
     app.register_blueprint(home)
     app.register_blueprint(register_bp)
     app.register_blueprint(login_bp)
     app.register_blueprint(chat)
+    app.register_blueprint(goal)
+    app.register_blueprint(history)
+    app.register_blueprint(body_input)
     
     return app
