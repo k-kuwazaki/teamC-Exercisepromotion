@@ -1,6 +1,196 @@
-{% extends "home/base.html" %}
-{% block title %}AIチャット{% endblock %}
-{% block content %}
-<h1>AIチャット</h1>
-<p>AIチャット画面です。</p>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AI運動トレーナー</title>
+    <style>
+        body {
+            max-width: 650px;
+            margin: 40px auto;
+            padding: 20px;
+            font-family: sans-serif;
+            background: #f3f5f7;
+            color: #222;
+        }
+
+        h1,
+        h2 {
+            color: #246b50;
+        }
+
+        h2 {
+            margin-top: 24px;
+        }
+
+        textarea,
+        button,
+        select,
+        input[type="submit"] {
+            box-sizing: border-box;
+            width: 100%;
+            padding: 12px;
+            margin: 8px 0;
+            font-size: 16px;
+            border-radius: 8px;
+        }
+
+        textarea,
+        select {
+            border: 1px solid #ccc;
+            background: white;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        button,
+        input[type="submit"] {
+            background: #246b50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover,
+        input[type="submit"]:hover {
+            background: #1b543e;
+        }
+
+        label {
+            display: block;
+            margin-top: 12px;
+            font-weight: bold;
+        }
+
+        .status {
+            min-height: 1.5em;
+        }
+
+        .error {
+            color: #b42318;
+        }
+
+        .answer {
+            white-space: pre-wrap;
+            overflow-wrap: anywhere;
+            background: white;
+            padding: 16px;
+            border-radius: 8px;
+            line-height: 1.7;
+            min-height: 60px;
+        }
+
+        .panel {
+            background: white;
+            padding: 18px;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        .description {
+            color: #555;
+            line-height: 1.6;
+        }
+
+        .back {
+            margin-top: 24px;
+        }
+
+        .back a {
+            display: block;
+            padding: 14px;
+            background: white;
+            color: #2563eb;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            text-decoration: none;
+        }
+
+        .back a:hover {
+            background: #eaf1ff;
+        }
+
+        hr {
+            margin: 30px 0;
+            border: none;
+            border-top: 1px solid #ddd;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>AI運動トレーナー</h1>
+
+    <p class="description">
+        運動の目的を選ぶだけで、AIがあなたに合った運動メニューを提案します。
+    </p>
+
+    <section class="panel">
+        <h2>運動カテゴリーを選択</h2>
+        <p class="description">
+            まずは今日取り組みたい運動を選んでください。
+        </p>
+
+        <form method="post" action="{{ url_for('chat.index') }}">
+            {{ plan_form.hidden_tag() }}
+            <input type="hidden" name="action" value="plan">
+
+            {{ plan_form.category.label }}
+            {{ plan_form.category() }}
+
+            {{ plan_form.experience.label }}
+            {{ plan_form.experience() }}
+
+            {{ plan_form.duration.label }}
+            {{ plan_form.duration() }}
+
+            {{ plan_form.equipment.label }}
+            {{ plan_form.equipment() }}
+
+            {{ plan_form.submit() }}
+        </form>
+
+        {% if plan_error %}
+        <p class="status error" role="alert">{{ plan_error }}</p>
+        {% endif %}
+
+        <h2>おすすめの運動メニュー</h2>
+        <div class="answer" aria-live="polite">{% if plan_answer %}{{ plan_answer }}{% else %}カテゴリーを選んで提案ボタンを押してください。{%
+            endif %}</div>
+    </section>
+
+    <hr>
+
+    <section class="panel">
+        <h2>AIに運動を相談</h2>
+        <p class="description">
+            運動の悩みや、提案されたメニューについて質問できます。
+        </p>
+
+        <form method="post" action="{{ url_for('chat.index') }}">
+            {{ coach_form.hidden_tag() }}
+            <input type="hidden" name="action" value="coach">
+
+            {{ coach_form.question.label }}
+            {{ coach_form.question(rows=4, maxlength=500, placeholder="例：腕立て伏せの正しいフォームを教えて") }}
+
+            {{ coach_form.submit() }}
+        </form>
+
+        {% if chat_error %}
+        <p class="status error" role="alert">{{ chat_error }}</p>
+        {% endif %}
+
+        <div class="answer" aria-live="polite">{% if chat_answer %}{{ chat_answer }}{% else %}AIの回答がここに表示されます。{% endif
+            %}</div>
+    </section>
+
+    <div class="back">
+        <a href="{{ url_for('home.index') }}">← トップページに戻る</a>
+    </div>
+</body>
+
+</html>
