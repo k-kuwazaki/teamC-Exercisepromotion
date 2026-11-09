@@ -20,9 +20,11 @@ def create_app():
     from apps.home.views import home
     from apps.register.views import register_bp
     from apps.login.views import login_bp
+    from apps.chat.views import chat
 
     app.register_blueprint(home)
     app.register_blueprint(register_bp)
     app.register_blueprint(login_bp)
-
+    app.register_blueprint(chat)
+    
     return app

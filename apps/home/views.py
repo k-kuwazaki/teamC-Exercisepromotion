@@ -8,16 +8,14 @@ home = Blueprint("home", __name__, template_folder="templates", static_folder="s
 def index():
     return render_template("home/index.html")
 
-
-
 # 目標入力画面
 @home.route("/goal")
 def goal():
     return render_template("home/goal.html")
 # チャット
-# @home.route("/chat")
-# def chat():
-#     return render_template("chat/chat.html")
+@home.route("/chat")
+def chat():
+     return render_template("chat/chat.html")
 
 # 履歴機能
 @home.route("/history")
