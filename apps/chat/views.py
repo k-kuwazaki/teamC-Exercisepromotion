@@ -7,8 +7,9 @@ from google.genai import types
 from apps.chat.forms import CoachForm, PlanForm
 
 chat = Blueprint("chat", __name__, template_folder="templates", static_folder="static")
-#AIの制約だったりAPIキーだったり生成の処理
-#DBに登録　ほかのページで回答を表示したりなどは後で
+
+# AIの制約、APIキー、回答生成の処理
+# DBへの登録や、ほかのページでの回答表示は後で追加する
 SYSTEM_INSTRUCTION = (
     "あなたは日本語で回答する運動トレーナーです。"
     "利用者の質問に直接答えてください。"
@@ -29,6 +30,17 @@ def inject_chat_forms():
             "plan_form": PlanForm(),
         }
     return {}
+
+@chat.app_context_processor
+def inject_chat_forms():
+    """home側から同じテンプレートを表示する場合にもフォームを渡す。"""
+    if request.path == "/chat":
+        return {
+            "coach_form": CoachForm(),
+            "plan_form": PlanForm(),
+        }
+    return {}
+
 
 def generate_answer(prompt, system_instruction=None, log_message="Gemini API request failed"):
     api_key = os.environ.get("GEMINI_API_KEY")
