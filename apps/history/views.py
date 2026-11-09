@@ -7,3 +7,12 @@ history = Blueprint("history", __name__, template_folder="templates", static_fol
 @history.route("/")
 def index():
     return render_template("home/index.html")
+
+# カレンダー
+@history.route("/calendar")
+def calendar():
+    return render_template("calendar/calendar.html")
+
+@history.route("/situation")
+def situation():
+    return render_template("situation/situation.html")

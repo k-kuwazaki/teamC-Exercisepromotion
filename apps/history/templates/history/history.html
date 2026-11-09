@@ -3,4 +3,6 @@
 {% block content %}
 <h1>履歴機能</h1>
 <p>運動状況や履歴を確認する画面です。</p>
+<a href="{{ url_for('history.situation') }}">運動状況確認</a>
+<a href="{{ url_for('history.calendar') }}">カレンダー</a>
 {% endblock %}
