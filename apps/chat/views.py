@@ -30,6 +30,7 @@ def inject_chst_forms():
         }
     return{}
 
+
 def generate_answer(prompt, system_instruction=None, log_message="Gemini API request failed"):
     api_key = os.environ.get("GEMINI_API_KEY")
     if not api_key:
