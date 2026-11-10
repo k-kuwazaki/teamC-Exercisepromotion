@@ -1,14 +1,28 @@
 import os
 
-from flask import Blueprint, current_app, render_template, request
+from flask import (
+    Blueprint,
+    current_app,
+    render_template,
+    request,
+    session,
+)
 from google import genai
 from google.genai import types
 
+from apps.app import db
 from apps.chat.forms import CoachForm, PlanForm
+from apps.situation.models import Situation
 
-chat = Blueprint("chat", __name__, template_folder="templates", static_folder="static")
-#AIの制約だったりAPIキーだったり生成の処理
-#DBに登録　ほかのページで回答を表示したりなどは後で
+
+chat = Blueprint(
+    "chat",
+    __name__,
+    template_folder="templates",
+    static_folder="static",
+)
+
+
 SYSTEM_INSTRUCTION = (
     "あなたは日本語で回答する運動トレーナーです。"
     "利用者の質問に直接答えてください。"
@@ -21,22 +35,30 @@ SYSTEM_INSTRUCTION = (
     "痛みがある場合は運動を中止するよう伝えてください。"
     "医療上の診断はしないでください。"
 )
+
+
 @chat.app_context_processor
-def inject_chst_forms():
-    if request.path=="/chat":
-     return{
-            "coach_form":CoachForm(),
-            "plan_form":PlanForm(),
+def inject_chat_forms():
+    if request.path == "/chat":
+        return {
+            "coach_form": CoachForm(),
+            "plan_form": PlanForm(),
         }
-    return{}
+    return {}
 
 
-def generate_answer(prompt, system_instruction=None, log_message="Gemini API request failed"):
+def generate_answer(
+    prompt,
+    system_instruction=None,
+    log_message="Gemini API request failed",
+):
     api_key = os.environ.get("GEMINI_API_KEY")
+
     if not api_key:
         return None, "Gemini APIキーが設定されていません。"
 
     config_options = {"max_output_tokens": 2048}
+
     if system_instruction:
         config_options["system_instruction"] = system_instruction
 
@@ -47,9 +69,15 @@ def generate_answer(prompt, system_instruction=None, log_message="Gemini API req
             contents=prompt,
             config=types.GenerateContentConfig(**config_options),
         )
+
         if not response.text:
-            return None, "回答を生成できませんでした。質問を変えてお試しください。"
+            return None, (
+                "回答を生成できませんでした。"
+                "質問を変えてお試しください。"
+            )
+
         return response.text, None
+
     except Exception:
         current_app.logger.exception(log_message)
         return None, (
@@ -58,10 +86,48 @@ def generate_answer(prompt, system_instruction=None, log_message="Gemini API req
         )
 
 
+def save_situation(
+    kind,
+    answer,
+    question=None,
+    category=None,
+    experience=None,
+    duration=None,
+    equipment=None,
+):
+    """ログイン中のユーザーに回答履歴を紐づけて保存する。"""
+    user_id = session.get("user_id")
+
+    if user_id is None:
+        return "履歴を保存するにはログインしてください。"
+
+    try:
+        record = Situation(
+            user_id=user_id,
+            kind=kind,
+            question=question,
+            category=category,
+            experience=experience,
+            duration=duration,
+            equipment=equipment,
+            answer=answer,
+        )
+
+        db.session.add(record)
+        db.session.commit()
+        return None
+
+    except Exception:
+        db.session.rollback()
+        current_app.logger.exception("履歴の保存に失敗しました")
+        return "履歴を保存できませんでした。"
+
+
 @chat.route("/chat", methods=["GET", "POST"])
 def index():
     coach_form = CoachForm()
     plan_form = PlanForm()
+
     chat_answer = None
     plan_answer = None
     chat_error = None
@@ -72,13 +138,27 @@ def index():
 
         if action == "coach":
             if coach_form.validate_on_submit():
+                question = coach_form.question.data.strip()
+
                 chat_answer, chat_error = generate_answer(
-                    coach_form.question.data.strip(),
+                    question,
                     system_instruction=SYSTEM_INSTRUCTION,
                 )
+
+                if chat_answer:
+                    chat_error = save_situation(
+                        kind="chat",
+                        question=question,
+                        answer=chat_answer,
+                    )
+
             else:
                 chat_error = next(
-                    (message for errors in coach_form.errors.values() for message in errors),
+                    (
+                        message
+                        for errors in coach_form.errors.values()
+                        for message in errors
+                    ),
                     "質問を確認してください。",
                 )
 
@@ -123,15 +203,32 @@ def index():
 - 医療上の診断をしない。
 - 目標達成を保証しない。
 """
+
                 plan_answer, plan_error = generate_answer(
                     prompt,
                     log_message="運動メニューの生成に失敗しました",
                 )
+
+                if plan_answer:
+                    plan_error = save_situation(
+                        kind="plan",
+                        answer=plan_answer,
+                        category=category,
+                        experience=experience,
+                        duration=duration,
+                        equipment=equipment,
+                    )
+
             else:
                 plan_error = next(
-                    (message for errors in plan_form.errors.values() for message in errors),
+                    (
+                        message
+                        for errors in plan_form.errors.values()
+                        for message in errors
+                    ),
                     "入力内容を確認してください。",
                 )
+
         else:
             chat_error = "送信内容を確認してください。"
 

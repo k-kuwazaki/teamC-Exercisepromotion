@@ -31,6 +31,7 @@ def chat():
     return render_template("chat/chat.html")
 
 
+
 @home.route("/history")
 @login_required
 def history():
@@ -64,3 +65,4 @@ def help():
 @home.route("/register")
 def register():
     return render_template("register/register.html")
+
