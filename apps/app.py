@@ -15,6 +15,8 @@ def create_app():
         SQLALCHEMY_ECHO=True,
     )
     db.init_app(app)
+    #app変更点
+    from apps.situation.models import Situation
     Migrate(app, db)
 
     from apps.home.views import home
@@ -25,6 +27,15 @@ def create_app():
     from apps.history.views import history
     from apps.body_input.views import body_input
 
+    from apps.friend.views import friend
+    from apps.implementation.views import implementation
+    from apps.registration.views import registration
+    from apps.lookingback.views import lookingback
+    from apps.calendar.views import calendar
+    from apps.situation.views import situation
+    from apps.help.views import help
+
+    
     app.register_blueprint(home)
     app.register_blueprint(register_bp)
     app.register_blueprint(login_bp)
@@ -32,5 +43,14 @@ def create_app():
     app.register_blueprint(goal)
     app.register_blueprint(history)
     app.register_blueprint(body_input)
+
+
+    app.register_blueprint(friend)
+    app.register_blueprint(implementation)
+    app.register_blueprint(registration)
+    app.register_blueprint(lookingback)
+    app.register_blueprint(calendar)
+    app.register_blueprint(situation)
+    app.register_blueprint(help)
     
     return app
