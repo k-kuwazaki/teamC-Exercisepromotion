@@ -21,7 +21,14 @@ SYSTEM_INSTRUCTION = (
     "痛みがある場合は運動を中止するよう伝えてください。"
     "医療上の診断はしないでください。"
 )
-
+@chat.app_context_processor
+def inject_chst_forms():
+    if request.path=="/chat":
+     return{
+            "coach_form":CoachForm(),
+            "plan_form":PlanForm(),
+        }
+    return{}
 
 def generate_answer(prompt, system_instruction=None, log_message="Gemini API request failed"):
     api_key = os.environ.get("GEMINI_API_KEY")
