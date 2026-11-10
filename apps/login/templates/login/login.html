@@ -17,3 +17,11 @@
     <button type="submit">ログイン</button>
 </form>
 {% endblock %}
+
+{% block back_link %}
+{% if session.user_id %}
+<a href="{{ url_for('home.index') }}">← トップページに戻る</a>
+{% else %}
+<a href="{{ url_for('register.register') }}">新規登録はこちら</a>
+{% endif %}
+{% endblock %}

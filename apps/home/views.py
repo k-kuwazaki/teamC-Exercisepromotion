@@ -1,52 +1,66 @@
-from flask import Blueprint, render_template
-#各種リンク先は後々それ用のファイルに移動させる
+from flask import Blueprint, render_template, redirect, url_for, session
+from functools import wraps
+
 home = Blueprint("home", __name__, template_folder="templates", static_folder="static")
 
 
-# トップページ
+def login_required(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if "user_id" not in session:
+            return redirect(url_for("login.login"))
+        return f(*args, **kwargs)
+    return decorated
+
+
 @home.route("/")
+@login_required
 def index():
     return render_template("home/index.html")
 
-# 目標入力画面
+
 @home.route("/goal")
+@login_required
 def goal():
     return render_template("goal/goal.html")
 
 
-# AIチャット画面
 @home.route("/chat")
+@login_required
 def chat():
     return render_template("chat/chat.html")
 
 
 
-# 履歴機能
 @home.route("/history")
+@login_required
 def history():
     return render_template("history/history.html")
 
 
-# 身体情報入力・おなおし
 @home.route("/body-input")
+@login_required
 def body_input():
     return render_template("body_input/body_input.html")
 
 
-# フレンド機能
 @home.route("/friend")
+@login_required
 def friend():
     return render_template("friend/friend.html")
 
-# 運動実施
+
 @home.route("/implementation")
+@login_required
 def implementation():
     return render_template("implementation/implementation.html")
 
-# ヘルプ・使い方
+
 @home.route("/help")
+@login_required
 def help():
     return render_template("help/help.html")
+
 
 @home.route("/register")
 def register():

@@ -27,3 +27,8 @@ def login():
         )
 
     return render_template("login/login.html")
+
+@login_bp.route("/logout")
+def logout():
+    session.clear()
+    return render_template("login/logout.html")
