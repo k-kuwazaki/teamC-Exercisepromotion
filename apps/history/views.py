@@ -12,7 +12,7 @@ def index():
 # カレンダー
 @history.route("/calendar")
 def calendar():
-    return render_template("calendar/calendar.html")
+    return redirect(url_for("calendar.index"))
 
 @history.route("/situation")
 def situation():

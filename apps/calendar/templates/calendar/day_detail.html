@@ -1,0 +1,18 @@
+{% extends "home/base.html" %}
+{% block title %}{{ year }}年{{ month }}月{{ day }}日の詳細{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('calendar.static', filename='style/calendar.css') }}">
+
+<div class="day-detail-wrapper">
+    <h1>{{ year }}年{{ month }}月{{ day }}日</h1>
+
+    <h2>振り返り</h2>
+    {% if record %}
+    <p>{{ record.comment }}</p>
+    {% else %}
+    <p class="no-record">この日の振り返りはありません。</p>
+    {% endif %}
+
+    <a href="{{ url_for('calendar.index', year=year, month=month) }}">← カレンダーに戻る</a>
+</div>
+{% endblock %}
