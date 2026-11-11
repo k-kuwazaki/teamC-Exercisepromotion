@@ -31,7 +31,8 @@ def create_app():
     from apps.implementation.views import implementation
     from apps.registration.views import registration
     from apps.lookingback.views import lookingback
-    from apps.calendar.views import calendar
+    from apps.lookingback import models
+    from apps.calendar.views import calendar_bp
     from apps.situation.views import situation
     from apps.help.views import help
 
@@ -49,7 +50,7 @@ def create_app():
     app.register_blueprint(implementation)
     app.register_blueprint(registration)
     app.register_blueprint(lookingback)
-    app.register_blueprint(calendar)
+    app.register_blueprint(calendar_bp)
     app.register_blueprint(situation)
     app.register_blueprint(help)
     
