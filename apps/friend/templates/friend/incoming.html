@@ -1,0 +1,35 @@
+{% extends "home/base.html" %}
+{% block title %}受信した友達申請{% endblock %}
+{% block content %}
+{% include "friend/_navigation.html" %}
+<main class="friend-panel">
+<h1>受信した友達申請</h1>
+{% if not g.friend_user %}
+<p>ユーザー情報と連携すると、受信した申請が表示されます。</p>
+{% endif %}
+
+{% if incoming_requests %}
+<ul class="friend-list">
+    {% for friend_request in incoming_requests %}
+    <li>
+        <span>{{ friend_request.username }}さん</span>
+        {% if g.friend_user %}
+        <div>
+            <form method="post" action="{{ url_for('friend.accept_request', request_id=friend_request.id) }}">
+                {{ action_form.csrf_token }}
+                <button type="submit">承認</button>
+            </form>
+            <form method="post" action="{{ url_for('friend.reject_request', request_id=friend_request.id) }}">
+                {{ action_form.csrf_token }}
+                <button type="submit">拒否</button>
+            </form>
+        </div>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>受信した申請はありません。</p>
+{% endif %}
+</main>
+{% endblock %}
