@@ -1,0 +1,39 @@
+{% extends "home/base.html" %}
+{% block title %}ユーザー検索・申請{% endblock %}
+{% block content %}
+{% include "friend/_navigation.html" %}
+<main class="friend-panel">
+<h1>ユーザー検索・申請</h1>
+
+<form class="friend-search" method="get" action="{{ url_for('friend.search') }}">
+    <p>
+        <label for="username">ユーザー名</label>
+        <input id="username" name="q" type="search" value="{{ query }}" placeholder="ユーザー名を入力">
+    </p>
+    <button type="submit">検索</button>
+</form>
+
+<h2>検索結果</h2>
+{% if not g.friend_user %}
+<p>ユーザー検索はログインなしで利用できます。申請機能はユーザー情報との連携後に利用できます。</p>
+{% endif %}
+{% if query and not search_results %}
+<p>該当するユーザーはいません。</p>
+{% elif not query %}
+<p>ユーザー名を入力して検索してください。</p>
+{% endif %}
+<ul class="friend-list">
+    {% for user in search_results %}
+    <li>
+        <span>{{ user.username }}</span>
+        {% if g.friend_user %}
+        <form method="post" action="{{ url_for('friend.send_request', target_user_id=user.id) }}">
+            {{ action_form.csrf_token }}
+            <button type="submit">友達申請</button>
+        </form>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+</main>
+{% endblock %}

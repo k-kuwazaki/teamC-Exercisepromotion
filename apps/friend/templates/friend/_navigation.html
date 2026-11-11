@@ -1,0 +1,17 @@
+<link rel="stylesheet" href="{{ url_for('friend.static', filename='css/friend.css') }}">
+
+<nav aria-label="フレンドメニュー" class="friend-nav">
+    <a href="{{ url_for('friend.index') }}" {% if request.endpoint == 'friend.index' %}aria-current="page"{% endif %}>フレンド一覧</a>
+    <a href="{{ url_for('friend.search') }}" {% if request.endpoint == 'friend.search' %}aria-current="page"{% endif %}>検索・申請</a>
+    <a href="{{ url_for('friend.incoming') }}" {% if request.endpoint == 'friend.incoming' %}aria-current="page"{% endif %}>受信した申請・承認</a>
+    <a href="{{ url_for('friend.pending') }}" {% if request.endpoint == 'friend.pending' %}aria-current="page"{% endif %}>送信済み・未承認</a>
+</nav>
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <ul class="friend-notices" role="status">
+        {% for category, message in messages %}
+        <li class="{{ category }}">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+{% endwith %}
