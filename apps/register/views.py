@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request
+from flask import Blueprint, render_template, request, session, redirect, url_for
 from apps.app import db
 from apps.user.models import User
 from apps.register.forms import registration_form_data
@@ -31,3 +31,19 @@ def register():
         return render_template("register/confirmation.html", user=user)
 
     return render_template("register/register.html")
+
+# 削除用のルート
+@register_bp.route("/delete_account", methods=["GET", "POST"])
+def delete_account():
+    if "user_id" not in session:
+        return redirect(url_for("login.login"))
+
+    if request.method == "POST":
+        user = User.query.get(session["user_id"])
+        if user:
+            db.session.delete(user)
+            db.session.commit()
+        session.clear()
+        return render_template("register/deleted.html")
+
+    return render_template("register/delete_check.html")
