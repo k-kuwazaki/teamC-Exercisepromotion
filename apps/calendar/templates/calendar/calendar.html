@@ -17,10 +17,14 @@
     var container = document.getElementById('cal-container');
     var year = container.dataset.year;
     var month = container.dataset.month;
-    container.querySelectorAll('td.clickable').forEach(function (td) {
-        td.addEventListener('click', function () {
+    container.querySelectorAll('td.clickable').forEach(function(td) {
+        td.addEventListener('click', function() {
+
             window.location.href = '/calendar/day/' + year + '/' + month + '/' + td.dataset.day;
         });
     });
 </script>
+
 {% endblock %}
+
+

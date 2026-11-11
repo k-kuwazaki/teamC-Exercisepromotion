@@ -7,9 +7,7 @@
     <h1>運動の振り返り</h1>
     <p class="lb-today">{{ today }}</p>
 
-    {% if already_posted %}
-    <p class="lb-notice">本日の振り返りは入力済みです。</p>
-    {% else %}
+    {% if not already_posted %}
     <form method="POST" action="{{ url_for('lookingback.index') }}" class="lb-form">
         <textarea name="comment" placeholder="コメントを入力..." required></textarea>
         <button type="submit">保存</button>
@@ -30,4 +28,6 @@
         {% endfor %}
     </ul>
 </div>
+
 {% endblock %}
+
