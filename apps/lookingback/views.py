@@ -32,4 +32,6 @@ def delete(record_id):
     record = LookingBack.query.get_or_404(record_id)
     db.session.delete(record)
     db.session.commit()
+
     return redirect(url_for("lookingback.index"))
+
