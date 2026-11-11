@@ -1,0 +1,33 @@
+{% extends "home/base.html" %}
+{% block title %}振り返り{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('lookingback.static', filename='style/lookingback.css') }}">
+
+<div class="lb-wrapper">
+    <h1>運動の振り返り</h1>
+    <p class="lb-today">{{ today }}</p>
+
+    {% if already_posted %}
+    <p class="lb-notice">本日の振り返りは入力済みです。</p>
+    {% else %}
+    <form method="POST" action="{{ url_for('lookingback.index') }}" class="lb-form">
+        <textarea name="comment" placeholder="コメントを入力..." required></textarea>
+        <button type="submit">保存</button>
+    </form>
+    {% endif %}
+
+    <ul class="lb-list">
+        {% for r in records %}
+        <li>
+            <span class="lb-date">{{ r.date.strftime('%Y年%m月%d日') }}</span>
+            <span class="lb-comment">{{ r.comment }}</span>
+            <form method="POST" action="{{ url_for('lookingback.delete', record_id=r.id) }}" class="lb-delete-form">
+                <button type="submit" onclick="return confirm('削除しますか？')">削除</button>
+            </form>
+        </li>
+        {% else %}
+        <li class="lb-empty">まだ記録がありません。</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "home/base.html" %}
+
+{% block title %}トップページ{% endblock %}
+
+{% block content %}
+<h1>運動履歴</h1>
+
+{% if situations %}
+{% for item in situations %}
+<section>
+    <h2>
+        {% if item.kind == "chat" %}
+        AIチャット
+        {% elif item.kind == "plan" %}
+        運動メニュー
+        {% else %}
+        履歴
+        {% endif %}
+    </h2>
+
+    <p>日時：{{ item.created_at.strftime("%Y-%m-%d %H:%M") }}</p>
+
+    {% if item.kind == "chat" %}
+    <p>質問：{{ item.question }}</p>
+    {% else %}
+    <p>カテゴリー：{{ item.category }}</p>
+    <p>運動経験：{{ item.experience }}</p>
+    <p>運動時間：{{ item.duration }}</p>
+    <p>器具：{{ item.equipment }}</p>
+    {% endif %}
+
+    <h3>回答</h3>
+    <p style="white-space: pre-wrap;">{{ item.answer }}</p>
+</section>
+<hr>
+{% endfor %}
+{% else %}
+<p>履歴はまだありません。</p>
+{% endif %}
+{% endblock %}

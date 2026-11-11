@@ -1,0 +1,26 @@
+{% extends "home/base.html" %}
+{% block title %}{{ year }}年{{ month }}月のカレンダー{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('calendar.static', filename='style/calendar.css') }}">
+
+<div class="calendar-wrapper">
+    <h1>{{ year }}年{{ month }}月のカレンダー</h1>
+    <div class="cal-nav">
+        <a href="{{ url_for('calendar.index', year=prev_year, month=prev_month) }}">◀ 前月</a>
+        <span>{{ year }}年{{ month }}月</span>
+        <a href="{{ url_for('calendar.index', year=next_year, month=next_month) }}">次月 ▶</a>
+    </div>
+    <div id="cal-container" data-year="{{ year }}" data-month="{{ month }}">{{ calendar_html|safe }}</div>
+</div>
+
+<script>
+    var container = document.getElementById('cal-container');
+    var year = container.dataset.year;
+    var month = container.dataset.month;
+    container.querySelectorAll('td.clickable').forEach(function (td) {
+        td.addEventListener('click', function () {
+            window.location.href = '/calendar/day/' + year + '/' + month + '/' + td.dataset.day;
+        });
+    });
+</script>
+{% endblock %}
