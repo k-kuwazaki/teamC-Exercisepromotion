@@ -1,0 +1,12 @@
+{% extends "home/base.html" %}
+{% block content %}
+<h1>アカウント削除の確認</h1>
+<p>本当にアカウントを削除しますか？この操作は取り消せません。</p>
+<form method="post">
+    <button type="submit">削除する</button>
+</form>
+{% endblock %}
+
+{% block back_link %}
+<a href="{{ url_for('home.index') }}">← キャンセル</a>
+{% endblock %}

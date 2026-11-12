@@ -2,5 +2,30 @@
 {% block title %}身体情報入力{% endblock %}
 {% block content %}
 <h1>身体情報入力・おなおし</h1>
-<p>身体情報を入力する画面です。</p>
+{% if success %}<p>{{ success }}</p>{% endif %}
+
+<form method="post">
+    {{ form.hidden_tag() }}
+    <div>
+        <label>{{ form.height.label }}</label>
+        {{ form.height() }}
+    </div>
+    <div>
+        <label>{{ form.weight.label }}</label>
+        {{ form.weight() }}
+    </div>
+    <div>
+        <label>{{ form.age.label }}</label>
+        {{ form.age() }}
+    </div>
+    <div>
+        <label>{{ form.exercise_habit.label }}</label>
+        {{ form.exercise_habit() }}
+    </div>
+    <div>
+        <label>{{ form.goal.label }}</label>
+        {{ form.goal() }}
+    </div>
+    {{ form.submit() }}
+</form>
 {% endblock %}

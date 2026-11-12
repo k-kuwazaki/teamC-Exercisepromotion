@@ -1,6 +1,6 @@
 import calendar
 from datetime import date
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, session
 from apps.lookingback.models import LookingBack
 
 calendar_bp = Blueprint("calendar", __name__, template_folder="templates", static_folder="static", url_prefix="/calendar")
@@ -22,6 +22,10 @@ class TodayCalendar(calendar.HTMLCalendar):
 
 @calendar_bp.route("/")
 def index():
+    user_id = session.get("user_id")
+    if not user_id:
+        return redirect(url_for("login.login"))
+
     today = date.today()
     year = request.args.get("year", type=int)
     month = request.args.get("month", type=int)
@@ -57,5 +61,9 @@ def index():
 
 @calendar_bp.route("/day/<int:year>/<int:month>/<int:day>")
 def day_detail(year, month, day):
-    record = LookingBack.query.filter_by(date=date(year, month, day)).first()
+    user_id = session.get("user_id")
+    if not user_id:
+        return redirect(url_for("login.login"))
+
+    record = LookingBack.query.filter_by(user_id=user_id, date=date(year, month, day)).first()
     return render_template("calendar/day_detail.html", year=year, month=month, day=day, record=record)

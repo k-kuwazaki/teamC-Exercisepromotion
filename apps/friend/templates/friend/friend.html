@@ -1,6 +1,33 @@
 {% extends "home/base.html" %}
 {% block title %}フレンド{% endblock %}
 {% block content %}
+
+{% include "friend/_navigation.html" %}
+<main class="friend-panel">
+<h1>フレンド一覧</h1>
+{% if not g.friend_user %}
+<p>ユーザー情報と連携すると、フレンド一覧が表示されます。</p>
+{% endif %}
+{% if friends %}
+<ul class="friend-list">
+    {% for user in friends %}
+    <li>
+        <span>{{ user.username }}</span>
+        {% if g.friend_user %}
+        <form method="post" action="{{ url_for('friend.remove_friend', friend_user_id=user.id) }}">
+            {{ action_form.csrf_token }}
+            <button type="submit">フレンド解除</button>
+        </form>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>フレンドはいません。</p>
+{% endif %}
+</main>
+
 <h1>フレンド</h1>
 <p>フレンド画面です。</p>
+
 {% endblock %}

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, redirect, url_for
 #各種リンク先は後々それ用のファイルに移動させる
 registration = Blueprint("registration", __name__, template_folder="templates", static_folder="static")
 
@@ -10,7 +10,7 @@ def index():
 # 振り返り
 @registration.route("/lookingback")
 def lookingback():
-    return render_template("lookingback/lookingback.html")
+    return redirect(url_for("lookingback.index"))
 
 
 

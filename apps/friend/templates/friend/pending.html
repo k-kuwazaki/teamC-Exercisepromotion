@@ -1,0 +1,29 @@
+{% extends "home/base.html" %}
+{% block title %}送信済みの友達申請{% endblock %}
+{% block content %}
+{% include "friend/_navigation.html" %}
+<main class="friend-panel">
+<h1>送信済み・未承認の申請</h1>
+{% if not g.friend_user %}
+<p>ユーザー情報と連携すると、送信した申請が表示されます。</p>
+{% endif %}
+
+{% if pending_requests %}
+<ul class="friend-list">
+    {% for friend_request in pending_requests %}
+    <li>
+        <span>{{ friend_request.username }}さん（承認待ち）</span>
+        {% if g.friend_user %}
+        <form method="post" action="{{ url_for('friend.cancel_request', request_id=friend_request.id) }}">
+            {{ action_form.csrf_token }}
+            <button type="submit">申請を取り消す</button>
+        </form>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>未承認の友達申請はありません。</p>
+{% endif %}
+</main>
+{% endblock %}

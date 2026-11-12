@@ -38,12 +38,6 @@ def history():
     return render_template("history/history.html")
 
 
-@home.route("/body-input")
-@login_required
-def body_input():
-    return render_template("body_input/body_input.html")
-
-
 @home.route("/friend")
 @login_required
 def friend():
