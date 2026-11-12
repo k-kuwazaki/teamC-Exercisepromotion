@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template
+from flask import Blueprint, render_template, session
 #各種リンク先は後々それ用のファイルに移動させる
 implementation = Blueprint("implementation", __name__, template_folder="templates", static_folder="static")
 
@@ -16,3 +16,11 @@ def registration():
 @implementation.route("/history")
 def history():
     return render_template("history/history.html")
+#とりあえず飛ぶ用
+@implementation.route("/implementation")
+def exercise():
+    return render_template(
+        "implementation/implementation.html",
+        exercises=session.get("selected_exercises", []),
+        conditions=session.get("selected_plan_conditions", {}),
+    )
