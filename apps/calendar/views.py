@@ -15,7 +15,7 @@ class TodayCalendar(calendar.HTMLCalendar):
         if day == 0:
             return '<td class="noday">&nbsp;</td>'
         classes = self.cssclasses[weekday]
-        if day == self.today.day:
+        if self.today and day == self.today.day:
             classes += ' today'
         return f'<td class="{classes} clickable" data-day="{day}">{day}</td>'
 
@@ -42,8 +42,8 @@ def index():
     prev_year, prev_month = (year - 1, 12) if month == 1 else (year, month - 1)
     next_year, next_month = (year + 1, 1) if month == 12 else (year, month + 1)
 
-    # 今月表示中のときだけ今日を強調、それ以外は存在しない日付を渡す
-    cal_today = today if (year == today.year and month == today.month) else date(1, 1, 1)
+    is_current_month = (year == today.year and month == today.month)
+    cal_today = today if is_current_month else None
     cal = TodayCalendar(cal_today)
     calendar_html = cal.formatmonth(year, month)
 
