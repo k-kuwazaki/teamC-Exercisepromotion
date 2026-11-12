@@ -1,7 +1,9 @@
+#入力フォーム
 from flask_wtf import FlaskForm
 from wtforms import SelectField, SubmitField, TextAreaField
 from wtforms.validators import DataRequired, Length
-
+from wtforms import SelectMultipleField
+from wtforms.widgets import CheckboxInput, ListWidget
 #目標とカテゴリーの選択
 class TranslationForm(FlaskForm):
     source_text = TextAreaField(
@@ -56,3 +58,9 @@ class PlanForm(FlaskForm):
         default="なし",
     )
     submit = SubmitField("AIにメニューを提案してもらう")
+    selected_exercises = SelectMultipleField(
+    "取り入れたい運動（複数選択できます）",
+    choices=[],
+    option_widget=CheckboxInput(),
+    widget=ListWidget(prefix_label=False),
+)

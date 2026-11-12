@@ -118,6 +118,30 @@
             border: none;
             border-top: 1px solid #ddd;
         }
+
+        .exercise-options {
+            display: grid;
+            gap: 12px;
+        }
+
+        .exercise-option {
+            display: block;
+            padding: 14px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background: white;
+            font-weight: normal;
+        }
+
+        .exercise-option input[type="checkbox"] {
+            width: auto;
+            margin-right: 8px;
+        }
+
+        .exercise-option p {
+            margin: 8px 0 0;
+            line-height: 1.5;
+        }
     </style>
 </head>
 
@@ -152,14 +176,53 @@
 
             {{ plan_form.submit() }}
         </form>
+        {% if plan_options %}
+        <h2>候補から運動を選択</h2>
+        <p class="description">
+            取り入れたい運動を選んでください。複数選択できます。
+        </p>
+
+        <form method="post" action="{{ url_for('chat.index') }}">
+            {{ plan_form.hidden_tag() }}
+            <input type="hidden" name="action" value="select_exercises">
+
+            <input type="hidden" name="category" value="{{ plan_conditions.category }}">
+            <input type="hidden" name="experience" value="{{ plan_conditions.experience }}">
+            <input type="hidden" name="duration" value="{{ plan_conditions.duration }}">
+            <input type="hidden" name="equipment" value="{{ plan_conditions.equipment }}">
+
+            <div class="exercise-options">
+                {% for option in plan_options %}
+                <label class="exercise-option">
+                    <input type="checkbox" name="selected_exercises" value="{{ option.id }}">
+                    <strong>{{ option.name }}</strong>
+                    <p>目安時間：{{ option.minutes }}分</p>
+                    <p>セット数：{{ option.sets }}セット</p>
+                    <p>標準目標：{{ option.target_value }}{{ option.unit }}</p>
+                    <p>{{ option.description }}</p>
+                    <p>注意点：{{ option.caution }}</p>
+                </label>
+                {% endfor %}
+            </div>
+
+            <button type="submit">選択した運動を決定</button>
+        </form>
+        {% endif %}
 
         {% if plan_error %}
         <p class="status error" role="alert">{{ plan_error }}</p>
         {% endif %}
 
-        <h2>おすすめの運動メニュー</h2>
-        <div class="answer" aria-live="polite">{% if plan_answer %}{{ plan_answer }}{% else %}カテゴリーを選んで提案ボタンを押してください。{%
-            endif %}</div>
+        <h2>選択した運動メニュー</h2>
+        <div class="answer" aria-live="polite">
+            {% if plan_answer %}
+            {{ plan_answer }}
+            {% elif plan_options %}
+            候補を選択して「選択した運動を決定」を押してください。
+            {% else %}
+            カテゴリーを選んで提案ボタンを押してください。
+            {% endif %}
+        </div>
     </section>
 
     <hr>
