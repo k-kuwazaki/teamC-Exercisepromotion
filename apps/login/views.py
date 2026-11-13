@@ -19,6 +19,7 @@ def login():
         if user and check_password_hash(user.password_hash, form_data["password"]):
             session.clear()
             session["user_id"] = user.id
+            session["username"] = user.username
             return redirect(url_for("home.index"))
 
         return render_template(
@@ -27,6 +28,7 @@ def login():
         )
 
     return render_template("login/login.html")
+
 
 @login_bp.route("/logout")
 def logout():
