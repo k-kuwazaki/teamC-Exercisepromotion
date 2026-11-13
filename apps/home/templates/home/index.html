@@ -3,19 +3,78 @@
 {% block title %}トップページ{% endblock %}
 
 {% block content %}
-<h1>運動管理アプリ</h1>
-<p>利用する機能を選択してください。</p>
+<div class="page-header">
+    <h1><i class="fas fa-home"></i> 運動継続促進システム</h1>
+    <p>ようこそ！今日も一緒に運動を続けましょう。</p>
+</div>
 
-<div class="menu">
-    <a href="{{ url_for('login.logout') }}">ログアウト</a>
-    <a href="{{ url_for('home.register') }}">新規作成</a>
-    <a href="{{ url_for('home.goal') }}">目標入力画面</a>
-    <a href="{{ url_for('chat.index') }}">AIチャット</a>
-    <a href="{{ url_for('home.history') }}">履歴機能</a>
-    <a href="{{ url_for('body_input.index') }}">身体情報入力・おなおし</a>
-    <a href="{{ url_for('home.friend') }}">フレンド</a>
-    <a href="{{ url_for('home.implementation') }}">運動実施</a>
-    <a href="{{ url_for('home.help') }}">ヘルプ・使い方</a>
-    <a href="{{ url_for('register.delete_account') }}">アカウント削除</a>
+<!-- ダッシュボード（プレースホルダー） -->
+<div class="dashboard">
+    <div class="dashboard-card">
+        <div class="dashboard-icon"><i class="fas fa-fire"></i></div>
+        <div class="dashboard-info">
+            <span class="dashboard-label">今日の運動</span>
+            <span class="dashboard-value">-- 分</span>
+        </div>
+    </div>
+    <div class="dashboard-card">
+        <div class="dashboard-icon"><i class="fas fa-bullseye"></i></div>
+        <div class="dashboard-info">
+            <span class="dashboard-label">目標達成率</span>
+            <span class="dashboard-value">--%</span>
+        </div>
+    </div>
+    <div class="dashboard-card">
+        <div class="dashboard-icon"><i class="fas fa-calendar-check"></i></div>
+        <div class="dashboard-info">
+            <span class="dashboard-label">連続記録</span>
+            <span class="dashboard-value">-- 日</span>
+        </div>
+    </div>
+</div>
+
+<!-- メニューカード -->
+<h2 class="section-title">メニュー</h2>
+<div class="menu-grid">
+    <a href="{{ url_for('login.logout') }}" class="menu-card logout-card">
+        <i class="fas fa-sign-out-alt"></i>
+        <span>ログアウト</span>
+    </a>
+    <a href="{{ url_for('home.register') }}" class="menu-card">
+        <i class="fas fa-user-plus"></i>
+        <span>新規作成</span>
+    </a>
+    <a href="{{ url_for('home.goal') }}" class="menu-card">
+        <i class="fas fa-bullseye"></i>
+        <span>目標入力</span>
+    </a>
+    <a href="{{ url_for('chat.index') }}" class="menu-card">
+        <i class="fas fa-robot"></i>
+        <span>AIチャット</span>
+    </a>
+    <a href="{{ url_for('home.history') }}" class="menu-card">
+        <i class="fas fa-history"></i>
+        <span>履歴機能</span>
+    </a>
+    <a href="{{ url_for('body_input.index') }}" class="menu-card">
+        <i class="fas fa-heartbeat"></i>
+        <span>身体情報入力</span>
+    </a>
+    <a href="{{ url_for('home.friend') }}" class="menu-card">
+        <i class="fas fa-users"></i>
+        <span>フレンド</span>
+    </a>
+    <a href="{{ url_for('home.implementation') }}" class="menu-card">
+        <i class="fas fa-running"></i>
+        <span>運動実施</span>
+    </a>
+    <a href="{{ url_for('home.help') }}" class="menu-card">
+        <i class="fas fa-question-circle"></i>
+        <span>ヘルプ・使い方</span>
+    </a>
+    <a href="{{ url_for('register.delete_account') }}" class="menu-card danger-card">
+        <i class="fas fa-trash-alt"></i>
+        <span>アカウント削除</span>
+    </a>
 </div>
 {% endblock %}
