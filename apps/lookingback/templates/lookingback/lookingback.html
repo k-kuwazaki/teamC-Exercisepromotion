@@ -19,9 +19,7 @@
         <li>
             <span class="lb-date">{{ r.date.strftime('%Y年%m月%d日') }}</span>
             <span class="lb-comment">{{ r.comment }}</span>
-            <form method="POST" action="{{ url_for('lookingback.delete', record_id=r.id) }}" class="lb-delete-form">
-                <button type="submit" onclick="return confirm('削除しますか？')">削除</button>
-            </form>
+            <div class="lb-delete-form"><a href="{{ url_for('lookingback.delete_confirm', record_id=r.id) }}">削除</a></div>
         </li>
         {% else %}
         <li class="lb-empty">まだ記録がありません。</li>
