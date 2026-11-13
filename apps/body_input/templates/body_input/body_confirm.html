@@ -1,0 +1,21 @@
+{% extends "home/base.html" %}
+{% block title %}変更内容の確認{% endblock %}
+{% block content %}
+<h1>変更内容の確認</h1>
+<p>以下の内容で更新します。よろしいですか？</p>
+
+<p>身長：{{ data.height }}</p>
+<p>体重：{{ data.weight }}</p>
+<p>年齢：{{ data.age }}</p>
+<p>運動習慣：{{ data.exercise_habit }}</p>
+<p>目標：{{ data.goal }}</p>
+<p>パスワード：{% if data.change_password %}変更する{% else %}変更しない{% endif %}</p>
+
+<form method="post">
+    <button type="submit">更新する</button>
+</form>
+{% endblock %}
+
+{% block back_link %}
+<a href="{{ url_for('body_input.index') }}">← 編集画面に戻る</a>
+{% endblock %}
