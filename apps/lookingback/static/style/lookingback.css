@@ -1,9 +1,11 @@
+
 .lb-wrapper {
     max-width: 600px;
     margin: 0 auto;
     padding: 20px;
 }
 
+/* フォーム */
 .lb-form {
     display: flex;
     flex-direction: column;
@@ -24,9 +26,9 @@
     resize: vertical;
 }
 
-.lb-form button {
-    padding: 10px;
-    background: #52aa7c;
+/* ボタン共通 */
+.lb-form button,
+.lb-wrapper .lb-confirm-actions button {
     color: #fff;
     border: none;
     border-radius: 8px;
@@ -34,6 +36,13 @@
     cursor: pointer;
 }
 
+/* 投稿ボタン */
+.lb-form button {
+    padding: 10px;
+    background: #52aa7c;
+}
+
+/* 今日の日付 */
 .lb-today {
     font-size: 1rem;
     font-weight: bold;
@@ -41,6 +50,7 @@
     margin-bottom: 4px;
 }
 
+/* 一覧 */
 .lb-list {
     list-style: none;
     padding: 0;
@@ -49,7 +59,8 @@
     gap: 10px;
 }
 
-.lb-list li {
+.lb-list li,
+.lb-confirm-item {
     background: #fff;
     border: 1px solid #ddd;
     border-radius: 8px;
@@ -75,20 +86,49 @@
     margin-bottom: 16px;
 }
 
+/* 削除 */
 .lb-delete-form {
     margin-left: auto;
 }
 
-.lb-delete-form button {
+.lb-delete-form a {
+    display: inline-block;
     padding: 4px 12px;
     background: #e05c5c;
     color: #fff;
-    border: none;
     border-radius: 6px;
-    cursor: pointer;
     font-size: 0.85rem;
+    text-decoration: none;
 }
 
-.lb-delete-form button:hover {
+.lb-delete-form a:hover,
+.lb-wrapper .lb-confirm-actions button:hover {
     background: #c0392b;
+}
+
+/* 削除確認画面 */
+.lb-confirm-item {
+    margin-bottom: 20px;
+}
+
+.lb-wrapper .lb-confirm-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+    align-items: center;
+}
+
+.lb-wrapper .lb-confirm-actions button {
+    padding: 8px 20px;
+    background: #e05c5c;
+}
+
+.lb-wrapper .lb-confirm-actions a {
+    color: #4a90d9;
+    text-decoration: none;
+    font-size: 0.95rem;
+}
+
+.lb-wrapper .lb-confirm-actions a:hover {
+    text-decoration: underline;
 }

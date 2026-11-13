@@ -32,6 +32,13 @@ def index():
     )
 
 
+@lookingback.route("/delete/confirm/<int:record_id>")
+def delete_confirm(record_id):
+    user_id = session.get("user_id")
+    record = LookingBack.query.filter_by(id=record_id, user_id=user_id).first_or_404()
+    return render_template("lookingback/delete_confirm.html", record=record)
+
+
 @lookingback.route("/delete/<int:record_id>", methods=["POST"])
 def delete(record_id):
     user_id = session.get("user_id")
