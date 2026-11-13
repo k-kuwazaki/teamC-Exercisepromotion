@@ -20,6 +20,7 @@
     align-items: center;
     gap: 24px;
     margin-bottom: 16px;
+    font-size: 14px;
 }
 
 .cal-nav a {
@@ -86,6 +87,7 @@
     transition: background-color 0.15s, transform 0.1s;
     vertical-align: top;
     height: 60px;
+    width: calc(100% / 7);
 }
 
 /* 空白セル */
