@@ -26,3 +26,4 @@ class Situation(db.Model):
         nullable=False,
         default=datetime.now,
     )
+    self_exercises = db.Column(db.Text, nullable=True)

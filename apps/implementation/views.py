@@ -10,17 +10,11 @@ def index():
 # 実施登録画面
 @implementation.route("/registration")
 def registration():
-    return render_template("registration/registration.html")
-
+    return render_template(
+        "registration/registration.html",
+        selected_exercises=session.get("selected_exercises", []),
+    )
 # 履歴機能
 @implementation.route("/history")
 def history():
     return render_template("history/history.html")
-#とりあえず飛ぶ用
-@implementation.route("/implementation")
-def exercise():
-    return render_template(
-        "implementation/implementation.html",
-        exercises=session.get("selected_exercises", []),
-        conditions=session.get("selected_plan_conditions", {}),
-    )
