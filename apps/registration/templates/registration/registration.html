@@ -1,7 +1,40 @@
 {% extends "home/base.html" %}
+
 {% block title %}運動実施登録{% endblock %}
+
 {% block content %}
 <h1>運動実施登録</h1>
-<p>運動実施登録画面です。</p>
-<a href="{{ url_for('registration.lookingback') }}">今週振り返り</a>
+
+<h2>選択した運動メニュー</h2>
+
+{% if selected_exercises %}
+<ul>
+    {% for exercise in selected_exercises %}
+    <li>
+        <strong>{{ exercise.name }}</strong><br>
+        目安時間：{{ exercise.minutes }}分<br>
+        セット数：{{ exercise.sets }}セット<br>
+        標準目標：{{ exercise.target_value }}{{ exercise.unit }}<br>
+        内容：{{ exercise.description }}<br>
+        注意点：{{ exercise.caution }}
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>選択した運動メニューはありません。</p>
+{% endif %}
+
+<h2>自主的に行った運動</h2>
+
+<form method="post" action="{{ url_for('registration.save_registration') }}">
+    <label for="self_exercises">運動内容を入力してください</label>
+    <textarea id="self_exercises" name="self_exercises" rows="5"
+        placeholder="例：散歩を20分、腹筋を10回">{{ self_exercises }}</textarea>
+
+    <button type="submit">登録</button>
+</form>
+
+<p>
+    <a href="{{ url_for('registration.lookingback') }}">振り返り</a>
+</p>
 {% endblock %}

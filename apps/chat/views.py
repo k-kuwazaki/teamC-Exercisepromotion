@@ -208,33 +208,17 @@ def index():
                             f"{allowed_minutes}分以内になるよう選び直してください。"
                         )
                     else:
-                        plan_answer = format_selected_exercises(
-                            selected_options,
-                            plan_conditions,
-                        )
-
                         session["selected_exercises"] = selected_options
                         session["selected_plan_conditions"] = plan_conditions
 
-                        save_error = save_situation(
-                            kind="plan",
-                            answer=plan_answer,
-                            category=plan_conditions["category"],
-                            experience=plan_conditions["experience"],
-                            duration=plan_conditions["duration"],
-                            equipment=plan_conditions["equipment"],
+                        session.pop("plan_options", None)
+                        session.pop("plan_conditions", None)
+
+                        return redirect(
+                            url_for("implementation.registration")
                         )
 
-                        if save_error:
-                            plan_error = save_error
-                        else:
-                            session.pop("plan_options", None)
-                            session.pop("plan_conditions", None)
-
-                            return redirect(
-                                url_for("implementation.exercise")
-                            )
-
+                        
             else:
                 plan_error = next(
                     (
