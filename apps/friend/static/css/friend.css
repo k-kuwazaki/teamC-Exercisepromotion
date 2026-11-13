@@ -1,8 +1,13 @@
 body:has(.friend-nav) {
-    max-width: 980px;
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+
     background:
         radial-gradient(ellipse at 5% 0%, rgb(216 226 211 / 54%), transparent 34%),
         linear-gradient(145deg, #f1f2eb 0%, #f7f5ef 58%, #eeefea 100%);
+
     color: #242d29;
     font-family: "Noto Sans JP", "Yu Gothic UI", sans-serif;
 }
@@ -46,7 +51,6 @@ body:has(.friend-nav) {
 
 .friend-panel {
     position: relative;
-    min-height: 390px;
     overflow: hidden;
     padding: clamp(26px, 5vw, 52px);
     border: 1px solid rgb(255 255 255 / 95%);
@@ -140,14 +144,14 @@ body:has(.friend-nav) {
     box-shadow: 0 7px 16px rgb(45 52 44 / 6%);
 }
 
-.friend-list li > span {
+.friend-list li>span {
     display: inline-flex;
     align-items: center;
     gap: 12px;
     font-weight: 550;
 }
 
-.friend-list li > span::before {
+.friend-list li>span::before {
     width: 8px;
     height: 8px;
     flex: 0 0 auto;
@@ -158,7 +162,7 @@ body:has(.friend-nav) {
     content: "";
 }
 
-.friend-list li > div {
+.friend-list li>div {
     display: flex;
     gap: 8px;
 }
@@ -209,7 +213,7 @@ body:has(.friend-nav) {
     box-shadow: 0 0 0 3px rgb(113 135 117 / 14%);
 }
 
-.friend-search > p {
+.friend-search>p {
     flex: 1;
     margin: 0;
 }
@@ -282,32 +286,137 @@ body:has(.friend-nav) {
     color: #3e7050;
 }
 
-@media (max-width: 560px) {
-    body:has(.friend-nav) {
-        margin-top: 20px;
+/* =================================
+   フレンド画面の幅・配置
+================================= */
+
+/* メイン画面 */
+body:has(.friend-nav) .main-content {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    flex: 1;
+    width: 100%;
+    min-width: 0;
+    max-width: none;
+
+    padding: 40px clamp(16px, 3vw, 48px);
+}
+
+/* フレンドメニューと一覧 */
+body:has(.friend-nav) .friend-nav,
+body:has(.friend-nav) .friend-panel {
+    width: 100%;
+    max-width: 1400px;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    box-sizing: border-box;
+}
+
+/* フレンド一覧の高さ */
+.friend-panel {
+    min-height: 500px;
+}
+
+
+/* =================================
+   タブレット・スマホ対応
+================================= */
+
+@media screen and (max-width: 768px) {
+
+    /* メイン画面 */
+    body:has(.friend-nav) .main-content {
+        width: 100%;
+        padding: 70px 16px 24px;
     }
 
+    /* フレンドメニュー */
     .friend-nav {
         gap: 3px;
         padding: 5px;
+        margin-bottom: 15px;
+
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
     }
 
     .friend-nav a {
-        padding: 11px 13px;
+        flex: 0 0 auto;
+        padding: 11px 12px;
         font-size: 12px;
+        white-space: nowrap;
     }
 
+    /* フレンド一覧 */
     .friend-panel {
+        width: 100%;
+        max-width: 100%;
+        min-height: auto;
+
+        padding: 25px 18px;
         border-radius: 14px;
     }
 
-    .friend-search {
-        align-items: stretch;
+    /* フレンド情報 */
+    .friend-list li {
         flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    .friend-list li>div {
+        flex-wrap: wrap;
+    }
+
+    /* 検索欄 */
+    .friend-search {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+        padding: 15px;
+    }
+
+    .friend-search input {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .friend-search button {
+        width: 100%;
+        flex: none;
     }
 
     .friend-list li {
-        align-items: flex-start;
-        flex-direction: column;
+        padding: 13px;
+        box-sizing: border-box;
+    }
+
+    .friend-list li>span {
+        overflow-wrap: anywhere;
+    }
+}
+
+
+/* =================================
+   小さいスマホ対応
+================================= */
+
+@media screen and (max-width: 400px) {
+
+    body:has(.friend-nav) .main-content {
+        padding: 70px 10px 20px;
+    }
+
+    .friend-panel {
+        padding: 20px 13px;
+    }
+
+    .friend-nav a {
+        padding: 10px;
+        font-size: 11px;
     }
 }

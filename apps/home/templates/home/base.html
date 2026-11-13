@@ -5,52 +5,73 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}運動管理アプリ{% endblock %}</title>
-    <style>
-        body {
-            font-family: sans-serif;
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 0 20px;
-            background: #f5f7fa;
-        }
 
-        h1 {
-            color: #333;
-        }
+    <link rel="stylesheet" href="{{ url_for('home.static', filename='style/sidebar.css') }}">
 
-        .menu {
-            display: grid;
-            gap: 12px;
-        }
-
-        a {
-            display: block;
-            padding: 16px;
-            background: white;
-            color: #2563eb;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            text-decoration: none;
-        }
-
-        a:hover {
-            background: #eaf1ff;
-        }
-
-        .back {
-            margin-top: 24px;
-        }
-    </style>
 </head>
 
 <body>
-    {% block content %}{% endblock %}
+
+    <!-- サイドバー開閉ボタン -->
+    <button id="sidebar-toggle" onclick="toggleSidebar()">
+        ☰
+    </button>
+
+    <div class="layout">
+
+        <!-- サイドバー -->
+        <aside class="sidebar">
+            <h2>Sidebar</h2>
+
+            <nav>
+                <a href="{{ url_for('home.index') }}">ホーム</a>
+                <a href="{{ url_for('home.register') }}">新規作成</a>
+                <a href="{{ url_for('home.history') }}">履歴機能</a>
+                <a href="{{ url_for('friend.index') }}">フレンド</a>
+                <a href="{{ url_for('home.help') }}">ヘルプ・使い方</a>
+                <a href="{{ url_for('register.delete_account') }}">アカウント削除</a>
+            </nav>
+
+            <div class="logout">
+                <a href="{{ url_for('login.logout') }}">ログアウト</a>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            {% block content %}
+            {% endblock %}
+        </main>
+
+    </div>
 
     <div class="back">
         {% block back_link %}
         <a href="{{ url_for('home.index') }}">← トップページに戻る</a>
         {% endblock %}
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const layout = document.querySelector(".layout");
+
+            // 画面を開いたときはサイドバーを閉じる
+            layout.classList.add("sidebar-closed");
+
+            // 閉じた状態を保存する
+            localStorage.setItem("sidebarClosed", "true");
+        });
+
+        function toggleSidebar() {
+            const layout = document.querySelector(".layout");
+
+            // サイドバーの開閉を切り替える
+            layout.classList.toggle("sidebar-closed");
+
+            // 現在の状態を保存する
+            const isClosed = layout.classList.contains("sidebar-closed");
+            localStorage.setItem("sidebarClosed", isClosed);
+        }
+    </script>
 
 </body>
 

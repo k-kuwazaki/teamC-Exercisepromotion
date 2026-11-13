@@ -1,0 +1,213 @@
+/* 全体 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: sans-serif;
+    background: #f5f7fa;
+}
+
+/* 横並び */
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* サイドバー */
+.sidebar {
+    width: 230px;
+    min-width: 230px;
+    flex-shrink: 0;
+    background: #263445;
+    color: white;
+    padding: 65px 20px 20px;
+    overflow: hidden;
+    transition: width 0.3s ease, min-width 0.3s ease,
+        padding 0.3s ease;
+}
+
+/* メニュータイトル */
+.sidebar h2 {
+    margin-bottom: 30px;
+    white-space: nowrap;
+}
+
+/* メニュー */
+.sidebar nav {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* サイドバーのリンク */
+.sidebar a {
+    display: block;
+    padding: 12px;
+    color: white;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+/* マウスを乗せたとき */
+.sidebar a:hover {
+    background: #40536b;
+}
+
+/* ログアウト */
+.logout {
+    margin-top: 30px;
+}
+
+/* メイン画面 */
+.main-content {
+    flex: 1;
+    min-width: 0;
+    padding: 40px;
+}
+
+/* 見出し */
+h1 {
+    color: #333;
+}
+
+/* メニュー一覧 */
+.menu {
+    display: grid;
+    gap: 12px;
+}
+
+/* 通常のリンク */
+.main-content a {
+    display: block;
+    padding: 16px;
+    background: white;
+    color: #2563eb;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    text-decoration: none;
+}
+
+/* マウスを乗せたとき */
+.main-content a:hover {
+    background: #eaf1ff;
+}
+
+/* 戻るボタンの位置 */
+.back {
+    margin-top: 24px;
+}
+
+/* 戻るリンクのデザイン */
+.back a {
+    display: block;
+    padding: 16px;
+    background: white;
+    color: #2563eb;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    text-decoration: none;
+}
+
+/* マウスを乗せたとき */
+.back a:hover {
+    background: #eaf1ff;
+}
+
+/* サイドバーを閉じたとき */
+.layout.sidebar-closed .sidebar {
+    width: 0;
+    min-width: 0;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+/* 開閉ボタン */
+#sidebar-toggle {
+    position: fixed;
+    top: 15px;
+    left: 15px;
+    z-index: 1000;
+    padding: 10px 15px;
+    background: #263445;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+/* ボタンにマウスを乗せたとき */
+#sidebar-toggle:hover {
+    background: #40536b;
+}
+
+
+/* =========================
+   スマホ対応
+========================= */
+
+@media screen and (max-width: 768px) {
+
+    /* サイドバーを画面左側に固定 */
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        bottom: 0;
+
+        width: 230px;
+        min-width: 230px;
+        height: 100vh;
+        height: 100dvh;
+
+        z-index: 999;
+
+        overflow-y: auto;
+
+        transition: transform 0.3s ease;
+    }
+
+    /* スマホで閉じたとき */
+    .layout.sidebar-closed .sidebar {
+        width: 230px;
+        min-width: 230px;
+        padding: 65px 20px 20px;
+
+        transform: translateX(-100%);
+    }
+
+    /* メイン画面 */
+    .main-content {
+        width: 100%;
+        min-width: 0;
+        padding: 70px 16px 20px;
+    }
+
+    /* 開閉ボタン */
+    #sidebar-toggle {
+        top: 12px;
+        left: 12px;
+        z-index: 1000;
+    }
+
+    /* 戻るボタン */
+    .back {
+        margin: 20px 16px;
+    }
+}
+
+/* 小さいスマホ */
+@media screen and (max-width: 400px) {
+
+    .main-content {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+
+}

@@ -1,7 +1,13 @@
 from flask import Blueprint, render_template, redirect, url_for, session
 from functools import wraps
 
-home = Blueprint("home", __name__, template_folder="templates", static_folder="static")
+home = Blueprint(
+    "home",
+    __name__,
+    template_folder="templates",
+    static_folder="static",
+    static_url_path="/home_static",
+)
 
 
 def login_required(f):
@@ -10,6 +16,7 @@ def login_required(f):
         if "user_id" not in session:
             return redirect(url_for("login.login"))
         return f(*args, **kwargs)
+
     return decorated
 
 
@@ -31,7 +38,6 @@ def chat():
     return render_template("chat/chat.html")
 
 
-
 @home.route("/history")
 @login_required
 def history():
@@ -41,7 +47,7 @@ def history():
 @home.route("/friend")
 @login_required
 def friend():
-    return render_template("friend/friend.html")
+    return redirect(url_for("friend.index"))
 
 
 @home.route("/implementation")
@@ -59,4 +65,3 @@ def help():
 @home.route("/register")
 def register():
     return render_template("register/register.html")
-
