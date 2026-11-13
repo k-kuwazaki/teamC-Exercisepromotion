@@ -10,14 +10,21 @@
 
 </head>
 
+
 <body>
+
+    {% if session.get("username") %}
 
     <!-- サイドバー開閉ボタン -->
     <button id="sidebar-toggle" onclick="toggleSidebar()">
         ☰
     </button>
 
-    <div class="layout">
+    {% endif %}
+
+    <div class="layout {% if not session.get('username') %}no-sidebar{% endif %}">
+
+        {% if session.get("username") %}
 
         <!-- サイドバー -->
         <aside class="sidebar">
@@ -34,9 +41,23 @@
 
             <div class="logout">
                 <a href="{{ url_for('login.logout') }}">ログアウト</a>
+
+                <div class="sidebar-user">
+                    <div class="user-icon">
+                        🙍
+                    </div>
+
+                    <div class="user-info">
+                        <span>ログイン中</span>
+                        <p>{{ session["username"] }}</p>
+                    </div>
+                </div>
             </div>
         </aside>
 
+        {% endif %}
+
+        <!-- メイン画面 -->
         <main class="main-content">
             {% block content %}
             {% endblock %}
@@ -54,25 +75,25 @@
         document.addEventListener("DOMContentLoaded", function () {
             const layout = document.querySelector(".layout");
 
-            // 画面を開いたときはサイドバーを閉じる
-            layout.classList.add("sidebar-closed");
-
-            // 閉じた状態を保存する
-            localStorage.setItem("sidebarClosed", "true");
+            if (layout && !layout.classList.contains("no-sidebar")) {
+                layout.classList.add("sidebar-closed");
+                localStorage.setItem("sidebarClosed", "true");
+            }
         });
 
         function toggleSidebar() {
             const layout = document.querySelector(".layout");
 
-            // サイドバーの開閉を切り替える
+            if (!layout) return;
+
             layout.classList.toggle("sidebar-closed");
 
-            // 現在の状態を保存する
             const isClosed = layout.classList.contains("sidebar-closed");
             localStorage.setItem("sidebarClosed", isClosed);
         }
     </script>
 
 </body>
+
 
 </html>
