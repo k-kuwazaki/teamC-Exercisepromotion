@@ -13,6 +13,27 @@
         <button type="submit">保存</button>
     </form>
     {% endif %}
+    <section class="lb-exercises">
+        <h2>運動実施履歴</h2>
+
+        {% if exercise_record %}
+        <article class="lb-exercise">
+            <h3>{{ exercise_record.created_at.strftime('%Y年%m月%d日 %H:%M') }}</h3>
+
+            {% if exercise_record.answer %}
+            <h4>選択した運動メニュー</h4>
+            <p style="white-space: pre-wrap;">{{ exercise_record.answer }}</p>
+            {% endif %}
+
+            {% if exercise_record.self_exercises %}
+            <h4>自主的に行った運動</h4>
+            <p style="white-space: pre-wrap;">{{ exercise_record.self_exercises }}</p>
+            {% endif %}
+        </article>
+        {% else %}
+        <p>運動実施履歴はまだありません。</p>
+        {% endif %}
+    </section>
 
     <ul class="lb-list">
         {% for r in records %}
@@ -28,4 +49,3 @@
 </div>
 
 {% endblock %}
-
