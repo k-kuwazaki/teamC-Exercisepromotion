@@ -28,7 +28,9 @@ def login():
 
     return render_template("login/login.html")
 
-@login_bp.route("/logout")
+@login_bp.route("/logout", methods=["GET", "POST"])
 def logout():
-    session.clear()
-    return render_template("login/logout.html")
+    if request.method == "POST":
+        session.clear()
+        return render_template("login/logout.html")
+    return render_template("login/logout_check.html")

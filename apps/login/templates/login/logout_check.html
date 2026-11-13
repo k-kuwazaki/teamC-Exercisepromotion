@@ -1,0 +1,12 @@
+{% extends "home/base.html" %}
+{% block content %}
+<h1>ログアウトの確認</h1>
+<p>本当にログアウトしますか？</p>
+<form method="post">
+    <button type="submit">ログアウトする</button>
+</form>
+{% endblock %}
+
+{% block back_link %}
+<a href="{{ url_for('home.index') }}">← キャンセル</a>
+{% endblock %}

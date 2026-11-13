@@ -2,7 +2,6 @@
 {% block title %}身体情報入力{% endblock %}
 {% block content %}
 <h1>身体情報入力・おなおし</h1>
-{% if success %}<p>{{ success }}</p>{% endif %}
 
 <form method="post">
     {{ form.hidden_tag() }}
@@ -25,6 +24,20 @@
     <div>
         <label>{{ form.goal.label }}</label>
         {{ form.goal() }}
+    </div>
+    <div>
+        <label>{{ form.password.label }}</label>
+        {{ form.password() }}
+        {% if form.password.errors %}
+        <p>{{ form.password.errors[0] }}</p>
+        {% endif %}
+    </div>
+    <div>
+        <label>{{ form.password_confirm.label }}</label>
+        {{ form.password_confirm() }}
+        {% if form.password_confirm.errors %}
+        <p>{{ form.password_confirm.errors[0] }}</p>
+        {% endif %}
     </div>
     {{ form.submit() }}
 </form>

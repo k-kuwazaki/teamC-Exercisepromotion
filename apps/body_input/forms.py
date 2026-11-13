@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import FloatField, IntegerField, SelectField, SubmitField, TextAreaField
-from wtforms.validators import Optional
+from wtforms import FloatField, IntegerField, PasswordField, SelectField, SubmitField, TextAreaField
+from wtforms.validators import Optional, EqualTo
 
 
 class EditProfileForm(FlaskForm):
@@ -14,4 +14,6 @@ class EditProfileForm(FlaskForm):
         ("often", "週に3回以上"),
     ])
     goal = TextAreaField("目標", validators=[Optional()])
-    submit = SubmitField("更新")
+    password = PasswordField("新しいパスワード", validators=[Optional()])
+    password_confirm = PasswordField("新しいパスワード（確認）", validators=[Optional(), EqualTo("password", message="パスワードが一致しません。")])
+    submit = SubmitField("確認画面へ")
