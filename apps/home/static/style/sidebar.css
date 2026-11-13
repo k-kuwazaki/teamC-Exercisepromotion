@@ -211,3 +211,143 @@ h1 {
     }
 
 }
+
+/* ホーム画面 */
+
+.page-header {
+    margin-bottom: 28px;
+}
+
+.page-header h1 {
+    font-size: 1.6rem;
+    color: #1e3a5f;
+    margin-bottom: 6px;
+}
+
+.page-header p {
+    color: #666;
+    font-size: 0.95rem;
+}
+
+/* ダッシュボード */
+.dashboard {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 36px;
+}
+
+.dashboard-card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+    border-left: 4px solid #2563eb;
+}
+
+.dashboard-icon {
+    font-size: 1.8rem;
+    color: #2563eb;
+}
+
+.dashboard-label {
+    display: block;
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.dashboard-value {
+    display: block;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #1e3a5f;
+}
+
+/* セクションタイトル */
+.section-title {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e5e7eb;
+}
+
+/* メニューグリッド */
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 16px;
+}
+
+/* メニューカード */
+.menu-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 24px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: #1e3a5f;
+    font-size: 0.9rem;
+    font-weight: 500;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.menu-card i {
+    font-size: 1.8rem;
+    color: #2563eb;
+}
+
+.menu-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.15);
+    background: #f0f5ff;
+    color: #1e3a5f;
+}
+
+/* ログアウトカード */
+.logout-card {
+    border-color: #fbbf24;
+}
+
+.logout-card i {
+    color: #f59e0b;
+}
+
+.logout-card:hover {
+    background: #fffbeb;
+    box-shadow: 0 6px 16px rgba(245, 158, 11, 0.15);
+}
+
+/* アカウント削除カード */
+.danger-card {
+    border-color: #fca5a5;
+}
+
+.danger-card i {
+    color: #ef4444;
+}
+
+.danger-card:hover {
+    background: #fff5f5;
+    box-shadow: 0 6px 16px rgba(239, 68, 68, 0.15);
+}
+
+/* スマホ対応 */
+@media screen and (max-width: 768px) {
+    .menu-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 12px;
+    }
+
+    .dashboard {
+        grid-template-columns: 1fr;
+    }
+}
