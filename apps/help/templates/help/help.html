@@ -63,13 +63,20 @@
 </div>
 
 <script>
-document.querySelectorAll('.help-toggle').forEach(h2 => {
-    h2.addEventListener('click', () => {
-        const p = h2.nextElementSibling;
-        const isOpen = p.style.display !== 'none';
-        p.style.display = isOpen ? 'none' : 'block';
-        h2.classList.toggle('closed', isOpen);
+    document.querySelectorAll('.help-section h2').forEach(title => {
+        title.addEventListener('click', () => {
+
+            // 見出しの親要素を取得
+            const section = title.parentElement;
+
+            // 説明文を取得
+            const description = section.querySelector('p');
+
+            // 開閉を切り替える
+            description.classList.toggle('open');
+            title.classList.toggle('closed');
+
+        });
     });
-});
 </script>
 {% endblock %}
