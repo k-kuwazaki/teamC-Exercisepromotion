@@ -27,8 +27,7 @@
 
     {% endif %}
 
-    <div class="layout {% if not session.get('username') %}no-sidebar{% endif %}">
-
+    <div class="layout sidebar-closed {% if not session.get('username') %}no-sidebar{% endif %}">
         {% if session.get("username") %}
 
         <!-- サイドバー -->
@@ -77,15 +76,20 @@
     </div>
 
     <script>
+
         document.addEventListener("DOMContentLoaded", function () {
             const layout = document.querySelector(".layout");
 
-            if (layout && !layout.classList.contains("no-sidebar")) {
-                layout.classList.add("sidebar-closed");
-                localStorage.setItem("sidebarClosed", "true");
+            if (!layout || layout.classList.contains("no-sidebar")) {
+                return;
             }
+
+            // ページを開いたときは必ず閉じる
+            layout.classList.add("sidebar-closed");
+            localStorage.setItem("sidebarClosed", "true");
         });
 
+        // サイドバー開閉
         function toggleSidebar() {
             const layout = document.querySelector(".layout");
 
@@ -94,8 +98,10 @@
             layout.classList.toggle("sidebar-closed");
 
             const isClosed = layout.classList.contains("sidebar-closed");
+
             localStorage.setItem("sidebarClosed", isClosed);
         }
+
     </script>
 
 </body>
