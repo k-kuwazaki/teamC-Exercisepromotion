@@ -3,7 +3,7 @@ from apps.app import db
 from apps.user.models import User
 from apps.body_input.forms import EditProfileForm
 
-body_input = Blueprint("body_input", __name__, template_folder="templates", static_folder="static")
+body_input = Blueprint("body_input", __name__, template_folder="templates", static_folder="static",url_prefix="/body_input")
 
 
 @body_input.route("/body-input", methods=["GET", "POST"])
