@@ -7,6 +7,8 @@ login_bp = Blueprint(
     "login",
     __name__,
     template_folder="templates",
+    static_folder="static", 
+    url_prefix="/login"
 )
 
 
