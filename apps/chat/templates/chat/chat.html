@@ -1,151 +1,132 @@
-<!DOCTYPE html>
-<html lang="ja">
+{% extends "home/base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AI運動トレーナー</title>
-    <style>
-        body {
-            max-width: 650px;
-            margin: 40px auto;
-            padding: 20px;
-            font-family: sans-serif;
-            background: #f3f5f7;
-            color: #222;
-        }
+{% block title %}AI運動トレーナー{% endblock %}
 
-        h1,
-        h2 {
-            color: #246b50;
-        }
+{% block content %}
+<style>
+    .chat-page {
+        box-sizing: border-box;
+        width: 100%;
+        max-width: 650px;
+        margin: 24px auto;
+        padding: 20px;
+        font-family: sans-serif;
+        background: #f3f5f7;
+        color: #222;
+    }
 
-        h2 {
-            margin-top: 24px;
-        }
+    .chat-page h1,
+    .chat-page h2 {
+        color: #246b50;
+    }
 
-        textarea,
-        button,
-        select,
-        input[type="submit"] {
-            box-sizing: border-box;
-            width: 100%;
-            padding: 12px;
-            margin: 8px 0;
-            font-size: 16px;
-            border-radius: 8px;
-        }
+    .chat-page h2 {
+        margin-top: 24px;
+    }
 
-        textarea,
-        select {
-            border: 1px solid #ccc;
-            background: white;
-        }
+    .chat-page textarea,
+    .chat-page button,
+    .chat-page select,
+    .chat-page input[type="submit"] {
+        box-sizing: border-box;
+        width: 100%;
+        padding: 12px;
+        margin: 8px 0;
+        font-size: 16px;
+        border-radius: 8px;
+    }
 
-        textarea {
-            resize: vertical;
-        }
+    .chat-page textarea,
+    .chat-page select {
+        border: 1px solid #ccc;
+        background: white;
+    }
 
-        button,
-        input[type="submit"] {
-            background: #246b50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
+    .chat-page textarea {
+        resize: vertical;
+    }
 
-        button:hover,
-        input[type="submit"]:hover {
-            background: #1b543e;
-        }
+    .chat-page button,
+    .chat-page input[type="submit"] {
+        background: #246b50;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
 
-        label {
-            display: block;
-            margin-top: 12px;
-            font-weight: bold;
-        }
+    .chat-page button:hover,
+    .chat-page input[type="submit"]:hover {
+        background: #1b543e;
+    }
 
-        .status {
-            min-height: 1.5em;
-        }
+    .chat-page label {
+        display: block;
+        margin-top: 12px;
+        font-weight: bold;
+    }
 
-        .error {
-            color: #b42318;
-        }
+    .chat-page .status {
+        min-height: 1.5em;
+    }
 
-        .answer {
-            white-space: pre-wrap;
-            overflow-wrap: anywhere;
-            background: white;
-            padding: 16px;
-            border-radius: 8px;
-            line-height: 1.7;
-            min-height: 60px;
-        }
+    .chat-page .error {
+        color: #b42318;
+    }
 
-        .panel {
-            background: white;
-            padding: 18px;
-            border-radius: 12px;
-            margin: 20px 0;
-        }
+    .chat-page .answer {
+        min-height: 60px;
+        padding: 16px;
+        overflow-wrap: anywhere;
+        white-space: pre-wrap;
+        background: white;
+        border-radius: 8px;
+        line-height: 1.7;
+    }
 
-        .description {
-            color: #555;
-            line-height: 1.6;
-        }
+    .chat-page .panel {
+        margin: 20px 0;
+        padding: 18px;
+        background: white;
+        border-radius: 12px;
+    }
 
-        .back {
-            margin-top: 24px;
-        }
+    .chat-page .description {
+        color: #555;
+        line-height: 1.6;
+    }
 
-        .back a {
-            display: block;
-            padding: 14px;
-            background: white;
-            color: #2563eb;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            text-decoration: none;
-        }
+    .chat-page hr {
+        margin: 30px 0;
+        border: none;
+        border-top: 1px solid #ddd;
+    }
 
-        .back a:hover {
-            background: #eaf1ff;
-        }
+    .chat-page .exercise-options {
+        display: grid;
+        gap: 12px;
+    }
 
-        hr {
-            margin: 30px 0;
-            border: none;
-            border-top: 1px solid #ddd;
-        }
+    .chat-page .exercise-option {
+        display: block;
+        padding: 14px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background: white;
+        font-weight: normal;
+    }
 
-        .exercise-options {
-            display: grid;
-            gap: 12px;
-        }
+    .chat-page .exercise-option input[type="checkbox"] {
+        width: auto;
+        margin-right: 8px;
+    }
 
-        .exercise-option {
-            display: block;
-            padding: 14px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            background: white;
-            font-weight: normal;
-        }
+    .chat-page .exercise-option p {
+        margin: 8px 0 0;
+        line-height: 1.5;
+    }
+</style>
 
-        .exercise-option input[type="checkbox"] {
-            width: auto;
-            margin-right: 8px;
-        }
-
-        .exercise-option p {
-            margin: 8px 0 0;
-            line-height: 1.5;
-        }
-    </style>
-</head>
-
-<body>
+<div class="chat-page">
     <h1>AI運動トレーナー</h1>
 
     <p class="description">
@@ -176,6 +157,7 @@
 
             {{ plan_form.submit() }}
         </form>
+
         {% if plan_options %}
         <h2>候補から運動を選択</h2>
         <p class="description">
@@ -238,7 +220,11 @@
             <input type="hidden" name="action" value="coach">
 
             {{ coach_form.question.label }}
-            {{ coach_form.question(rows=4, maxlength=500, placeholder="例：腕立て伏せの正しいフォームを教えて") }}
+            {{ coach_form.question(
+            rows=4,
+            maxlength=500,
+            placeholder="例：腕立て伏せの正しいフォームを教えて"
+            ) }}
 
             {{ coach_form.submit() }}
         </form>
@@ -247,13 +233,13 @@
         <p class="status error" role="alert">{{ chat_error }}</p>
         {% endif %}
 
-        <div class="answer" aria-live="polite">{% if chat_answer %}{{ chat_answer }}{% else %}AIの回答がここに表示されます。{% endif
-            %}</div>
+        <div class="answer" aria-live="polite">
+            {% if chat_answer %}
+            {{ chat_answer }}
+            {% else %}
+            AIの回答がここに表示されます。
+            {% endif %}
+        </div>
     </section>
-
-    <div class="back">
-        <a href="{{ url_for('home.index') }}">← トップページに戻る</a>
-    </div>
-</body>
-
-</html>
+</div>
+{% endblock %}
