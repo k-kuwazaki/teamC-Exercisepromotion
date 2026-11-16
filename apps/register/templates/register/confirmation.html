@@ -1,13 +1,26 @@
 {% extends "home/base.html" %}
 {% block content %}
-<h1>登録内容の確認</h1>
 
-<p>名前：{{ user.username }}</p>
-<p>メールアドレス：{{ user.email }}</p>
-<p>身長：{{ user.height }}</p>
-<p>体重：{{ user.weight }}</p>
-<p>年齢：{{ user.age }}</p>
-<p>運動習慣：{{ user.exercise_habit }}</p>
-<p>目標：{{ user.goal }}</p>
-<a href="{{ url_for('register.register') }}">登録ページへ戻る</a>
+<link rel="stylesheet" href="{{ url_for('register.static', filename='style/register.css') }}">
+
+
+<div class="register-confirm">
+    <h1>登録内容の確認</h1>
+
+    <p class="confirm-description">
+        以下の内容で登録されました。
+    </p>
+
+    <div class="confirm-list">
+        <p><span>名前</span>{{ user.username }}</p>
+        <p><span>メールアドレス</span>{{ user.email }}</p>
+        <p><span>身長</span>{{ user.height }} cm</p>
+        <p><span>体重</span>{{ user.weight }} kg</p>
+        <p><span>年齢</span>{{ user.age }} 歳</p>
+        <p><span>運動習慣</span>{{ user.exercise_habit }}</p>
+        <p><span>目標</span>{{ user.goal }}</p>
+    </div>
+
+    <a class="confirm-back" href="{{ url_for('register.register') }}">登録ページへ戻る</a>
+</div>
 {% endblock %}

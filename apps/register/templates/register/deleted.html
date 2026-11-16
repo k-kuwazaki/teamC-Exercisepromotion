@@ -1,9 +1,16 @@
 {% extends "home/base.html" %}
 {% block content %}
+
+<link rel="stylesheet" href="{{ url_for('register.static', filename='style/deleted.css') }}">
+
 <meta http-equiv="refresh" content="3;url={{ url_for('login.login') }}">
-<h1>アカウントを削除しました。</h1>
-<p>3秒後にログイン画面に移動します。</p>
-<a href="{{ url_for('login.login') }}">すぐにログイン画面へ</a>
+
+<div class="deleted-card">
+    <h1>アカウントを削除しました。</h1>
+    <p>3秒後にログイン画面に移動します。</p>
+    <a href="{{ url_for('login.login') }}">すぐにログイン画面へ</a>
+</div>
+
 {% endblock %}
 
 {% block back_link %}{% endblock %}
