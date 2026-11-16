@@ -1,5 +1,9 @@
 {% extends "home/base.html" %}
 {% block content %}
+
+<link rel="stylesheet" href="{{ url_for('login.static', filename='style/login.css') }}">
+
+
 <div class="logout-panel">
 <h1>ログアウトの確認</h1>
 <p>本当にログアウトしますか？</p>

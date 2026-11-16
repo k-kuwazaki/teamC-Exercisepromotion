@@ -1,5 +1,9 @@
 {% extends "home/base.html" %}
 {% block content %}
+
+<link rel="stylesheet" href="{{ url_for('login.static', filename='style/login.css') }}">
+
+
 <div class="logout-panel">
 <meta http-equiv="refresh" content="3;url={{ url_for('login.login') }}">
 <h1>ログアウトしました。</h1>
