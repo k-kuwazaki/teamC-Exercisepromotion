@@ -1,6 +1,9 @@
 {% extends "home/base.html" %}
 {% block title %}身体情報入力{% endblock %}
 {% block content %}
+
+<link rel="stylesheet" href="{{ url_for('body_input.static', filename='style/body_input.css') }}">
+
 <h1>身体情報入力・おなおし</h1>
 
 <form method="post">

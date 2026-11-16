@@ -1,6 +1,9 @@
 {% extends "home/base.html" %}
 {% block title %}変更内容の確認{% endblock %}
 {% block content %}
+
+<link rel="stylesheet" href="{{ url_for('body_input.static', filename='style/body_confirm.css') }}">
+
 <h1>変更内容の確認</h1>
 <p>以下の内容で更新します。よろしいですか？</p>
 

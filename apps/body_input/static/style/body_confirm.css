@@ -1,0 +1,119 @@
+
+/* 確認画面全体 */
+.main-content {
+    padding: 30px 20px;
+}
+
+/* タイトル */
+h1 {
+    text-align: center;
+    color: #2e7d5b;
+    font-size: 28px;
+    margin: 30px 0 20px;
+}
+
+/* 説明文 */
+.main-content > p {
+    max-width: 550px;
+    margin: 15px auto;
+    color: #555;
+    font-size: 16px;
+    line-height: 1.7;
+}
+
+/* 更新内容の表示 */
+.main-content > p:nth-of-type(n+2) {
+    max-width: 500px;
+    box-sizing: border-box;
+    padding: 15px 20px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border-bottom: 1px solid #e5eee8;
+    color: #444;
+    font-size: 16px;
+}
+
+/* 最初の説明文 */
+.main-content > p:nth-of-type(1) {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+/* 内容の角丸 */
+.main-content > p:nth-of-type(2) {
+    border-radius: 12px 12px 0 0;
+}
+
+/* 最後の項目 */
+.main-content > p:nth-of-type(7) {
+    border-radius: 0 0 12px 12px;
+    border-bottom: none;
+}
+
+/* 更新フォーム */
+.main-content form {
+    max-width: 500px;
+    margin: 30px auto;
+    text-align: center;
+}
+
+/* 更新ボタン */
+.main-content form button {
+    width: 100%;
+    padding: 15px;
+    background-color: #43a879;
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+    border: none;
+    border-radius: 9px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* ホバー */
+.main-content form button:hover {
+    background-color: #32865f;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+}
+
+/* 戻るリンク */
+.back {
+    text-align: center;
+    margin: 20px 0 35px;
+}
+
+.back a {
+    color: #32865f;
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.back a:hover {
+    text-decoration: underline;
+}
+
+/* スマートフォン対応 */
+@media screen and (max-width: 600px) {
+    .main-content {
+        padding: 20px 15px;
+    }
+
+    h1 {
+        font-size: 23px;
+    }
+
+    .main-content > p {
+        font-size: 14px;
+    }
+
+    .main-content > p:nth-of-type(n+2) {
+        padding: 13px 15px;
+    }
+
+    .main-content form button {
+        font-size: 16px;
+    }
+}
