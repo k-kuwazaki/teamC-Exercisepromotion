@@ -20,7 +20,9 @@
         <p><span>運動習慣</span>{{ user.exercise_habit }}</p>
         <p><span>目標</span>{{ user.goal }}</p>
     </div>
-
+    <p class="register-link">
+        <a href="{{ url_for('login.login') }}">ログインはこちら</a>
+    </p>
     <a class="confirm-back" href="{{ url_for('register.register') }}">登録ページへ戻る</a>
 </div>
 {% endblock %}

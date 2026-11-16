@@ -1,9 +1,15 @@
-
 /* ===== ユーザー登録画面 ===== */
 
 @keyframes fadeSlideUp {
-    from { opacity: 0; transform: translateY(12px); }
-    to   { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* 登録フォーム全体 */
@@ -35,12 +41,10 @@
     right: 0;
     left: 0;
     height: 3px;
-    background: linear-gradient(
-        90deg,
-        #304a3b 0%,
-        #71836a 55%,
-        #c39b68 100%
-    );
+    background: linear-gradient(90deg,
+            #304a3b 0%,
+            #71836a 55%,
+            #c39b68 100%);
     content: "";
 }
 
@@ -55,7 +59,7 @@
 }
 
 /* 各入力項目 */
-.main-content form > div {
+.main-content form>div {
     display: flex;
     flex-direction: column;
     gap: 7px;
@@ -216,12 +220,10 @@
     right: 0;
     left: 0;
     height: 3px;
-    background: linear-gradient(
-        90deg,
-        #304a3b 0%,
-        #71836a 55%,
-        #c39b68 100%
-    );
+    background: linear-gradient(90deg,
+            #304a3b 0%,
+            #71836a 55%,
+            #c39b68 100%);
     content: "";
 }
 
@@ -321,6 +323,25 @@
 .confirm-back:active {
     transform: translateY(1px);
     box-shadow: none;
+}
+
+.register-link {
+    margin: 20px auto 40px;
+    color: #7a817b;
+    font-size: 14px;
+    text-align: center;
+}
+
+.register-link a {
+    color: #304a3b;
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: #b58b59;
+    text-underline-offset: 4px;
+}
+
+.register-link a:hover {
+    color: #71836a;
 }
 
 /* スマートフォン対応 */
