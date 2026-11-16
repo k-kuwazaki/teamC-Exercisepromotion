@@ -1,19 +1,39 @@
-from flask import Blueprint,current_app, redirect,render_template, request ,url_for,session
-#各種リンク先は後々それ用のファイルに移動させる
-registration = Blueprint("registration", __name__, template_folder="templates", static_folder="static")
+from flask import (
+    Blueprint,
+    current_app,
+    redirect,
+    render_template,
+    request,
+    session,
+    url_for,
+)
+
 from apps.app import db
 from apps.situation.models import Situation
+
+
+# 各種リンク先は後々それ用のファイルに移動させる
+registration = Blueprint(
+    "registration",
+    __name__,
+    template_folder="templates",
+    static_folder="static",
+)
+
+
 # トップページ
 @registration.route("/")
 def index():
     return render_template("home/index.html")
 
+
 # 振り返り
 @registration.route("/lookingback")
 def lookingback():
     return redirect(url_for("lookingback.index"))
-#飛んで保存
-#変更　AIのメニューを選択とここで二回データベースへ登録していたのでこちらのみに変更
+
+
+# 運動内容を保存
 @registration.route("/registration", methods=["GET", "POST"])
 def save_registration():
     selected_exercises = session.get("selected_exercises", [])
@@ -29,7 +49,9 @@ def save_registration():
     user_id = session.get("user_id")
     if user_id is None:
         return redirect(url_for("login.login"))
+
     self_exercises = request.form.get("self_exercises", "").strip()
+
     if not selected_exercises and not self_exercises:
         return render_template(
             "registration/registration.html",
@@ -37,6 +59,21 @@ def save_registration():
             self_exercises=self_exercises,
             error="選択した運動か、自主的に行った運動を入力してください。",
         )
+
+    actual_minutes_text = request.form.get("actual_minutes", "").strip()
+
+    if (
+        not actual_minutes_text.isdigit()
+        or not 1 <= int(actual_minutes_text) <= 300
+    ):
+        return render_template(
+            "registration/registration.html",
+            selected_exercises=selected_exercises,
+            self_exercises=self_exercises,
+            error="運動時間を1〜300分で入力してください。",
+        )
+
+    actual_minutes = int(actual_minutes_text)
 
     selected_text = "\n".join(
         (
@@ -55,7 +92,7 @@ def save_registration():
             self_exercises=self_exercises or None,
             category=conditions.get("category"),
             experience=conditions.get("experience"),
-            duration=conditions.get("duration"),
+            duration=str(actual_minutes),
             equipment=conditions.get("equipment"),
         )
 
@@ -77,6 +114,3 @@ def save_registration():
             self_exercises=self_exercises,
             error="登録内容を保存できませんでした。",
         )
-
-
-
