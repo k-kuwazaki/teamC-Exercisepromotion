@@ -58,7 +58,7 @@
     gap: 18px;
 }
 
-.login-panel form > div {
+.login-panel form>div {
     display: flex;
     flex-direction: column;
     gap: 7px;
@@ -152,8 +152,8 @@
     letter-spacing: .015em;
     text-decoration: none;
     transition: background .2s ease,
-                border-color .2s ease,
-                transform .2s ease;
+        border-color .2s ease,
+        transform .2s ease;
 }
 
 /* ホバー */
@@ -191,6 +191,35 @@
     border-color: #496552;
 }
 
+/* 新規登録リンク */
+.login-panel .register-link {
+    margin: 24px 0 0;
+    color: #7a817b;
+    font-size: 14px;
+    text-align: center;
+}
+
+.login-panel .register-link a {
+    display: inline-block;
+    margin-left: 6px;
+    color: #304a3b;
+    font-weight: 600;
+    text-decoration: underline;
+    text-decoration-color: #b58b59;
+    text-underline-offset: 4px;
+    transition: color .2s ease;
+}
+
+.login-panel .register-link a:hover {
+    color: #71836a;
+}
+
+.login-panel .register-link a:focus-visible {
+    outline: 2px solid #718775;
+    outline-offset: 3px;
+    border-radius: 2px;
+}
+
 /* ===== レスポンシブ ===== */
 @media screen and (max-width: 768px) {
     .logout-panel {
@@ -198,5 +227,3 @@
         padding: 28px 20px;
     }
 }
-
-
