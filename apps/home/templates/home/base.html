@@ -62,15 +62,17 @@
         <main class="main-content">
             {% block content %}
             {% endblock %}
+
+            <div class="back">
+                <a href="{{ url_for('home.index') }}"
+                    onclick="if (document.referrer && new URL(document.referrer).origin === location.origin) { history.back(); return false; }">
+                    ← トップページへ戻る
+                </a>
+
+                {% block back_link %}{% endblock %}
+            </div>
         </main>
-
     </div>
-
-    <!-- <div class="back">
-        {% block back_link %}
-        <a href="{{ url_for('home.index') }}">← トップページに戻る</a>
-        {% endblock %}
-    </div> -->
 
     <script>
 
