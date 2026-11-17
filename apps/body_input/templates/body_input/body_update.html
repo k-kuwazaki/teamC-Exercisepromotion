@@ -4,8 +4,12 @@
 <link rel="stylesheet" href="{{ url_for('body_input.static', filename='style/body_update.css') }}">
 
 <h1>更新しました。</h1>
+<div class="back">
+    <a href="{{ url_for('home.index') }}">← トップページに戻る</a>
+</div>
 {% endblock %}
 
 {% block back_link %}
-<a href="{{ url_for('home.index') }}">← トップページに戻る</a>
+
+
 {% endblock %}

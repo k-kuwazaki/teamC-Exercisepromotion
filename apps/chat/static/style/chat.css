@@ -1,0 +1,222 @@
+/* チャット画面全体 */
+.chat-page {
+    max-width: 1100px;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 45px 30px 70px;
+    color: #294b37;
+    background:
+        radial-gradient(circle at 10% 15%, rgba(125, 211, 159, 0.16), transparent 30%),
+        radial-gradient(circle at 90% 80%, rgba(96, 165, 250, 0.10), transparent 30%),
+        linear-gradient(135deg, #edf8f1, #f8fcf9, #eaf5ef);
+}
+
+/* ページ見出し */
+.chat-page>h1 {
+    margin: 5px 0 12px;
+    color: #17633d;
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.chat-page>.description {
+    margin: 0 0 30px;
+    color: #718579;
+    font-size: 1rem;
+    line-height: 1.8;
+}
+
+/* 各セクション */
+.chat-page .panel {
+    margin: 24px 0;
+    padding: 28px;
+    border: 1px solid rgba(83, 160, 112, 0.15);
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: 0 8px 25px rgba(46, 100, 67, 0.07);
+}
+
+.chat-page h2 {
+    margin: 0 0 14px;
+    color: #245b3c;
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+.chat-page .panel>.description {
+    margin: 0 0 20px;
+    color: #84978b;
+    font-size: 0.9rem;
+    line-height: 1.8;
+}
+
+/* フォーム */
+.chat-page form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.chat-page form>label:not(.exercise-option) {
+    margin-top: 8px;
+    color: #56665b;
+    font-size: 0.9rem;
+    font-weight: 700;
+}
+
+.chat-page select,
+.chat-page textarea {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 13px 15px;
+    border: 1px solid #dcded5;
+    border-radius: 9px;
+    outline: none;
+    background: #fffefa;
+    color: #28372f;
+    font: inherit;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.chat-page textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.chat-page select:focus,
+.chat-page textarea:focus {
+    border-color: #718775;
+    box-shadow: 0 0 0 3px rgba(113, 135, 117, 0.14);
+}
+
+/* AIへの送信ボタン */
+.chat-page button[type="submit"],
+.chat-page input[type="submit"] {
+    width: 100%;
+    margin-top: 8px;
+    padding: 14px 20px;
+    border: 1px solid #304a3b;
+    border-radius: 9px;
+    background: #304a3b;
+    color: white;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.chat-page button[type="submit"]:hover,
+.chat-page input[type="submit"]:hover {
+    transform: translateY(-1px);
+    background: #496552;
+}
+
+/* 運動候補 */
+.chat-page .exercise-options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.chat-page .exercise-option {
+    display: block;
+    padding: 20px;
+    border: 1px solid rgba(83, 160, 112, 0.2);
+    border-radius: 16px;
+    background: #fff;
+    color: #294b37;
+    cursor: pointer;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.chat-page .exercise-option:hover {
+    transform: translateY(-3px);
+    border-color: rgba(46, 158, 104, 0.45);
+    box-shadow: 0 10px 24px rgba(46, 120, 76, 0.12);
+}
+
+.chat-page .exercise-option input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin: 0 8px 0 0;
+    accent-color: #248b55;
+    vertical-align: middle;
+}
+
+.chat-page .exercise-option strong {
+    color: #28563b;
+    font-size: 1.05rem;
+}
+
+.chat-page .exercise-option p {
+    margin: 10px 0 0;
+    color: #758b7b;
+    font-size: 0.9rem;
+    line-height: 1.7;
+}
+
+/* 回答・エラー */
+.chat-page .answer {
+    min-height: 60px;
+    padding: 20px;
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+    border: 1px solid #e0ece3;
+    border-radius: 14px;
+    background: #f8fcf9;
+    color: #405b49;
+    line-height: 1.8;
+}
+
+.chat-page .status {
+    margin: 12px 0;
+}
+
+.chat-page .error {
+    color: #964f49;
+}
+
+/* 区切り線 */
+.chat-page hr {
+    margin: 35px 0;
+    border: 0;
+    border-top: 1px solid #dce9df;
+}
+
+.back {
+    display: flex;
+    justify-content: center;
+    margin: 24px 16px;
+}
+
+/* 戻るリンクのデザイン */
+.back a {
+    display: inline-block;
+    padding: 12px 22px;
+    background: #263445;
+    color: white;
+    border: 1px solid #263445;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background .2s ease, transform .2s ease;
+}
+
+/* スマートフォン */
+@media (max-width: 700px) {
+    .chat-page {
+        padding: 28px 16px 45px;
+    }
+
+    .chat-page>h1 {
+        font-size: 2rem;
+    }
+
+    .chat-page .panel {
+        padding: 22px 18px;
+    }
+
+    .chat-page .exercise-options {
+        grid-template-columns: 1fr;
+    }
+}

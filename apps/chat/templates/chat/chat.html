@@ -3,128 +3,7 @@
 {% block title %}AI運動トレーナー{% endblock %}
 
 {% block content %}
-<style>
-    .chat-page {
-        box-sizing: border-box;
-        width: 100%;
-        max-width: 650px;
-        margin: 24px auto;
-        padding: 20px;
-        font-family: sans-serif;
-        background: #f3f5f7;
-        color: #222;
-    }
-
-    .chat-page h1,
-    .chat-page h2 {
-        color: #246b50;
-    }
-
-    .chat-page h2 {
-        margin-top: 24px;
-    }
-
-    .chat-page textarea,
-    .chat-page button,
-    .chat-page select,
-    .chat-page input[type="submit"] {
-        box-sizing: border-box;
-        width: 100%;
-        padding: 12px;
-        margin: 8px 0;
-        font-size: 16px;
-        border-radius: 8px;
-    }
-
-    .chat-page textarea,
-    .chat-page select {
-        border: 1px solid #ccc;
-        background: white;
-    }
-
-    .chat-page textarea {
-        resize: vertical;
-    }
-
-    .chat-page button,
-    .chat-page input[type="submit"] {
-        background: #246b50;
-        color: white;
-        border: none;
-        cursor: pointer;
-    }
-
-    .chat-page button:hover,
-    .chat-page input[type="submit"]:hover {
-        background: #1b543e;
-    }
-
-    .chat-page label {
-        display: block;
-        margin-top: 12px;
-        font-weight: bold;
-    }
-
-    .chat-page .status {
-        min-height: 1.5em;
-    }
-
-    .chat-page .error {
-        color: #b42318;
-    }
-
-    .chat-page .answer {
-        min-height: 60px;
-        padding: 16px;
-        overflow-wrap: anywhere;
-        white-space: pre-wrap;
-        background: white;
-        border-radius: 8px;
-        line-height: 1.7;
-    }
-
-    .chat-page .panel {
-        margin: 20px 0;
-        padding: 18px;
-        background: white;
-        border-radius: 12px;
-    }
-
-    .chat-page .description {
-        color: #555;
-        line-height: 1.6;
-    }
-
-    .chat-page hr {
-        margin: 30px 0;
-        border: none;
-        border-top: 1px solid #ddd;
-    }
-
-    .chat-page .exercise-options {
-        display: grid;
-        gap: 12px;
-    }
-
-    .chat-page .exercise-option {
-        display: block;
-        padding: 14px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        background: white;
-        font-weight: normal;
-    }
-
-    .chat-page .exercise-option input[type="checkbox"] {
-        width: auto;
-        margin-right: 8px;
-    }
-
-    .chat-page .exercise-option p {
-        margin: 8px 0 0;
-        line-height: 1.5;
-    }
-</style>
+<link rel="stylesheet" href="{{ url_for('chat.static', filename='style/chat.css') }}">
 
 <div class="chat-page">
     <h1>AI運動トレーナー</h1>
@@ -241,5 +120,8 @@
             {% endif %}
         </div>
     </section>
+</div>
+<div class="back">
+    <a href="{{ url_for('home.index') }}">← トップページに戻る</a>
 </div>
 {% endblock %}
