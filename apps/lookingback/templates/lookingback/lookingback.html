@@ -40,6 +40,7 @@
     </section>
 
     <ul class="lb-list">
+        <h2>過去の振り返り</h2>
         {% for r in records %}
         <li>
             <span class="lb-date">{{ r.date.strftime('%Y年%m月%d日') }}</span>
@@ -51,6 +52,7 @@
         <li class="lb-empty">まだ記録がありません。</li>
         {% endfor %}
     </ul>
+
 </div>
 
 {% endblock %}

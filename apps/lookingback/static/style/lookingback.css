@@ -50,6 +50,51 @@
     margin-bottom: 4px;
 }
 
+/* 運動実施履歴 */
+.lb-exercises {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 16px;
+    margin-bottom: 24px;
+}
+
+.lb-exercises h2 {
+    font-size: 1.1rem;
+    color: #2c3e50;
+    margin-bottom: 12px;
+    border-bottom: 2px solid #52aa7c;
+    padding-bottom: 6px;
+}
+
+.lb-exercise {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.lb-exercise h3 {
+    font-size: 0.95rem;
+    color: #888;
+    font-weight: normal;
+    margin: 0;
+}
+
+.lb-exercise h4 {
+    font-size: 0.9rem;
+    color: #52aa7c;
+    margin: 4px 0 2px;
+}
+
+.lb-exercise p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #333;
+    background: #f7f9f8;
+    border-radius: 6px;
+    padding: 8px 12px;
+}
+
 /* 一覧 */
 .lb-list {
     list-style: none;

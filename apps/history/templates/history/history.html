@@ -1,8 +1,94 @@
+
 {% extends "home/base.html" %}
 {% block title %}履歴機能{% endblock %}
 {% block content %}
-<h1>履歴機能</h1>
-<p>運動状況や履歴を確認する画面です。</p>
-<a href="{{ url_for('history.situation') }}">運動状況確認</a>
-<a href="{{ url_for('history.calendar') }}">カレンダー</a>
+
+<link rel="stylesheet" href="{{ url_for('history.static', filename='style/history.css') }}">
+
+<div class="history-container">
+
+    <!-- ヘッダー -->
+    <div class="page-header">
+        <div class="header-icon">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+        </div>
+
+        <span class="header-label">ACTIVITY HISTORY</span>
+
+        <h1>履歴機能</h1>
+
+        <p>日々の運動を振り返り、健康的な毎日につなげましょう。</p>
+
+        <div class="header-decoration">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+
+    <!-- メニュー -->
+    <div class="menu-section">
+
+        <div class="section-title">
+            <h2>メニュー</h2>
+            <p>確認したい項目を選択してください</p>
+        </div>
+
+        <div class="menu-grid">
+
+            <a href="{{ url_for('history.situation') }}" class="menu-card">
+                <div class="card-icon green">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+                <div class="card-content">
+                    <h3>運動状況確認</h3>
+                    <p>日々の運動状況や成果を確認できます。</p>
+                </div>
+                <div class="card-arrow">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </a>
+
+            <a href="{{ url_for('history.calendar') }}" class="menu-card">
+                <div class="card-icon blue">
+                    <i class="fa-solid fa-calendar-days"></i>
+                </div>
+                <div class="card-content">
+                    <h3>カレンダー</h3>
+                    <p>カレンダーから運動履歴を確認できます。</p>
+                </div>
+                <div class="card-arrow">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </a>
+
+            <a href="{{ url_for('home.index') }}" class="menu-card">
+                <div class="card-icon orange">
+                    <i class="fa-solid fa-house"></i>
+                </div>
+                <div class="card-content">
+                    <h3>トップページ</h3>
+                    <p>トップページに戻ります。</p>
+                </div>
+                <div class="card-arrow">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </a>
+
+        </div>
+    </div>
+
+    <!-- メッセージ -->
+    <div class="history-message">
+        <div class="message-icon">
+            <i class="fa-solid fa-heart"></i>
+        </div>
+        <div>
+            <h3>毎日の積み重ねを大切に</h3>
+            <p>これまでの運動を振り返り、これからの健康づくりに役立てましょう。</p>
+        </div>
+    </div>
+
+</div>
+
 {% endblock %}
