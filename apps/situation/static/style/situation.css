@@ -1,0 +1,116 @@
+/* 運動履歴画面 全体 */
+.situation-page {
+    max-width: 1100px;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 45px 30px 70px;
+    color: #294b37;
+    background:
+        radial-gradient(circle at 10% 15%, rgba(125, 211, 159, 0.16), transparent 30%),
+        radial-gradient(circle at 90% 80%, rgba(96, 165, 250, 0.10), transparent 30%),
+        linear-gradient(135deg, #edf8f1, #f8fcf9, #eaf5ef);
+}
+
+/* ページ見出し */
+.situation-page h1 {
+    margin: 5px 0 30px;
+    color: #17633d;
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+/* 各セクション */
+.situation-page section {
+    margin: 24px 0;
+    padding: 28px;
+    border: 1px solid rgba(83, 160, 112, 0.15);
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: 0 8px 25px rgba(46, 100, 67, 0.07);
+}
+
+.situation-page h2 {
+    margin: 0 0 14px;
+    color: #245b3c;
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+.situation-page h3 {
+    margin: 16px 0 8px;
+    color: #28563b;
+    font-size: 1.1rem;
+    font-weight: 700;
+}
+
+.situation-page p {
+    margin: 6px 0;
+    color: #56665b;
+    font-size: 0.95rem;
+    line-height: 1.8;
+}
+
+/* 回答エリア */
+.situation-page .answer {
+    padding: 16px 20px;
+    border: 1px solid #e0ece3;
+    border-radius: 14px;
+    background: #f8fcf9;
+    color: #405b49;
+    line-height: 1.8;
+    white-space: pre-wrap;
+}
+
+/* 区切り線 */
+.situation-page hr {
+    margin: 10px 0;
+    border: 0;
+    border-top: 1px solid #dce9df;
+}
+
+/* 履歴なしメッセージ */
+.situation-page .empty {
+    text-align: center;
+    color: #84978b;
+    font-size: 1rem;
+    padding: 40px 0;
+}
+
+/* 戻るリンク */
+.back {
+    display: flex;
+    justify-content: center;
+    margin: 24px 16px;
+}
+
+.back a {
+    display: inline-block;
+    padding: 12px 22px;
+    background: #263445;
+    color: white;
+    border: 1px solid #263445;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background .2s ease, transform .2s ease;
+}
+
+.back a:hover {
+    transform: translateY(-1px);
+    background: #3a4f63;
+}
+
+/* スマートフォン */
+@media (max-width: 700px) {
+    .situation-page {
+        padding: 28px 16px 45px;
+    }
+
+    .situation-page h1 {
+        font-size: 2rem;
+    }
+
+    .situation-page section {
+        padding: 22px 18px;
+    }
+}
