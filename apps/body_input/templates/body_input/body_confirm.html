@@ -2,27 +2,70 @@
 {% block title %}変更内容の確認{% endblock %}
 {% block content %}
 
-<link rel="stylesheet" href="{{ url_for('body_input.static', filename='style/body_confirm.css') }}">
+<link rel="stylesheet" href="{{ url_for('body_input.static', filename='style/body_input.css') }}">
 
-<h1>変更内容の確認</h1>
-<p>以下の内容で更新します。よろしいですか？</p>
+<div class="body-page">
 
-<p>身長：{{ data.height }}</p>
-<p>体重：{{ data.weight }}</p>
-<p>年齢：{{ data.age }}</p>
-<p>運動習慣：{{ data.exercise_habit }}</p>
-<p>目標：{{ data.goal }}</p>
-<p>パスワード：{% if data.change_password %}変更する{% else %}変更しない{% endif %}</p>
+    <div class="body-header">
+        <div class="body-icon">✓</div>
 
-<form method="post">
-    <button type="submit">更新する</button>
-</form>
-<!-- <div class="back">
-    <a href="{{ url_for('home.index') }}">← トップページに戻る</a>
-</div> -->
+        <p class="body-en-title">CONFIRM INFORMATION</p>
+        <h1>変更内容の確認</h1>
+        <p class="body-description">
+            以下の内容で更新します。<br>
+            入力内容に間違いがないか確認してください。
+        </p>
+    </div>
 
-{% endblock %}
+    <div class="body-card">
 
-{% block back_link %}
-<a href="{{ url_for('body_input.index') }}">← 編集画面に戻る</a>
+        <h2>登録内容</h2>
+
+        <div class="body-confirm-item">
+            <strong>身長</strong>
+            {{ data.height }} cm
+        </div>
+
+        <div class="body-confirm-item">
+            <strong>体重</strong>
+            {{ data.weight }} kg
+        </div>
+
+        <div class="body-confirm-item">
+            <strong>年齢</strong>
+            {{ data.age }} 歳
+        </div>
+
+        <div class="body-confirm-item">
+            <strong>運動習慣</strong>
+            {{ data.exercise_habit }}
+        </div>
+
+        <div class="body-confirm-item">
+            <strong>目標</strong>
+            {{ data.goal }}
+        </div>
+
+        <div class="body-confirm-item">
+            <strong>パスワード</strong>
+            {% if data.change_password %}
+            変更する
+            {% else %}
+            変更しない
+            {% endif %}
+        </div>
+
+        <form method="post">
+            <button type="submit" class="body-submit">
+                更新する
+            </button>
+        </form>
+
+    </div>
+
+</div>
+
+<div class="back">
+    <a href="{{ url_for('body_input.index') }}">← 編集画面に戻る</a>
+</div>
 {% endblock %}
