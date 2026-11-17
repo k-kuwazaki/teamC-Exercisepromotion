@@ -1,73 +1,129 @@
 .help-wrapper {
-    max-width: 700px;
+    max-width: 760px;
     margin: 0 auto;
     padding: 20px;
     font-family: 'Segoe UI', sans-serif;
 }
 
-.help-wrapper h1 {
-    color: #2c3e50;
-    margin-bottom: 8px;
+/* ページヘッダー */
+.help-header {
+    background: linear-gradient(135deg, #1a4a3a, #2da86a);
+    color: white;
+    border-radius: 16px;
+    padding: 28px 32px;
+    margin-bottom: 32px;
 }
 
-.help-wrapper>p {
-    color: #666;
-    margin-bottom: 24px;
+.help-header h1 {
+    font-size: 1.6rem;
+    color: white;
+    margin-bottom: 6px;
 }
 
+.help-header p {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+/* セクション */
 .help-section {
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 16px 20px;
-    margin-bottom: 16px;
+    background: #f7fdf9;
+    border: none;
+    border-left: 4px solid transparent;
+    border-radius: 12px;
+    padding: 0;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+    overflow: hidden;
+    transition: box-shadow 0.3s ease, transform 0.3s ease, border-left-color 0.3s ease;
+}
+
+.help-section:hover {
+    box-shadow: 0 6px 24px rgba(45, 168, 106, 0.2);
+    transform: translateY(-2px);
+}
+
+.help-section.is-open {
+    border-left-color: #2da86a;
+    box-shadow: 0 6px 24px rgba(45, 168, 106, 0.25);
 }
 
 .help-section h2 {
     font-size: 1rem;
-    color: #52aa7c;
+    color: #1e3a5f;
     margin: 0;
-    padding-bottom: 6px;
-    border-bottom: 1px solid #eee;
+    padding: 18px 20px;
     cursor: pointer;
     display: flex;
-    justify-content: space-between;
     align-items: center;
     user-select: none;
+    background: #fafafa;
+    transition: background 0.15s ease;
+    gap: 10px;
+}
+
+.help-section h2:hover {
+    background: #d9f0e5;
+}
+
+/* アイコン */
+.help-section h2 .help-icon {
+    font-size: 1.1rem;
+    width: 34px;
+    height: 34px;
+    background: #dbeafe;
+    color: #2563eb;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform 0.3s ease;
+}
+
+.help-section h2:hover .help-icon {
+    transform: scale(1.1) rotate(-5deg);
+}
+
+/* タイトルテキスト */
+.help-section h2 .help-title {
+    flex: 1;
 }
 
 .help-section h2::after {
     content: '▲';
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: #aaa;
-}
-
-.help-section h2.closed {
-    border-bottom: none;
-    padding-bottom: 0;
+    flex-shrink: 0;
 }
 
 .help-section h2.closed::after {
     content: '▼';
 }
 
+/* 説明文 */
 .help-section p {
-    font-size: 0.95rem;
-    color: #444;
-    line-height: 1.7;
-    margin-top: 8px;
-}
-
-/* 説明文を最初は非表示にする */
-.help-section p {
-    display: none;
-}
-
-/* 開いたときに説明文を表示 */
-.help-section p.open {
     display: block;
+    font-size: 0.93rem;
+    color: #444;
+    line-height: 2;
+    margin: 0;
+    padding: 0 24px;
+    border-top: 0px solid #c8ebd8;
+    background: #ffffff;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), padding 0.5s cubic-bezier(0.4, 0, 0.2, 1), border-top-width 0.5s ease;
 }
 
+.help-section p.open {
+    max-height: 500px;
+    padding: 16px 24px 20px 24px;
+    border-top-width: 1px;
+}
+
+/* 戻るボタンの位置 */
 .back {
     display: flex;
     justify-content: center;
