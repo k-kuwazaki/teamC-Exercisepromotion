@@ -8,6 +8,7 @@ situation = Blueprint(
     __name__,
     template_folder="templates",
     static_folder="static",
+    url_prefix="/situation"
 )
 
 
@@ -28,7 +29,7 @@ def index():
     print("取得した履歴件数:", len(situations))
 
     return render_template(
-        "situation/index.html",
+        "situation/situation.html",
         situations=situations,
     )
 
