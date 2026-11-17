@@ -400,6 +400,24 @@ body:has(.friend-nav) .friend-panel {
     }
 }
 
+.back {
+    display: flex;
+    justify-content: center;
+    margin: 24px 16px;
+}
+
+/* 戻るリンクのデザイン */
+.back a {
+    display: inline-block;
+    padding: 12px 22px;
+    background: #263445;
+    color: white;
+    border: 1px solid #263445;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background .2s ease, transform .2s ease;
+}
+
 
 /* =================================
    小さいスマホ対応

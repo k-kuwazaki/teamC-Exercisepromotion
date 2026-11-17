@@ -1,10 +1,37 @@
 {% extends "home/base.html" %}
 {% block title %}{{ year }}年{{ month }}月{{ day }}日の詳細{% endblock %}
+
 {% block content %}
 <link rel="stylesheet" href="{{ url_for('calendar.static', filename='style/calendar.css') }}">
 
 <div class="day-detail-wrapper">
     <h1>{{ year }}年{{ month }}月{{ day }}日</h1>
+
+    <h2>運動実施内容</h2>
+
+    {% if exercise_records %}
+    {% for exercise_record in exercise_records %}
+    <section class="exercise-record">
+        <h3>{{ exercise_record.created_at.strftime('%H:%M') }}の記録</h3>
+
+        {% if exercise_record.answer %}
+        <h4>選択した運動メニュー</h4>
+        <p style="white-space: pre-wrap;">{{ exercise_record.answer }}</p>
+        {% endif %}
+
+        {% if exercise_record.self_exercises %}
+        <h4>自主的に行った運動</h4>
+        <p style="white-space: pre-wrap;">{{ exercise_record.self_exercises }}</p>
+        {% endif %}
+
+        {% if exercise_record.duration %}
+        <p>運動時間：{{ exercise_record.duration }}分</p>
+        {% endif %}
+    </section>
+    {% endfor %}
+    {% else %}
+    <p class="no-record">この日の運動記録はありません。</p>
+    {% endif %}
 
     <h2>振り返り</h2>
     {% if record %}
@@ -16,4 +43,8 @@
     <a href="{{ url_for('calendar.index', year=year, month=month) }}">← カレンダーに戻る</a>
     <a href="{{ url_for('lookingback.index') }}">振り返りページへ</a>
 </div>
+<div class="back">
+    <a href="{{ url_for('home.index') }}">← トップページに戻る</a>
+</div>
+
 {% endblock %}
