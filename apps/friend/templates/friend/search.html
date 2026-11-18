@@ -1,39 +1,54 @@
 {% extends "home/base.html" %}
-{% block title %}ユーザー検索・申請{% endblock %}
+{% block title %}仲間を探す{% endblock %}
 {% block content %}
 {% include "friend/_navigation.html" %}
 <main class="friend-panel">
-<h1>ユーザー検索・申請</h1>
+    <h1>仲間を探す</h1>
 
-<form class="friend-search" method="get" action="{{ url_for('friend.search') }}">
-    <p>
-        <label for="username">ユーザー名</label>
-        <input id="username" name="q" type="search" value="{{ query }}" placeholder="ユーザー名を入力">
-    </p>
-    <button type="submit">検索</button>
-</form>
+    <form class="friend-search" method="get" action="{{ url_for('friend.search') }}">
+        <p>
+            <label for="habit">運動習慣</label>
+            <select id="habit" name="habit">
+                <option value="">すべて</option>
+                <option value="rarely" {% if habit=="rarely" %}selected{% endif %}>ほとんどしない</option>
+                <option value="sometimes" {% if habit=="sometimes" %}selected{% endif %}>週に1〜2回</option>
+                <option value="often" {% if habit=="often" %}selected{% endif %}>週に3回以上</option>
+            </select>
+        </p>
+        <p>
+            <label for="goal">目標キーワード</label>
+            <input id="goal" name="goal" type="search" value="{{ goal_keyword }}" placeholder="例：ダイエット、筋力アップ">
+        </p>
+        <p>
+            <label for="username">ユーザー名</label>
+            <input id="username" name="username" type="search" value="{{ username }}" placeholder="ユーザー名を入力">
+        </p>
 
-<h2>検索結果</h2>
-{% if not g.friend_user %}
-<p>ユーザー検索はログインなしで利用できます。申請機能はユーザー情報との連携後に利用できます。</p>
-{% endif %}
-{% if query and not search_results %}
-<p>該当するユーザーはいません。</p>
-{% elif not query %}
-<p>ユーザー名を入力して検索してください。</p>
-{% endif %}
-<ul class="friend-list">
-    {% for user in search_results %}
-    <li>
-        <span>{{ user.username }}</span>
-        {% if g.friend_user %}
-        <form method="post" action="{{ url_for('friend.send_request', target_user_id=user.id) }}">
-            {{ action_form.csrf_token }}
-            <button type="submit">友達申請</button>
-        </form>
-        {% endif %}
-    </li>
-    {% endfor %}
-</ul>
+        <button type="submit">絞り込む</button>
+    </form>
+
+    <h2>ユーザー一覧</h2>
+    {% if not g.friend_user %}
+    <p>申請機能はログイン後に利用できます。</p>
+    {% endif %}
+    <ul class="friend-list">
+        {% for user in search_results %}
+        <li>
+            <span>{{ user.username }}</span>
+            <span class="user-habit">{{ {"rarely": "ほとんどしない", "sometimes": "週に1〜2回", "often":
+                "週に3回以上"}.get(user.exercise_habit, "未設定") }}</span>
+            {% if user.goal %}<span class="user-goal">目標：{{ user.goal }}</span>{% endif %}
+            {% if g.friend_user %}
+            <form method="post" action="{{ url_for('friend.send_request', target_user_id=user.id) }}">
+                {{ action_form.csrf_token }}
+                <input type="hidden" name="habit" value="{{ habit }}">
+                <input type="hidden" name="goal" value="{{ goal_keyword }}">
+                <input type="hidden" name="username" value="{{ username }}">
+                <button type="submit">仲間申請</button>
+            </form>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
 </main>
 {% endblock %}
