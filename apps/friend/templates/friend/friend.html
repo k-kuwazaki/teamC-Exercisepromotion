@@ -10,11 +10,16 @@
     {% endif %}
     {% if friends %}
     <ul class="friend-list">
-        {% for user in friends %}
+        {% for item in friends %}
         <li>
-            <span>{{ user.username }}</span>
+            <span>{{ item.user.username }}</span>
+            {% if item.done_today %}
+            <span class="done-today">今日は実施済みです</span>
+            {% else %}
+            <span class="not-yet">まだ実施されていません...</span>
+            {% endif %}
             {% if g.friend_user %}
-            <form method="post" action="{{ url_for('friend.remove_friend', friend_user_id=user.id) }}">
+            <form method="post" action="{{ url_for('friend.remove_friend', friend_user_id=item.user.id) }}">
                 {{ action_form.csrf_token }}
                 <button type="submit">フレンド解除</button>
             </form>
@@ -25,6 +30,7 @@
     {% else %}
     <p>フレンドはいません。</p>
     {% endif %}
+
 </main>
 <div class="back">
     <a href="{{ url_for('home.index') }}">← トップページに戻る</a>

@@ -17,6 +17,8 @@ from apps.app import db
 from apps.friend.forms import FriendActionForm
 from apps.friend.models import Friend
 from apps.user.models import User
+from datetime import date
+from apps.lookingback.models import LookingBack
 
 
 friend = Blueprint(
@@ -79,13 +81,24 @@ def index():
             item.addressee_id if item.requester_id == user_id else item.requester_id
             for item in relationships
         ]
-        friends = (
-            User.query.filter(User.id.in_(friend_ids))
-            .order_by(User.username)
-            .all()
-            if friend_ids
-            else []
-        )
+        if friend_ids:
+            today = date.today()
+            done_today_ids = {
+                r.user_id
+                for r in LookingBack.query.filter(
+                    LookingBack.user_id.in_(friend_ids),
+                    LookingBack.date == today,
+                ).all()
+            }
+            friend_users = (
+                User.query.filter(User.id.in_(friend_ids))
+                .order_by(User.username)
+                .all()
+            )
+            friends = [
+                {"user": u, "done_today": u.id in done_today_ids}
+                for u in friend_users
+            ]
     return render_template(
         "friend/friend.html",
         friends=friends,
@@ -96,7 +109,10 @@ def index():
 @friend.route("/search")
 def search():
     user_id = g.friend_user.id if g.friend_user is not None else None
-    query = request.args.get("q", "").strip()
+    habit = request.args.get("habit", "").strip()
+    goal_keyword = request.args.get("goal", "").strip()
+    username = request.args.get("username", "").strip()
+
     related_user_ids = set()
     if user_id is not None:
         relationships = Friend.query.filter(
@@ -107,20 +123,25 @@ def search():
             for item in relationships
         }
 
-    search_results = []
-    if query:
-        users_query = User.query.filter(User.username.ilike(f"%{query}%"))
-        if user_id is not None:
-            users_query = users_query.filter(User.id != user_id)
-        if related_user_ids:
-            users_query = users_query.filter(~User.id.in_(related_user_ids))
-        search_results = (
-            users_query.order_by(User.username).limit(50).all()
-        )
+    users_query = User.query
+    if user_id is not None:
+        users_query = users_query.filter(User.id != user_id)
+    if related_user_ids:
+        users_query = users_query.filter(~User.id.in_(related_user_ids))
+    if habit:
+        users_query = users_query.filter(User.exercise_habit == habit)
+    if goal_keyword:
+        users_query = users_query.filter(User.goal.ilike(f"%{goal_keyword}%"))
+    if username:
+        users_query = users_query.filter(User.username.ilike(f"%{username}%"))
+
+    search_results = users_query.order_by(User.username).limit(50).all()
 
     return render_template(
         "friend/search.html",
-        query=query,
+        habit=habit,
+        username=username,
+        goal_keyword=goal_keyword,
         search_results=search_results,
         action_form=FriendActionForm(),
     )
@@ -160,7 +181,7 @@ def send_request(target_user_id):
             return redirect(url_for("friend.index"))
         else:
             flash("このユーザーにはすでに申請しています。", "info")
-        return redirect(url_for("friend.search", q=request.args.get("q", "")))
+        return redirect(url_for("friend.search", habit=request.args.get("habit", ""), goal=request.args.get("goal", ""), username=request.args.get("username", "")))
 
     db.session.add(
         Friend(
@@ -193,10 +214,10 @@ def send_request(target_user_id):
             return redirect(url_for("friend.index"))
         else:
             flash("このユーザーにはすでに申請しています。", "info")
-        return redirect(url_for("friend.search", q=request.args.get("q", "")))
+        return redirect(url_for("friend.search", habit=request.args.get("habit", ""), goal=request.args.get("goal", ""), username=request.args.get("username", "")))
 
     flash(f"{target.username}さんに友達申請を送りました。", "success")
-    return redirect(url_for("friend.search", q=request.args.get("q", "")))
+    return redirect(url_for("friend.search", habit=request.args.get("habit", ""), goal=request.args.get("goal", ""), username=request.args.get("username", "")))
 
 
 @friend.route("/incoming")
