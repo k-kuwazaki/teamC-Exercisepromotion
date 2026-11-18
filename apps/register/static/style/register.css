@@ -1,4 +1,6 @@
-/* ===== ユーザー登録画面 ===== */
+/* =========================
+   共通アニメーション
+========================= */
 
 @keyframes fadeSlideUp {
     from {
@@ -12,25 +14,36 @@
     }
 }
 
+/* =========================
+   ユーザー登録画面
+========================= */
+
 /* 登録フォーム全体 */
 .main-content form {
     position: relative;
     display: flex;
     flex-direction: column;
     gap: 19px;
+
     max-width: 480px;
     margin: 40px auto 60px;
     padding: clamp(26px, 5vw, 45px);
-    border: 1px solid rgb(255 255 255 / 95%);
-    border-radius: 18px;
+
+    border: 1px solid #e1e9e4;
+    border-radius: 20px;
+
     background:
-        radial-gradient(ellipse at 100% 0%, rgb(227 215 190 / 27%), transparent 34%),
-        #fffefa;
+        radial-gradient(ellipse at 100% 0%,
+            rgba(216, 239, 224, 0.5),
+            transparent 34%),
+        #ffffff;
+
     box-shadow:
-        0 18px 50px rgb(45 52 44 / 8%),
-        0 2px 6px rgb(45 52 44 / 3%);
+        0 5px 20px rgba(30, 80, 55, 0.07);
+
     box-sizing: border-box;
     overflow: hidden;
+
     animation: fadeSlideUp .35s ease both;
 }
 
@@ -41,20 +54,24 @@
     right: 0;
     left: 0;
     height: 3px;
+
     background: linear-gradient(90deg,
-            #304a3b 0%,
-            #71836a 55%,
-            #c39b68 100%);
+            #219765 0%,
+            #40b47d 55%,
+            #a5d6b8 100%);
+
     content: "";
 }
 
 /* タイトル */
 .main-content h1 {
     margin: 40px 0 25px;
-    color: #28372f;
+
+    color: #075c3b;
     font-size: clamp(23px, 4vw, 29px);
     font-weight: 650;
     letter-spacing: .025em;
+
     text-align: center;
 }
 
@@ -67,8 +84,8 @@
 
 /* ラベル */
 .main-content form label {
-    color: #56665b;
-    font-size: 13px;
+    color: #315d4b;
+    font-size: 14px;
     font-weight: 650;
     letter-spacing: .02em;
 }
@@ -79,14 +96,20 @@
 .main-content form textarea {
     width: 100%;
     padding: 13px 15px;
-    border: 1px solid #dcded5;
-    border-radius: 8px;
+
+    border: 1px solid #dce8e1;
+    border-radius: 12px;
+
     outline: none;
-    background-color: #fffefa;
-    color: #28372f;
+
+    background-color: #fbfdfb;
+    color: #334155;
+
     font-family: inherit;
     font-size: 14px;
+
     box-sizing: border-box;
+
     transition:
         border-color .2s ease,
         box-shadow .2s ease,
@@ -97,16 +120,16 @@
 .main-content form input:hover,
 .main-content form select:hover,
 .main-content form textarea:hover {
-    border-color: #b0b8aa;
-    background-color: #f9f9f4;
+    border-color: #b0cdbb;
+    background-color: #f7fbf8;
 }
 
 /* フォーカス時 */
 .main-content form input:focus,
 .main-content form select:focus,
 .main-content form textarea:focus {
-    border-color: #718775;
-    box-shadow: 0 0 0 3px rgb(113 135 117 / 14%);
+    border-color: #36a875;
+    box-shadow: 0 0 0 3px rgba(54, 168, 117, 0.12);
 }
 
 /* テキストエリア */
@@ -124,28 +147,38 @@
 .main-content form button[type="submit"] {
     width: 100%;
     margin-top: 8px;
-    padding: 14px 28px;
-    border: 1px solid #304a3b;
-    border-radius: 8px;
-    background: #304a3b;
-    color: #fff;
+    padding: 15px 28px;
+
+    border: none;
+    border-radius: 13px;
+
+    background: linear-gradient(135deg,
+            #219765,
+            #40b47d);
+
+    color: #ffffff;
+
     font-family: inherit;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 600;
     letter-spacing: .03em;
+
     cursor: pointer;
+
     transition:
         background .2s ease,
-        border-color .2s ease,
-        transform .2s ease;
+        transform .2s ease,
+        box-shadow .2s ease;
 }
 
 /* ボタンホバー */
 .main-content form button[type="submit"]:hover {
     transform: translateY(-1px);
-    background: #496552;
-    border-color: #496552;
-    box-shadow: 0 4px 14px rgb(48 74 59 / 22%);
+
+    background: #299d69;
+
+    box-shadow:
+        0 4px 14px rgba(40, 150, 100, 0.22);
 }
 
 .main-content form button[type="submit"]:active {
@@ -153,27 +186,263 @@
     box-shadow: none;
 }
 
-/* 戻るリンク */
+/* =========================
+   戻るリンク
+========================= */
+
 .back {
-    text-align: center;
-    margin: 25px 0 35px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 12px;
+
+    margin: 25px 16px 35px;
 }
 
+/* 戻るリンクのデザイン */
 .back a {
-    color: #304a3b;
-    font-size: 14px;
-    font-weight: 600;
+    display: inline-block;
+
+    padding: 12px 22px;
+
+    background: #263548;
+    color: white;
+
+    border: 1px solid #263548;
+    border-radius: 10px;
+
     text-decoration: none;
-    transition: color .2s ease;
+    font-weight: 600;
+
+    transition:
+        background .2s ease,
+        transform .2s ease;
 }
 
 .back a:hover {
-    color: #71836a;
-    text-decoration: underline;
+    background: #354b63;
+    transform: translateY(-1px);
 }
 
-/* ===== レスポンシブ ===== */
+/* =========================
+   登録内容確認画面
+========================= */
+
+.register-confirm {
+    position: relative;
+
+    max-width: 520px;
+    margin: 45px auto 60px;
+    padding: clamp(26px, 5vw, 45px);
+
+    box-sizing: border-box;
+
+    border: 1px solid #e1e9e4;
+    border-radius: 20px;
+
+    background:
+        radial-gradient(ellipse at 100% 0%,
+            rgba(216, 239, 224, 0.5),
+            transparent 34%),
+        #ffffff;
+
+    box-shadow:
+        0 5px 20px rgba(30, 80, 55, 0.07);
+
+    overflow: hidden;
+
+    animation: fadeSlideUp .35s ease both;
+}
+
+/* 上部アクセントライン */
+.register-confirm::before {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    height: 3px;
+
+    background: linear-gradient(90deg,
+            #219765 0%,
+            #40b47d 55%,
+            #a5d6b8 100%);
+
+    content: "";
+}
+
+/* タイトル */
+.register-confirm h1 {
+    margin: 0 0 18px;
+    padding-bottom: 18px;
+
+    position: relative;
+
+    color: #075c3b;
+    font-size: clamp(22px, 4vw, 28px);
+    font-weight: 650;
+    letter-spacing: .025em;
+
+    text-align: center;
+}
+
+.register-confirm h1::after {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+
+    width: 48px;
+    height: 2px;
+
+    background: #40b47d;
+
+    transform: translateX(-50%);
+
+    content: "";
+}
+
+/* 説明文 */
+.confirm-description {
+    margin: 22px 0;
+
+    color: #78918a;
+    font-size: 14px;
+    line-height: 1.8;
+
+    text-align: center;
+}
+
+/* 登録内容一覧 */
+.confirm-list {
+    margin-top: 25px;
+
+    border: 1px solid #dce8e1;
+    border-radius: 12px;
+
+    overflow: hidden;
+}
+
+/* 各項目（偶数行に縞模様） */
+.confirm-list p:nth-child(even) {
+    background-color: #f1f8f3;
+}
+
+.confirm-list p {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+
+    margin: 0;
+    padding: 15px 17px;
+
+    border-bottom: 1px solid #e5eee8;
+
+    color: #334155;
+    font-size: 14px;
+    line-height: 1.6;
+
+    overflow-wrap: anywhere;
+}
+
+.confirm-list p:last-child {
+    border-bottom: none;
+}
+
+/* 項目名 */
+.confirm-list p span {
+    flex-shrink: 0;
+
+    color: #29976a;
+    font-weight: 650;
+}
+
+/* 確認画面の戻るボタン */
+.confirm-back {
+    display: block;
+
+    margin-top: 28px;
+    padding: 13px 20px;
+
+    border: none;
+    border-radius: 12px;
+
+    background: linear-gradient(135deg,
+            #219765,
+            #40b47d);
+
+    color: #ffffff;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    text-align: center;
+    text-decoration: none;
+
+    transition: .2s ease;
+}
+
+.confirm-back:hover {
+    transform: translateY(-1px);
+
+    background: #299d69;
+
+    box-shadow:
+        0 4px 14px rgba(40, 150, 100, 0.22);
+}
+
+.confirm-back:active {
+    transform: translateY(1px);
+    box-shadow: none;
+}
+
+/* ログインリンク全体 */
+.main-content form .register-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    margin: 5px 0 0;
+
+    color: #78918a;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* ログインボタン */
+.main-content form .register-link a {
+    display: inline-block;
+    padding: 12px 18px;
+
+    background: #ffffff;
+    color: #075c3b;
+
+    border: 1px solid #e1e9e4;
+    border-radius: 12px;
+
+    font-weight: 600;
+
+    text-decoration: underline;
+    text-decoration-color: #b58b59;
+    text-underline-offset: 4px;
+
+    transition: .2s ease;
+}
+
+/* ホバー時 */
+.register-link a:hover {
+    background: #f1f8f3;
+    border-color: #40b47d;
+    transform: translateY(-1px);
+}
+
+/* =========================
+   スマートフォン対応
+========================= */
+
 @media screen and (max-width: 768px) {
+
     .main-content form {
         margin: 25px 16px 40px;
         padding: 28px 20px;
@@ -190,162 +459,7 @@
     .main-content form textarea {
         font-size: 16px;
     }
-}
 
-
-/* ===== 登録内容確認画面 ===== */
-
-.register-confirm {
-    position: relative;
-    max-width: 520px;
-    margin: 45px auto 60px;
-    padding: clamp(26px, 5vw, 45px);
-    box-sizing: border-box;
-    border: 1px solid rgb(255 255 255 / 95%);
-    border-radius: 18px;
-    background:
-        radial-gradient(ellipse at 100% 0%, rgb(227 215 190 / 27%), transparent 34%),
-        #fffefa;
-    box-shadow:
-        0 18px 50px rgb(45 52 44 / 8%),
-        0 2px 6px rgb(45 52 44 / 3%);
-    overflow: hidden;
-    animation: fadeSlideUp .35s ease both;
-}
-
-/* 上部アクセントライン */
-.register-confirm::before {
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    height: 3px;
-    background: linear-gradient(90deg,
-            #304a3b 0%,
-            #71836a 55%,
-            #c39b68 100%);
-    content: "";
-}
-
-/* タイトル */
-.register-confirm h1 {
-    margin: 0 0 18px;
-    padding-bottom: 18px;
-    position: relative;
-    color: #28372f;
-    font-size: clamp(22px, 4vw, 28px);
-    font-weight: 650;
-    letter-spacing: .025em;
-    text-align: center;
-}
-
-.register-confirm h1::after {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    width: 48px;
-    height: 2px;
-    background: #b58b59;
-    transform: translateX(-50%);
-    content: "";
-}
-
-/* 説明文 */
-.confirm-description {
-    margin: 22px 0;
-    color: #7a817b;
-    font-size: 14px;
-    line-height: 1.8;
-    text-align: center;
-}
-
-/* 登録内容一覧 */
-.confirm-list {
-    margin-top: 25px;
-    border: 1px solid #e4e5dc;
-    border-radius: 10px;
-    overflow: hidden;
-}
-
-/* 各項目（偶数行に縞模様） */
-.confirm-list p:nth-child(even) {
-    background-color: #f6f7f2;
-}
-
-.confirm-list p {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 15px;
-    margin: 0;
-    padding: 15px 17px;
-    border-bottom: 1px solid #e9e9e1;
-    color: #28372f;
-    font-size: 14px;
-    line-height: 1.6;
-    overflow-wrap: anywhere;
-}
-
-.confirm-list p:last-child {
-    border-bottom: none;
-}
-
-/* 項目名 */
-.confirm-list p span {
-    flex-shrink: 0;
-    color: #71836a;
-    font-weight: 650;
-}
-
-/* 戻るボタン */
-.confirm-back {
-    display: block;
-    margin-top: 28px;
-    padding: 13px 20px;
-    border: 1px solid #304a3b;
-    border-radius: 8px;
-    background: #304a3b;
-    color: #ffffff;
-    font-size: 14px;
-    font-weight: 600;
-    text-align: center;
-    text-decoration: none;
-    transition: .2s ease;
-}
-
-.confirm-back:hover {
-    transform: translateY(-1px);
-    background: #496552;
-    border-color: #496552;
-    box-shadow: 0 4px 14px rgb(48 74 59 / 22%);
-}
-
-.confirm-back:active {
-    transform: translateY(1px);
-    box-shadow: none;
-}
-
-.register-link {
-    margin: 20px auto 40px;
-    color: #7a817b;
-    font-size: 14px;
-    text-align: center;
-}
-
-.register-link a {
-    color: #304a3b;
-    font-weight: 600;
-    text-decoration: underline;
-    text-decoration-color: #b58b59;
-    text-underline-offset: 4px;
-}
-
-.register-link a:hover {
-    color: #71836a;
-}
-
-/* スマートフォン対応 */
-@media screen and (max-width: 768px) {
     .register-confirm {
         margin: 30px 16px;
         padding: 28px 20px;
@@ -355,22 +469,4 @@
         padding: 13px 12px;
         font-size: 13px;
     }
-}
-
-.back {
-    display: flex;
-    justify-content: center;
-    margin: 24px 16px;
-}
-
-/* 戻るリンクのデザイン */
-.back a {
-    display: inline-block;
-    padding: 12px 22px;
-    background: #263445;
-    color: white;
-    border: 1px solid #263445;
-    border-radius: 8px;
-    text-decoration: none;
-    transition: background .2s ease, transform .2s ease;
 }
