@@ -39,29 +39,39 @@ def lookingback():
 def save_registration():
     selected_exercises = session.get("selected_exercises", [])
     conditions = session.get("selected_plan_conditions", {})
+    implementation_result = session.get("implementation_result", {})
 
     if request.method == "GET":
         return render_template(
             "registration/registration.html",
             selected_exercises=selected_exercises,
-            self_exercises="",
+            self_exercises=implementation_result.get("self_exercises", ""),
+            actual_minutes=implementation_result.get("actual_minutes", ""),
         )
 
     user_id = session.get("user_id")
     if user_id is None:
         return redirect(url_for("login.login"))
 
-    self_exercises = request.form.get("self_exercises", "").strip()
+    # 登録画面で編集された値があればそれを使い、空欄なら実施画面の値を使う
+    self_exercises = (
+        request.form.get("self_exercises", "").strip()
+        or implementation_result.get("self_exercises", "")
+    )
+
+    actual_minutes_text = (
+        request.form.get("actual_minutes", "").strip()
+        or str(implementation_result.get("actual_minutes", ""))
+    )
 
     if not selected_exercises and not self_exercises:
         return render_template(
             "registration/registration.html",
             selected_exercises=selected_exercises,
             self_exercises=self_exercises,
+            actual_minutes=actual_minutes_text,
             error="選択した運動か、自主的に行った運動を入力してください。",
         )
-
-    actual_minutes_text = request.form.get("actual_minutes", "").strip()
 
     if (
         not actual_minutes_text.isdigit()
@@ -71,6 +81,7 @@ def save_registration():
             "registration/registration.html",
             selected_exercises=selected_exercises,
             self_exercises=self_exercises,
+            actual_minutes=actual_minutes_text,
             error="運動時間を1〜300分で入力してください。",
         )
 
@@ -102,6 +113,7 @@ def save_registration():
 
         session.pop("selected_exercises", None)
         session.pop("selected_plan_conditions", None)
+        session.pop("implementation_result", None)
 
         return redirect(url_for("registration.lookingback"))
 
@@ -113,5 +125,6 @@ def save_registration():
             "registration/registration.html",
             selected_exercises=selected_exercises,
             self_exercises=self_exercises,
+            actual_minutes=actual_minutes_text,
             error="登録内容を保存できませんでした。",
         )

@@ -27,6 +27,11 @@ def login_required(f):
 @home.route("/")
 @login_required
 def index():
+    # 未登録の運動メニューと実施途中のデータを破棄
+    session.pop("selected_exercises", None)
+    session.pop("selected_plan_conditions", None)
+    session.pop("implementation_result", None)
+
     today_date = date.today()
     week_start = today_date - timedelta(days=today_date.weekday())
 
