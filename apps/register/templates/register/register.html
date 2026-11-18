@@ -52,8 +52,11 @@
     </div>
 
     <button type="submit">登録</button>
+
+    <p class="register-link">
+        アカウントをお持ちの方は
+        <a href="{{ url_for('login.login') }}">ログイン</a>
+    </p>
 </form>
-<p class="register-link">
-    <a href="{{ url_for('login.login') }}">ログインはこちら</a>
-</p>
+
 {% endblock %}
