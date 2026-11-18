@@ -64,6 +64,38 @@ body {
     margin-top: 30px;
 }
 
+/* ヘッダー行（タイトル＋ログアウト） */
+.header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.header-row .page-header {
+    margin-bottom: 0;
+}
+
+.logout-btn {
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+@media screen and (max-width: 768px) {
+    .header-row {
+        flex-direction: column;
+        align-items: flex-end;
+    }
+    .header-row .page-header {
+        width: 100%;
+        order: 2;
+        margin-top: 0.5rem;
+    }
+    .logout-btn {
+        order: 1;
+    }
+}
+
 /* メイン画面 */
 .main-content {
     flex: 1;
