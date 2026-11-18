@@ -29,6 +29,10 @@
             <h4>自主的に行った運動</h4>
             <p style="white-space: pre-wrap;">{{ exercise_record.self_exercises }}</p>
             {% endif %}
+            {% if exercise_record.duration %}
+            <h4>本日の運動時間</h4>
+            <p>{{ exercise_record.duration }}分</p>
+            {% endif %}
         </article>
         {% else %}
         <p>運動実施履歴はまだありません。</p>
@@ -36,16 +40,21 @@
     </section>
 
     <ul class="lb-list">
+        <h2>過去の振り返り</h2>
         {% for r in records %}
         <li>
             <span class="lb-date">{{ r.date.strftime('%Y年%m月%d日') }}</span>
             <span class="lb-comment">{{ r.comment }}</span>
-            <div class="lb-delete-form"><a href="{{ url_for('lookingback.delete_confirm', record_id=r.id) }}">削除</a></div>
+            <div class="lb-delete-form"><a href="{{ url_for('lookingback.delete_confirm', record_id=r.id) }}">削除</a>
+            </div>
         </li>
         {% else %}
         <li class="lb-empty">まだ記録がありません。</li>
         {% endfor %}
     </ul>
-</div>
 
+</div>
+<div class="back">
+    <a href="{{ url_for('home.index') }}">← トップページに戻る</a>
+</div>
 {% endblock %}

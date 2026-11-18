@@ -2,6 +2,8 @@ import calendar
 from datetime import date
 from flask import Blueprint, render_template, request, redirect, url_for, session
 from apps.lookingback.models import LookingBack
+from sqlalchemy import func
+from apps.situation.models import Situation
 
 calendar_bp = Blueprint("calendar", __name__, template_folder="templates", static_folder="static", url_prefix="/calendar")
 
@@ -57,13 +59,33 @@ def index():
         next_month=next_month,
         calendar_html=calendar_html,
     )
-
-
+#変更　履歴を追加できるように
 @calendar_bp.route("/day/<int:year>/<int:month>/<int:day>")
 def day_detail(year, month, day):
     user_id = session.get("user_id")
     if not user_id:
         return redirect(url_for("login.login"))
 
-    record = LookingBack.query.filter_by(user_id=user_id, date=date(year, month, day)).first()
-    return render_template("calendar/day_detail.html", year=year, month=month, day=day, record=record)
+    selected_date = date(year, month, day)
+
+    record = LookingBack.query.filter_by(
+        user_id=user_id,
+        date=selected_date,
+    ).first()
+
+    exercise_records = (
+        Situation.query
+        .filter_by(user_id=user_id, kind="registration")
+        .filter(func.date(Situation.created_at) == selected_date.isoformat())
+        .order_by(Situation.created_at.desc())
+        .all()
+    )
+
+    return render_template(
+        "calendar/day_detail.html",
+        year=year,
+        month=month,
+        day=day,
+        record=record,
+        exercise_records=exercise_records,
+    )

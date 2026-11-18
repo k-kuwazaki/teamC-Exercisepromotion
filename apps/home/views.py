@@ -1,6 +1,10 @@
 from flask import Blueprint, render_template, redirect, url_for, session
 from functools import wraps
-
+from datetime import date,timedelta
+from flask import session
+from apps.app import db
+from apps.situation.models import Situation
+from sqlalchemy import func
 home = Blueprint(
     "home",
     __name__,
@@ -23,8 +27,49 @@ def login_required(f):
 @home.route("/")
 @login_required
 def index():
-    return render_template("home/index.html")
+    # 未登録の運動メニューと実施途中のデータを破棄
+    session.pop("selected_exercises", None)
+    session.pop("selected_plan_conditions", None)
+    session.pop("implementation_result", None)
 
+    today_date = date.today()
+    week_start = today_date - timedelta(days=today_date.weekday())
+
+    exercise_records = (
+        Situation.query
+        .filter_by(
+            user_id=session["user_id"],
+            kind="registration",
+        )
+        .filter(func.date(Situation.created_at) >= week_start.isoformat())
+        .filter(func.date(Situation.created_at) <= today_date.isoformat())
+        .all()
+    )
+
+    today_records = [
+        record
+        for record in exercise_records
+        if record.created_at.date() == today_date
+    ]
+
+    today_minutes = sum(
+        int(record.duration)
+        for record in today_records
+        if record.duration and record.duration.isdigit()
+    )
+
+    today_input = bool(today_records)
+    week_days = len({
+        record.created_at.date()
+        for record in exercise_records
+    })
+
+    return render_template(
+        "home/index.html",
+        today_minutes=today_minutes,
+        today_input=today_input,
+        week_days=week_days,
+    )
 
 @home.route("/goal")
 @login_required

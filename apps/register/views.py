@@ -6,7 +6,9 @@ from apps.register.forms import registration_form_data
 register_bp = Blueprint(
     "register",
     __name__,
-    template_folder="templates",
+    template_folder="templates", 
+    static_folder="static", 
+    url_prefix="/register"
 )
 
 

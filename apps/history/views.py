@@ -6,7 +6,7 @@ from apps.situation.models import Situation
 from flask import Blueprint, render_template, redirect, url_for
 
 
-history = Blueprint("history", __name__, template_folder="templates", static_folder="static")
+history = Blueprint("history", __name__, template_folder="templates", static_folder="static",url_prefix="/history")
 
 
 @history.route("/")

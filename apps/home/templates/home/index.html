@@ -3,6 +3,7 @@
 {% block title %}トップページ{% endblock %}
 
 {% block content %}
+<div class="home-container">
 <div class="page-header">
     <h1><i class="fas fa-home"></i> 運動継続促進システム</h1>
     <p>ようこそ！今日も一緒に運動を続けましょう。</p>
@@ -14,67 +15,70 @@
         <div class="dashboard-icon"><i class="fas fa-fire"></i></div>
         <div class="dashboard-info">
             <span class="dashboard-label">今日の運動</span>
-            <span class="dashboard-value">-- 分</span>
+            <span class="dashboard-value">{{ today_minutes }}分</span>
         </div>
     </div>
     <div class="dashboard-card">
         <div class="dashboard-icon"><i class="fas fa-bullseye"></i></div>
         <div class="dashboard-info">
-            <span class="dashboard-label">目標達成率</span>
-            <span class="dashboard-value">--%</span>
+            <span class="dashboard-label">本日の入力</span>
+            <span class="dashboard-value">
+                {% if today_input %}入力済み{% else %}未入力{% endif %}
+            </span>
         </div>
     </div>
     <div class="dashboard-card">
         <div class="dashboard-icon"><i class="fas fa-calendar-check"></i></div>
         <div class="dashboard-info">
-            <span class="dashboard-label">連続記録</span>
-            <span class="dashboard-value">-- 日</span>
+            <span class="dashboard-label">今週の運動日数</span>
+            <span class="dashboard-value">{{ week_days }}日</span>
         </div>
     </div>
 </div>
 
 <!-- メニューカード -->
-<h2 class="section-title">メニュー</h2>
-<div class="menu-grid">
-    <a href="{{ url_for('login.logout') }}" class="menu-card logout-card">
-        <i class="fas fa-sign-out-alt"></i>
-        <span>ログアウト</span>
-    </a>
-    <a href="{{ url_for('home.register') }}" class="menu-card">
-        <i class="fas fa-user-plus"></i>
-        <span>新規作成</span>
-    </a>
-    <a href="{{ url_for('home.goal') }}" class="menu-card">
-        <i class="fas fa-bullseye"></i>
-        <span>目標入力</span>
-    </a>
-    <a href="{{ url_for('chat.index') }}" class="menu-card">
-        <i class="fas fa-robot"></i>
-        <span>AIチャット</span>
-    </a>
-    <a href="{{ url_for('home.history') }}" class="menu-card">
-        <i class="fas fa-history"></i>
-        <span>履歴機能</span>
-    </a>
-    <a href="{{ url_for('body_input.index') }}" class="menu-card">
-        <i class="fas fa-heartbeat"></i>
-        <span>身体情報入力</span>
-    </a>
-    <a href="{{ url_for('home.friend') }}" class="menu-card">
-        <i class="fas fa-users"></i>
-        <span>フレンド</span>
-    </a>
-    <a href="{{ url_for('home.implementation') }}" class="menu-card">
-        <i class="fas fa-running"></i>
-        <span>運動実施</span>
-    </a>
-    <a href="{{ url_for('home.help') }}" class="menu-card">
-        <i class="fas fa-question-circle"></i>
-        <span>ヘルプ・使い方</span>
-    </a>
-    <a href="{{ url_for('register.delete_account') }}" class="menu-card danger-card">
-        <i class="fas fa-trash-alt"></i>
-        <span>アカウント削除</span>
-    </a>
+<div class="home-menu-section">
+    <div class="home-section-title">
+        <h2>メニュー</h2>
+        <p>確認したい項目を選択してください</p>
+    </div>
+    <div class="home-menu-grid">
+        <a href="{{ url_for('chat.index') }}" class="home-menu-card">
+            <div class="home-card-icon purple"><i class="fas fa-robot"></i></div>
+            <div class="home-card-content"><h3>AIチャット</h3><p>AIと会話しながら運動をサポートします。</p></div>
+            <div class="home-card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        </a>
+        <a href="{{ url_for('home.history') }}" class="home-menu-card">
+            <div class="home-card-icon green"><i class="fas fa-chart-line"></i></div>
+            <div class="home-card-content"><h3>履歴機能</h3><p>日々の運動状況や成果を確認できます。</p></div>
+            <div class="home-card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        </a>
+        <a href="{{ url_for('body_input.index') }}" class="home-menu-card">
+            <div class="home-card-icon red"><i class="fas fa-heartbeat"></i></div>
+            <div class="home-card-content"><h3>身体情報入力</h3><p>身体情報を入力・更新できます。</p></div>
+            <div class="home-card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        </a>
+        <a href="{{ url_for('home.friend') }}" class="home-menu-card">
+            <div class="home-card-icon blue"><i class="fas fa-users"></i></div>
+            <div class="home-card-content"><h3>フレンド</h3><p>フレンドの運動状況を確認できます。</p></div>
+            <div class="home-card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        </a>
+        <a href="{{ url_for('home.implementation') }}" class="home-menu-card">
+            <div class="home-card-icon orange"><i class="fas fa-running"></i></div>
+            <div class="home-card-content"><h3>運動実施</h3><p>運動の記録を入力できます。</p></div>
+            <div class="home-card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        </a>
+        <a href="{{ url_for('home.help') }}" class="home-menu-card">
+            <div class="home-card-icon gray"><i class="fas fa-question-circle"></i></div>
+            <div class="home-card-content"><h3>ヘルプ・使い方</h3><p>システムの使い方を確認できます。</p></div>
+            <div class="home-card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        </a>
+        <a href="{{ url_for('register.delete_account') }}" class="home-menu-card">
+            <div class="home-card-icon danger"><i class="fas fa-trash-alt"></i></div>
+            <div class="home-card-content"><h3>アカウント削除</h3><p>アカウントを削除します。</p></div>
+            <div class="home-card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        </a>
+    </div>
+</div>
 </div>
 {% endblock %}

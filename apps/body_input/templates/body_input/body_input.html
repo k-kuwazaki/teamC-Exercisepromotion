@@ -4,44 +4,98 @@
 
 <link rel="stylesheet" href="{{ url_for('body_input.static', filename='style/body_input.css') }}">
 
-<h1>身体情報入力・おなおし</h1>
+<div class="body-page">
 
-<form method="post">
-    {{ form.hidden_tag() }}
-    <div>
-        <label>{{ form.height.label }}</label>
-        {{ form.height() }}
+    <!-- タイトル -->
+    <div class="body-header">
+        <div class="body-icon">
+            ♥
+        </div>
+
+        <p class="body-en-title">BODY INFORMATION</p>
+        <h1>身体情報入力</h1>
+        <p class="body-description">
+            あなたの身体情報を登録して、<br>
+            健康的な毎日につなげましょう。
+        </p>
     </div>
-    <div>
-        <label>{{ form.weight.label }}</label>
-        {{ form.weight() }}
+
+    <!-- 入力フォーム -->
+    <div class="body-card">
+
+        <h2>基本情報</h2>
+        <p class="body-card-description">
+            現在の身体情報を入力してください。
+        </p>
+
+        <form method="post">
+            {{ form.hidden_tag() }}
+
+            <div class="body-form-group">
+                <label>{{ form.height.label }}</label>
+                {{ form.height() }}
+            </div>
+
+            <div class="body-form-group">
+                <label>{{ form.weight.label }}</label>
+                {{ form.weight() }}
+            </div>
+
+            <div class="body-form-group">
+                <label>{{ form.age.label }}</label>
+                {{ form.age() }}
+            </div>
+
+            <div class="body-form-group">
+                <label>{{ form.exercise_habit.label }}</label>
+                {{ form.exercise_habit() }}
+            </div>
+
+            <div class="body-form-group">
+                <label>{{ form.goal.label }}</label>
+                {{ form.goal() }}
+            </div>
+
+            <div class="body-form-group">
+                <label>{{ form.password.label }}</label>
+                {{ form.password() }}
+
+                {% if form.password.errors %}
+                <p class="body-error">
+                    {{ form.password.errors[0] }}
+                </p>
+                {% endif %}
+            </div>
+
+            <div class="body-form-group">
+                <label>{{ form.password_confirm.label }}</label>
+                {{ form.password_confirm() }}
+
+                {% if form.password_confirm.errors %}
+                <p class="body-error">
+                    {{ form.password_confirm.errors[0] }}
+                </p>
+                {% endif %}
+            </div>
+
+            {{ form.submit(class_="body-submit") }}
+
+        </form>
     </div>
-    <div>
-        <label>{{ form.age.label }}</label>
-        {{ form.age() }}
+
+    <!-- 説明 -->
+    <div class="body-note">
+        <h3>健康的な毎日のために</h3>
+        <p>
+            登録した身体情報をもとに、
+            あなたに合った運動メニューを提案します。
+        </p>
     </div>
-    <div>
-        <label>{{ form.exercise_habit.label }}</label>
-        {{ form.exercise_habit() }}
+
+    <div class="back">
+        <a href="{{ url_for('home.index') }}">← トップページに戻る</a>
     </div>
-    <div>
-        <label>{{ form.goal.label }}</label>
-        {{ form.goal() }}
-    </div>
-    <div>
-        <label>{{ form.password.label }}</label>
-        {{ form.password() }}
-        {% if form.password.errors %}
-        <p>{{ form.password.errors[0] }}</p>
-        {% endif %}
-    </div>
-    <div>
-        <label>{{ form.password_confirm.label }}</label>
-        {{ form.password_confirm() }}
-        {% if form.password_confirm.errors %}
-        <p>{{ form.password_confirm.errors[0] }}</p>
-        {% endif %}
-    </div>
-    {{ form.submit() }}
-</form>
+
+</div>
+
 {% endblock %}

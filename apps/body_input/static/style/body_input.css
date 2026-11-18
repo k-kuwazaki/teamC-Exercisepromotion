@@ -1,124 +1,327 @@
+/* =========================
+   全体
+========================= */
 
-/* 全体 */
-body {
-    margin: 0;
-    padding: 0;
-    background-color: #f3f8f5;
-    font-family: "Noto Sans JP", sans-serif;
-    color: #333;
+.body-page {
+    max-width: 700px;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 30px 20px 50px;
+
+    font-family: 'Segoe UI', sans-serif;
+    box-sizing: border-box;
+
+    background:
+        radial-gradient(ellipse at 5% 0%,
+            rgba(216, 239, 224, 0.7),
+            transparent 45%),
+        linear-gradient(145deg,
+            #edf7f1 0%,
+            #f5faf7 55%,
+            #e5f2f1 100%);
 }
 
-/* メインタイトル */
-h1 {
+/* =========================
+   タイトル
+========================= */
+
+.body-header {
     text-align: center;
-    color: #2e7d5b;
-    font-size: 28px;
-    margin: 40px 0 30px;
+    padding: 30px 10px 40px;
+}
+
+.body-icon {
+    width: 85px;
+    height: 85px;
+    margin: 0 auto 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: white;
+    font-size: 38px;
+
+    background: linear-gradient(135deg,
+            #219765,
+            #4dbb85);
+
+    border-radius: 28px;
+
+    box-shadow: 0 10px 25px rgba(40, 150, 100, 0.2);
+}
+
+.body-en-title {
+    color: #29976a;
+    font-size: 13px;
     font-weight: bold;
+    letter-spacing: 3px;
+    margin-bottom: 12px;
 }
 
-/* フォーム全体 */
-form {
-    max-width: 500px;
-    margin: 0 auto 50px;
-    padding: 35px 40px;
-    background-color: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+.body-header h1 {
+    color: #075c3b;
+    font-size: 30px;
+    margin: 0 0 15px;
 }
 
-/* 各入力項目 */
-form div {
-    margin-bottom: 22px;
+.body-description {
+    color: #78918a;
+    font-size: 16px;
+    line-height: 1.8;
 }
 
-/* ラベル */
-form label {
+/* =========================
+   入力フォームカード
+========================= */
+
+.body-card {
+    background: white;
+    padding: 30px;
+    margin-bottom: 30px;
+
+    border: 1px solid #e1e9e4;
+    border-radius: 20px;
+
+    box-shadow: 0 5px 20px rgba(30, 80, 55, 0.07);
+}
+
+.body-card h2 {
+    color: #075c3b;
+    font-size: 22px;
+    margin: 0 0 8px;
+}
+
+.body-card-description {
+    color: #84968e;
+    font-size: 14px;
+    margin-bottom: 28px;
+}
+
+/* =========================
+   入力項目
+========================= */
+
+.body-form-group {
+    margin-bottom: 23px;
+}
+
+.body-form-group label {
     display: block;
-    margin-bottom: 8px;
+    color: #315d4b;
     font-size: 15px;
     font-weight: bold;
-    color: #444;
+    margin-bottom: 10px;
 }
 
-/* 入力欄・セレクトボックス・テキストエリア */
-form input:not([type="submit"]),
-form select,
-form textarea {
+/* 入力欄・選択欄 */
+.body-form-group input,
+.body-form-group select,
+.body-form-group textarea {
     width: 100%;
+    min-height: 48px;
+    padding: 13px 15px;
+
     box-sizing: border-box;
-    padding: 12px 14px;
-    border: 1px solid #cddbd2;
-    border-radius: 8px;
-    background-color: #fbfdfb;
+
+    color: #334155;
     font-size: 16px;
-    color: #333;
-    transition: 0.3s;
-}
 
-/* 入力欄にフォーカスしたとき */
-form input:focus,
-form select:focus,
-form textarea:focus {
+    background: #fbfdfb;
+
+    border: 1px solid #dce8e1;
+    border-radius: 12px;
+
     outline: none;
-    border-color: #43a879;
-    box-shadow: 0 0 5px rgba(67, 168, 121, 0.3);
-    background-color: #ffffff;
+    transition: 0.2s;
 }
 
-/* エラーメッセージ */
-form p {
-    color: #e05252;
+/* 入力時 */
+.body-form-group input:focus,
+.body-form-group select:focus,
+.body-form-group textarea:focus {
+    border-color: #36a875;
+    box-shadow: 0 0 0 3px rgba(54, 168, 117, 0.12);
+}
+
+/* エラー表示 */
+.body-error {
+    color: #dc4545;
     font-size: 13px;
-    margin: 6px 0 0;
+    margin-top: 8px;
 }
 
-/* 送信ボタン */
-form input[type="submit"] {
-    display: block;
+/* =========================
+   登録ボタン
+========================= */
+
+.body-submit {
     width: 100%;
-    padding: 14px;
-    margin-top: 30px;
-    border: none;
-    border-radius: 8px;
-    background-color: #43a879;
+    padding: 16px;
+    margin-top: 10px;
+
     color: white;
     font-size: 17px;
     font-weight: bold;
+
+    background: linear-gradient(135deg,
+            #219765,
+            #40b47d);
+
+    border: none;
+    border-radius: 13px;
+
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.2s;
 }
 
-/* ボタンにマウスを乗せたとき */
-form input[type="submit"]:hover {
-    background-color: #32865f;
+.body-submit:hover {
+    opacity: 0.85;
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
-/* ボタンを押したとき */
-form input[type="submit"]:active {
-    transform: translateY(0);
+/* =========================
+   説明部分
+========================= */
+
+.body-note {
+    padding: 22px;
+    margin-top: 30px;
+
+    background: #e2f3e8;
+    border: 1px solid #d5ebdc;
+    border-radius: 20px;
+
+    color: #65877a;
+    line-height: 1.8;
 }
 
-/* スマートフォン対応 */
+.body-note h3 {
+    color: #176b48;
+    margin: 0 0 8px;
+}
+
+/* =========================
+   確認画面
+========================= */
+
+.body-confirm-item {
+    padding: 15px 5px;
+    border-bottom: 1px solid #e5eee8;
+    color: #527568;
+}
+
+.body-confirm-item strong {
+    display: block;
+    color: #176b48;
+    margin-bottom: 7px;
+}
+
+/* =========================
+   更新完了画面
+========================= */
+
+.body-complete {
+    text-align: center;
+    padding: 45px 20px;
+}
+
+.body-complete-icon {
+    width: 85px;
+    height: 85px;
+    margin: 0 auto 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: white;
+    font-size: 38px;
+
+    background: #35a875;
+    border-radius: 50%;
+}
+
+.body-complete h1 {
+    color: #075c3b;
+    margin-bottom: 15px;
+}
+
+.body-complete p {
+    color: #78918a;
+    line-height: 1.8;
+}
+
+/* =========================
+   戻るボタン
+========================= */
+
+.back {
+    display: flex;
+    justify-content: center;
+    margin: 24px 16px;
+}
+
+/* 戻るリンクのデザイン */
+.back a {
+    display: inline-block;
+    padding: 12px 22px;
+    background: #263445;
+    color: white;
+    border: 1px solid #263445;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background .2s ease, transform .2s ease;
+}
+
+/* =========================
+   スマートフォン対応
+========================= */
+
 @media screen and (max-width: 600px) {
-    h1 {
-        font-size: 23px;
-        margin: 25px 0;
+
+    .body-page {
+        padding: 20px 15px 40px;
     }
 
-    form {
-        width: calc(100% - 40px);
+    .body-header {
+        padding: 30px 5px;
+    }
+
+    .body-header h1 {
+        font-size: 27px;
+    }
+
+    .body-description {
+        font-size: 15px;
+    }
+
+    .body-card {
+        padding: 22px 18px;
+        border-radius: 17px;
+    }
+
+    .body-card h2 {
+        font-size: 20px;
+    }
+
+    .body-form-group input,
+    .body-form-group select,
+    .body-form-group textarea {
+        padding: 14px;
+    }
+
+    .body-submit {
+        padding: 15px;
+    }
+
+    .body-note {
+        padding: 20px;
+    }
+
+    .body-back {
+        width: 80%;
         box-sizing: border-box;
-        padding: 25px 20px;
-        margin-bottom: 30px;
-    }
-
-    form input:not([type="submit"]),
-    form select,
-    form textarea {
-        font-size: 16px;
-        padding: 11px;
+        text-align: center;
     }
 }

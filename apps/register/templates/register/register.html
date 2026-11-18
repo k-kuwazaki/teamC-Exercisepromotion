@@ -1,7 +1,11 @@
 {% extends "home/base.html" %}
 {% block content %}
+
+<link rel="stylesheet" href="{{ url_for('register.static', filename='style/register.css') }}">
+
+
 <h1>ユーザー登録</h1>
-<form method="post">
+<form method="post" action="{{ url_for('register.register') }}">
     <div>
         <label for="name">名前</label>
         <input type="text" id="name" name="name">
@@ -48,13 +52,11 @@
     </div>
 
     <button type="submit">登録</button>
-</form>
-{% endblock %}
 
-{% block back_link %}
-{% if session.user_id %}
-<a href="{{ url_for('home.index') }}">← トップページに戻る</a>
-{% else %}
-<a href="{{ url_for('login.login') }}">ログインはこちら</a>
-{% endif %}
+    <p class="register-link">
+        アカウントをお持ちの方は
+        <a href="{{ url_for('login.login') }}">ログイン</a>
+    </p>
+</form>
+
 {% endblock %}

@@ -3,6 +3,7 @@
 {% block title %}運動実施登録{% endblock %}
 
 {% block content %}
+<link rel="stylesheet" href="{{ url_for('registration.static', filename='style/registration.css') }}">
 <h1>運動実施登録</h1>
 
 <h2>選択した運動メニュー</h2>
@@ -29,12 +30,20 @@
 <form method="post" action="{{ url_for('registration.save_registration') }}">
     <label for="self_exercises">運動内容を入力してください</label>
     <textarea id="self_exercises" name="self_exercises" rows="5"
-        placeholder="例：散歩を20分、腹筋を10回">{{ self_exercises }}</textarea>
+        placeholder="例：腹筋を10回など">{{ self_exercises }}</textarea>
+    <label for="actual_minutes">本日の運動時間（分）</label>
+    <input type="number" id="actual_minutes" name="actual_minutes" min="1" max="300" step="1" placeholder="例：25"
+        value="{{ actual_minutes }}" required>
 
     <button type="submit">登録</button>
 </form>
 
+<div class="bottom-row">
 <p>
-    <a href="{{ url_for('registration.lookingback') }}">振り返り</a>
+    <a href="{{ url_for('registration.lookingback') }}">↩ 振り返り</a>
 </p>
+<div class="back">
+    <a href="{{ url_for('home.index') }}">← トップページに戻る</a>
+</div>
+</div>
 {% endblock %}

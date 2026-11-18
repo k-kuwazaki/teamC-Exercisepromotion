@@ -7,7 +7,6 @@
     <title>{% block title %}運動管理アプリ{% endblock %}</title>
 
     <link rel="stylesheet" href="{{ url_for('home.static', filename='style/sidebar.css') }}">
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 </head>
@@ -62,14 +61,16 @@
         <main class="main-content">
             {% block content %}
             {% endblock %}
+
+            <!-- <div class="back">
+                <a href="{{ url_for('home.index') }}"
+                    onclick="if (document.referrer && new URL(document.referrer).origin === location.origin) { history.back(); return false; }">
+                    ← トップページへ戻る
+                </a>
+
+                {% block back_link %}{% endblock %}
+            </div> -->
         </main>
-
-    </div>
-
-    <div class="back">
-        {% block back_link %}
-        <a href="{{ url_for('home.index') }}">← トップページに戻る</a>
-        {% endblock %}
     </div>
 
     <script>
