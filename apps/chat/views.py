@@ -216,7 +216,7 @@ def index():
                         session.pop("plan_conditions", None)
 
                         return redirect(
-                            url_for("implementation.registration")
+                        url_for("implementation.index")
                         )
 
                         

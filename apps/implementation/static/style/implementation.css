@@ -1,0 +1,222 @@
+/* 運動実施画面全体 */
+.implementation-page {
+    max-width: 1000px;
+    min-height: 100vh;
+    margin: 0 auto;
+    padding: 45px 30px 70px;
+    color: #294b37;
+    background:
+        radial-gradient(circle at 10% 15%, rgba(125, 211, 159, 0.16), transparent 30%),
+        radial-gradient(circle at 90% 80%, rgba(96, 165, 250, 0.10), transparent 30%),
+        linear-gradient(135deg, #edf8f1, #f8fcf9, #eaf5ef);
+}
+
+/* 見出し */
+.implementation-page>h1 {
+    margin: 5px 0 28px;
+    color: #17633d;
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.implementation-page h2 {
+    margin: 0 0 18px;
+    color: #245b3c;
+    font-size: 1.5rem;
+    font-weight: 800;
+}
+
+.implementation-page h3 {
+    margin: 0 0 12px;
+    color: #28563b;
+    font-size: 1.2rem;
+}
+
+/* メニュー・タイマー・自主運動の各パネル */
+.implementation-page .exercise-list,
+.implementation-page .timer-panel,
+.implementation-page .self-exercise-panel {
+    margin: 24px 0;
+    padding: 28px;
+    border: 1px solid rgba(83, 160, 112, 0.15);
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: 0 8px 25px rgba(46, 100, 67, 0.07);
+}
+
+/* 運動メニューカード */
+.implementation-page .exercise-card {
+    margin: 14px 0;
+    padding: 20px;
+    border: 1px solid #e0ece3;
+    border-radius: 16px;
+    background: #f8fcf9;
+}
+
+.implementation-page .exercise-card p {
+    margin: 8px 0;
+    color: #607568;
+    line-height: 1.7;
+}
+
+/* フォーム */
+.implementation-page form {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.implementation-page label {
+    margin-top: 8px;
+    color: #56665b;
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.implementation-page input[type="number"],
+.implementation-page textarea {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 13px 15px;
+    border: 1px solid #dcded5;
+    border-radius: 9px;
+    outline: none;
+    background: #fffefa;
+    color: #28372f;
+    font: inherit;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.implementation-page textarea {
+    min-height: 110px;
+    resize: vertical;
+}
+
+.implementation-page input[type="number"]:focus,
+.implementation-page textarea:focus {
+    border-color: #718775;
+    box-shadow: 0 0 0 3px rgba(113, 135, 117, 0.14);
+}
+
+/* タイマー表示 */
+.implementation-page #timer {
+    margin: 20px 0;
+    color: #17633d;
+    font-size: 3rem;
+    font-weight: 800;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+}
+
+.implementation-page .progress-area {
+    margin: 18px 0;
+    color: #607568;
+    line-height: 1.7;
+}
+
+.implementation-page progress {
+    display: block;
+    width: 100%;
+    height: 18px;
+    overflow: hidden;
+    border: 0;
+    border-radius: 999px;
+    background: #e6eee8;
+    accent-color: #248b55;
+}
+
+.implementation-page progress::-webkit-progress-bar {
+    border-radius: 999px;
+    background: #e6eee8;
+}
+
+.implementation-page progress::-webkit-progress-value {
+    border-radius: 999px;
+    background: linear-gradient(90deg, #248b55, #68bd7d);
+}
+
+.implementation-page progress::-moz-progress-bar {
+    border-radius: 999px;
+    background: linear-gradient(90deg, #248b55, #68bd7d);
+}
+
+/* タイマー操作ボタン */
+.implementation-page .timer-buttons {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.implementation-page button {
+    padding: 13px 18px;
+    border: 1px solid #304a3b;
+    border-radius: 9px;
+    background: #304a3b;
+    color: #fff;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.implementation-page button:hover:not(:disabled) {
+    transform: translateY(-1px);
+    background: #496552;
+}
+
+.implementation-page button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* 登録ボタン */
+.implementation-page #register-button {
+    width: 100%;
+    margin-top: 12px;
+    padding: 15px 20px;
+    background: #248b55;
+    border-color: #248b55;
+}
+
+.implementation-page #register-button:hover:not(:disabled) {
+    background: #17633d;
+}
+
+/* エラーメッセージ */
+.implementation-page .error {
+    margin: 12px 0;
+    padding: 12px 16px;
+    border: 1px solid #eed6d3;
+    border-left: 4px solid #b42318;
+    border-radius: 8px;
+    background: #fdf5f4;
+    color: #964f49;
+    line-height: 1.6;
+}
+
+/* スマートフォン */
+@media (max-width: 700px) {
+    .implementation-page {
+        padding: 28px 16px 45px;
+    }
+
+    .implementation-page>h1 {
+        font-size: 2rem;
+    }
+
+    .implementation-page .exercise-list,
+    .implementation-page .timer-panel,
+    .implementation-page .self-exercise-panel {
+        padding: 22px 18px;
+    }
+
+    .implementation-page .timer-buttons {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .implementation-page #timer {
+        font-size: 2.5rem;
+    }
+}
