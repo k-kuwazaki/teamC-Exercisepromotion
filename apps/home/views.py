@@ -110,3 +110,8 @@ def help():
 @home.route("/register")
 def register():
     return render_template("register/register.html")
+
+@home.route("/test")
+@login_required
+def test():
+    return render_template("test/test.html")
