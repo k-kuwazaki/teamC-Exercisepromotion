@@ -173,11 +173,14 @@ p a:hover {
 .back {
     display: flex;
     justify-content: center;
-    margin: 24px 16px;
+    margin: 24px 0;
 }
 
 .back a {
-    display: inline-block;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
     padding: 12px 22px;
     background: #54bd82;
     color: #ffffff;
@@ -204,6 +207,7 @@ p a:hover {
     background: #2da86a;
     border-color: #2da86a;
 }
+
 .bottom-row {
     display: flex;
     gap: 10px;
@@ -246,7 +250,8 @@ p a:hover {
 
     textarea,
     input[type="number"] {
-        font-size: 16px; /* iOSズーム防止 */
+        font-size: 16px;
+        /* iOSズーム防止 */
     }
 
     button[type="submit"] {
