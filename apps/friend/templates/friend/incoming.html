@@ -1,9 +1,9 @@
 {% extends "home/base.html" %}
-{% block title %}受信した友達申請{% endblock %}
+{% block title %}受信したフレンド申請{% endblock %}
 {% block content %}
 {% include "friend/_navigation.html" %}
 <main class="friend-panel">
-    <h1>受信した友達申請</h1>
+    <h1>受信したフレンド申請</h1>
     {% if not g.friend_user %}
     <p>ユーザー情報と連携すると、受信した申請が表示されます。</p>
     {% endif %}
