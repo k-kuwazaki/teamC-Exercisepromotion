@@ -1,0 +1,82 @@
+{% extends "home/base.html" %}
+{% block title %}流れ確認{% endblock %}
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('test.static', filename='style/test.css') }}">
+
+<div class="history-container">
+
+    <!-- ヘッダー -->
+    <div class="page-header">
+        <div class="header-icon">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+        </div>
+
+        <span class="header-label">ACTIVITY HISTORY</span>
+
+        <h1>最初の流れ確認</h1>
+
+        <p>日々の運動を継続させ、健康的な毎日につなげましょう。</p>
+
+        <div class="header-decoration">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </div>
+
+    <!-- メニュー -->
+    <div class="menu-section">
+
+        <div class="section-title">
+            <h2>メニュー</h2>
+            <p>実施したい項目を選択してください</p>
+        </div>
+
+        <div class="menu-grid">
+
+            <a href="{{ url_for('chat.index') }}" class="menu-card">
+                <div class="card-icon green">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+                <div class="card-content">
+                    <h3>AIチャット</h3>
+                    <p>AIに相談して、自分が何の運動をするか決めよう</p>
+                </div>
+                <div class="card-arrow">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </a>
+
+            <a href="{{ url_for('implementation.index') }}" class="menu-card">
+                <div class="card-icon blue">
+                    <i class="fa-solid fa-calendar-days"></i>
+                </div>
+                <div class="card-content">
+                    <h3>運動実施</h3>
+                    <p>運動が決まっている方はこちらへ、運動をしていきます</p>
+                </div>
+                <div class="card-arrow">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </a>
+
+            <a href="{{ url_for('home.index') }}" class="menu-card">
+                <div class="card-icon orange">
+                    <i class="fa-solid fa-house"></i>
+                </div>
+                <div class="card-content">
+                    <h3>トップページ</h3>
+                    <p>トップページに戻ります。</p>
+                </div>
+                <div class="card-arrow">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </a>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
