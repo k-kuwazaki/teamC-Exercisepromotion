@@ -176,6 +176,150 @@
     transition: background .2s ease, transform .2s ease, box-shadow .2s ease;
 }
 
+/* ===== 運動実施内容・振り返りセクション ===== */
+.day-detail-wrapper h2 {
+    font-size: 1.1rem;
+    color: #203744;
+    border-left: 4px solid #52aa7c;
+    padding-left: 10px;
+    margin: 28px 0 12px;
+}
+
+.exercise-record {
+    background: #f4faf7;
+    border: 1px solid #c3e6d4;
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+}
+
+.exercise-record h3 {
+    font-size: 0.95rem;
+    color: #218653;
+    margin: 0 0 10px;
+}
+
+.exercise-record h4 {
+    font-size: 0.85rem;
+    color: #555;
+    margin: 10px 0 4px;
+}
+
+.exercise-record p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: #333;
+    white-space: pre-wrap;
+}
+
+.review-section {
+    background: #f9f9f9;
+    border: 1px solid #dde3ec;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+}
+
+.review-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.review-content p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: #333;
+    line-height: 1.4;
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.lb-delete-form {
+    margin: 0;
+    margin-left: auto;
+    flex-shrink: 0;
+}
+
+.delete-link {
+    white-space: nowrap;
+    text-decoration: none;
+    background: #e05c5c;
+    color: #fff;
+    font-size: 0.75rem;
+    padding: 5px 10px;
+    border-radius: 5px;
+    display: inline-block;
+}
+
+
+
+.no-record {
+    color: #999;
+    font-size: 0.9rem;
+    font-style: italic;
+}
+
+/* ===== lb-list (振り返りセクション) ===== */
+.lb-list {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.lb-list h2 {
+    font-size: 1.1rem;
+    color: #203744;
+    border-left: 4px solid #52aa7c;
+    padding-left: 10px;
+    margin: 28px 0 12px;
+}
+
+.lb-list li {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 10px 14px;
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    font-size: 0.85rem;
+}
+
+.lb-comment {
+    flex: 1;
+    font-size: 0.95rem;
+    color: #333;
+}
+
+.lb-empty {
+    color: #aaa;
+    text-align: center;
+}
+
+.lb-delete-form {
+    margin-left: auto;
+}
+
+.lb-delete-form a {
+    display: inline-block;
+    padding: 4px 12px;
+    background: #e05c5c;
+    color: #fff;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    text-decoration: none;
+    margin-top: 0 !important;
+}
+
+.lb-delete-form a:hover {
+    background: #c0392b;
+}
+
 /* 祝日の日付を赤色にする */
 #cal-container td.holiday {
     color: #e05c5c;
@@ -185,4 +329,24 @@
 /* カレンダー上部の年月表示を非表示 */
 #cal-container table tr:first-child {
     display: none;
+}
+
+/* 削除 */
+.lb-delete-form {
+    margin-left: auto;
+}
+
+.lb-delete-form a {
+    display: inline-block;
+    padding: 4px 12px;
+    background: #e05c5c;
+    color: #fff;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    text-decoration: none;
+}
+
+.lb-delete-form a:hover,
+.lb-wrapper .lb-confirm-actions button:hover {
+    background: #c0392b;
 }

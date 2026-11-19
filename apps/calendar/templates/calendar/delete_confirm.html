@@ -1,0 +1,26 @@
+{% extends "home/base.html" %}
+{% block title %}削除確認{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('lookingback.static', filename='style/lookingback.css') }}">
+
+<div class="lb-wrapper">
+    <h1>振り返りを削除します</h1>
+    <p>{{ record.date.strftime('%Y年%m月%d日') }} の以下の振り返りを削除してもよいですか？</p>
+    <div class="lb-list">
+        <div class="lb-confirm-item">
+            <span class="lb-date">{{ record.date.strftime('%Y年%m月%d日') }}</span>
+            <span class="lb-comment">{{ record.comment }}</span>
+        </div>
+    </div>
+    <form method="POST" action="{{ url_for('calendar.delete', record_id=record.id) }}">
+        <div class="lb-confirm-actions">
+            <button type="submit">削除する</button>
+            <a href="{{ url_for('calendar.day_detail', year=record.date.year, month=record.date.month, day=record.date.day) }}">キャンセル</a>
+        </div>
+    </form>
+</div>
+<div class="back">
+    <a href="{{ url_for('home.index') }}">← トップページに戻る</a>
+</div>
+
+{% endblock %}

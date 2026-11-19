@@ -16,12 +16,12 @@
 
         {% if exercise_record.answer %}
         <h4>選択した運動メニュー</h4>
-        <p style="white-space: pre-wrap;">{{ exercise_record.answer }}</p>
+        <p>{{ exercise_record.answer }}</p>
         {% endif %}
 
         {% if exercise_record.self_exercises %}
         <h4>自主的に行った運動</h4>
-        <p style="white-space: pre-wrap;">{{ exercise_record.self_exercises }}</p>
+        <p>{{ exercise_record.self_exercises }}</p>
         {% endif %}
 
         {% if exercise_record.duration %}
@@ -34,17 +34,22 @@
     {% endif %}
 
     <h2>振り返り</h2>
-    {% if record %}
-    <p>{{ record.comment }}</p>
-    {% else %}
-    <p class="no-record">この日の振り返りはありません。</p>
-    {% endif %}
+    <ul class="lb-list">
+        {% if record %}
+        <li>
+            <span class="lb-comment">{{ record.comment }}</span>
+            <div class="lb-delete-form"><a href="{{ url_for('calendar.delete_confirm', record_id=record.id) }}">削除</a>
+            </div>
+        </li>
+        {% else %}
+        <li class="lb-empty">この日の振り返りはありません。</li>
+        {% endif %}
+    </ul>
 
-    <a href="{{ url_for('calendar.index', year=year, month=month) }}">← カレンダーに戻る</a>
-    <a href="{{ url_for('lookingback.index') }}">振り返りページへ</a>
-</div>
-<div class="back">
-    <a href="{{ url_for('home.index') }}">← トップページに戻る</a>
-</div>
+        <a href="{{ url_for('calendar.index', year=year, month=month) }}">← カレンダーに戻る</a>
+    </div>
+    <div class="back">
+        <a href="{{ url_for('home.index') }}">← トップページに戻る</a>
+    </div>
 
-{% endblock %}
+    {% endblock %}
