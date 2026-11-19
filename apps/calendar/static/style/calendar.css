@@ -60,7 +60,7 @@
 }
 
 #cal-container th {
-    background-color: #515159;
+    background-color: #203744;
     color: #fff;
     padding: 12px 0;
     font-size: 0.95rem;
@@ -159,12 +159,30 @@
 
 /* 戻るリンクのデザイン */
 .back a {
-    display: inline-block;
-    padding: 12px 22px;
-    background: #263445;
+    display: block;
+    width: 70%;
+    box-sizing: border-box;
+    text-align: center;
+    padding: 14px 0;
+    background: linear-gradient(135deg, #218653, #54bd82);
     color: white;
-    border: 1px solid #263445;
-    border-radius: 8px;
+    border: none;
+    border-radius: 10px;
     text-decoration: none;
-    transition: background .2s ease, transform .2s ease;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 14px rgba(33, 134, 83, 0.3);
+    transition: background .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+
+/* 祝日の日付を赤色にする */
+#cal-container td.holiday {
+    color: #e05c5c;
+    font-weight: bold;
+}
+
+/* カレンダー上部の年月表示を非表示 */
+#cal-container table tr:first-child {
+    display: none;
 }
