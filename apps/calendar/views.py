@@ -3,6 +3,7 @@ import jpholiday
 from datetime import date
 from flask import Blueprint, render_template, request, redirect, url_for, session
 from apps.lookingback.models import LookingBack
+from apps.app import db
 from sqlalchemy import func
 from apps.situation.models import Situation
 
@@ -112,3 +113,22 @@ def day_detail(year, month, day):
         record=record,
         exercise_records=exercise_records,
     )
+
+
+@calendar_bp.route("/delete/confirm/<int:record_id>")
+def delete_confirm(record_id):
+    user_id = session.get("user_id")
+    if not user_id:
+        return redirect(url_for("login.login"))
+    record = LookingBack.query.filter_by(id=record_id, user_id=user_id).first_or_404()
+    return render_template("calendar/delete_confirm.html", record=record)
+
+
+@calendar_bp.route("/delete/<int:record_id>", methods=["POST"])
+def delete(record_id):
+    user_id = session.get("user_id")
+    record = LookingBack.query.filter_by(id=record_id, user_id=user_id).first_or_404()
+    year, month, day = record.date.year, record.date.month, record.date.day
+    db.session.delete(record)
+    db.session.commit()
+    return redirect(url_for("calendar.day_detail", year=year, month=month, day=day))
