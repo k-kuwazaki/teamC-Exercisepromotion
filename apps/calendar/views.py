@@ -1,24 +1,46 @@
 import calendar
+import jpholiday
 from datetime import date
 from flask import Blueprint, render_template, request, redirect, url_for, session
 from apps.lookingback.models import LookingBack
 from sqlalchemy import func
 from apps.situation.models import Situation
 
-calendar_bp = Blueprint("calendar", __name__, template_folder="templates", static_folder="static", url_prefix="/calendar")
+calendar_bp = Blueprint(
+    "calendar",
+    __name__,
+    template_folder="templates",
+    static_folder="static",
+    url_prefix="/calendar",
+)
 
 
 class TodayCalendar(calendar.HTMLCalendar):
-    def __init__(self, today):
+    def __init__(self, today, year, month):
         super().__init__(firstweekday=6)
         self.today = today
+        self.year = year
+        self.month = month
+
+    def formatweekday(self, day):
+        weekdays = ["月", "火", "水", "木", "金", "土", "日"]
+        return f"<th>{weekdays[day]}</th>"
 
     def formatday(self, day, weekday):
         if day == 0:
             return '<td class="noday">&nbsp;</td>'
+
         classes = self.cssclasses[weekday]
+
+        # 今日の日付
         if self.today and day == self.today.day:
-            classes += ' today'
+            classes += " today"
+
+        # 日本の祝日
+        selected_date = date(self.year, self.month, day)
+        if jpholiday.is_holiday(selected_date):
+            classes += " holiday"
+
         return f'<td class="{classes} clickable" data-day="{day}">{day}</td>'
 
 
@@ -44,9 +66,9 @@ def index():
     prev_year, prev_month = (year - 1, 12) if month == 1 else (year, month - 1)
     next_year, next_month = (year + 1, 1) if month == 12 else (year, month + 1)
 
-    is_current_month = (year == today.year and month == today.month)
+    is_current_month = year == today.year and month == today.month
     cal_today = today if is_current_month else None
-    cal = TodayCalendar(cal_today)
+    cal = TodayCalendar(cal_today, year, month)
     calendar_html = cal.formatmonth(year, month)
 
     return render_template(
@@ -59,7 +81,9 @@ def index():
         next_month=next_month,
         calendar_html=calendar_html,
     )
-#変更　履歴を追加できるように
+
+
+# 変更　履歴を追加できるように
 @calendar_bp.route("/day/<int:year>/<int:month>/<int:day>")
 def day_detail(year, month, day):
     user_id = session.get("user_id")
@@ -74,8 +98,7 @@ def day_detail(year, month, day):
     ).first()
 
     exercise_records = (
-        Situation.query
-        .filter_by(user_id=user_id, kind="registration")
+        Situation.query.filter_by(user_id=user_id, kind="registration")
         .filter(func.date(Situation.created_at) == selected_date.isoformat())
         .order_by(Situation.created_at.desc())
         .all()
