@@ -18,6 +18,14 @@
             {% else %}
             <span class="not-yet">まだ実施されていません...</span>
             {% endif %}
+            {% if item.latest_situation %}
+            {% set lines = item.latest_situation.answer.strip().splitlines() %}
+            <span class="latest-menu">
+                最近の運動：{{ lines[0] }}
+                {% if lines|length > 1 %}他{{ lines|length - 1 }}種目{% endif %}
+                （{{ item.latest_situation.duration }}）
+            </span>
+            {% endif %}
             {% if g.friend_user %}
             <form method="post" action="{{ url_for('friend.remove_friend', friend_user_id=item.user.id) }}">
                 {{ action_form.csrf_token }}
@@ -35,6 +43,5 @@
 <div class="back">
     <a href="{{ url_for('home.index') }}">← トップページに戻る</a>
 </div>
-
 
 {% endblock %}
