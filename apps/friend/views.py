@@ -19,6 +19,7 @@ from apps.friend.models import Friend
 from apps.user.models import User
 from datetime import date
 from apps.lookingback.models import LookingBack
+from apps.situation.models import Situation
 
 
 friend = Blueprint(
@@ -90,13 +91,31 @@ def index():
                     LookingBack.date == today,
                 ).all()
             }
+
+            latest_situations = {}
+            for s in (
+                Situation.query
+                .filter(
+                    Situation.user_id.in_(friend_ids),
+                    Situation.kind == "registration",
+                )
+                .order_by(Situation.created_at.desc())
+                .all()
+            ):
+                if s.user_id not in latest_situations:
+                    latest_situations[s.user_id] = s
+
             friend_users = (
                 User.query.filter(User.id.in_(friend_ids))
                 .order_by(User.username)
                 .all()
             )
             friends = [
-                {"user": u, "done_today": u.id in done_today_ids}
+                {
+                    "user": u,
+                    "done_today": u.id in done_today_ids,
+                    "latest_situation": latest_situations.get(u.id),
+                }
                 for u in friend_users
             ]
     return render_template(
@@ -336,5 +355,3 @@ def remove_friend(friend_user_id):
     db.session.commit()
     flash("フレンドを解除しました。", "success")
     return redirect(url_for("friend.index"))
-
-
