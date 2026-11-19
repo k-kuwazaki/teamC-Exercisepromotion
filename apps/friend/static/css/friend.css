@@ -5,10 +5,10 @@ body:has(.friend-nav) {
     padding: 0;
 
     background:
-        radial-gradient(ellipse at 5% 0%, rgb(216 226 211 / 54%), transparent 34%),
-        linear-gradient(145deg, #f1f2eb 0%, #f7f5ef 58%, #eeefea 100%);
+        radial-gradient(ellipse at 5% 0%, rgb(180 210 185 / 45%), transparent 38%),
+        linear-gradient(145deg, #eef4ee 0%, #f4f8f2 55%, #e8f0e8 100%);
 
-    color: #242d29;
+    color: #1e2d22;
     font-family: "Noto Sans JP", "Yu Gothic UI", sans-serif;
 }
 
@@ -18,10 +18,10 @@ body:has(.friend-nav) {
     margin: 0 0 22px;
     padding: 7px;
     overflow-x: auto;
-    border: 1px solid rgb(255 255 255 / 90%);
+    border: 1px solid rgb(120 170 130 / 25%);
     border-radius: 12px;
-    background: rgb(255 255 255 / 82%);
-    box-shadow: 0 8px 26px rgb(34 45 39 / 6%);
+    background: rgb(255 255 255 / 90%);
+    box-shadow: 0 4px 18px rgb(40 90 55 / 8%);
 }
 
 .friend-nav a {
@@ -30,7 +30,7 @@ body:has(.friend-nav) {
     border: 1px solid transparent;
     border-radius: 8px;
     background: transparent;
-    color: #707873;
+    color: #5a7060;
     font-size: 13px;
     font-weight: 600;
     letter-spacing: .015em;
@@ -39,13 +39,13 @@ body:has(.friend-nav) {
 }
 
 .friend-nav a:hover {
-    background: #f1f3ee;
-    color: #344c40;
+    background: #e8f2ea;
+    color: #2a4d38;
 }
 
 .friend-nav a[aria-current="page"] {
-    background: #293d34;
-    box-shadow: 0 3px 8px rgb(29 51 40 / 15%);
+    background: #2d5240;
+    box-shadow: 0 3px 10px rgb(29 70 45 / 20%);
     color: #fff;
 }
 
@@ -53,14 +53,14 @@ body:has(.friend-nav) {
     position: relative;
     overflow: hidden;
     padding: clamp(26px, 5vw, 52px);
-    border: 1px solid rgb(255 255 255 / 95%);
+    border: 1px solid rgb(140 190 150 / 20%);
     border-radius: 18px;
     background:
-        radial-gradient(ellipse at 100% 0%, rgb(227 215 190 / 27%), transparent 34%),
-        #fffefa;
+        radial-gradient(ellipse at 100% 0%, rgb(190 225 195 / 22%), transparent 38%),
+        #f9fdf9;
     box-shadow:
-        0 18px 50px rgb(45 52 44 / 8%),
-        0 2px 6px rgb(45 52 44 / 3%);
+        0 16px 48px rgb(30 70 40 / 9%),
+        0 2px 6px rgb(30 70 40 / 4%);
 }
 
 .friend-panel::before {
@@ -68,8 +68,8 @@ body:has(.friend-nav) {
     top: 0;
     right: 0;
     left: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #304a3b 0%, #71836a 55%, #c39b68 100%);
+    height: 4px;
+    background: linear-gradient(90deg, #2d5240 0%, #5a9068 50%, #8dc49a 100%);
     content: "";
 }
 
@@ -77,7 +77,7 @@ body:has(.friend-nav) {
     position: relative;
     margin: 0 0 32px;
     padding: 0 0 19px;
-    color: #28372f;
+    color: #1e3d2a;
     font-size: clamp(26px, 4vw, 34px);
     font-weight: 650;
     letter-spacing: .025em;
@@ -88,8 +88,9 @@ body:has(.friend-nav) {
     bottom: 0;
     left: 0;
     width: 48px;
-    height: 2px;
-    background: #b58b59;
+    height: 3px;
+    border-radius: 2px;
+    background: #4a9060;
     content: "";
 }
 
@@ -98,7 +99,7 @@ body:has(.friend-nav) {
     align-items: center;
     gap: 12px;
     margin: 0 0 17px;
-    color: #43554a;
+    color: #2d5240;
     font-size: 17px;
     font-weight: 650;
 }
@@ -106,19 +107,20 @@ body:has(.friend-nav) {
 .friend-panel h2::after {
     height: 1px;
     flex: 1;
-    background: #e8e8df;
+    background: #c8dece;
     content: "";
 }
 
 .friend-panel p {
-    color: #7a817b;
+    color: #5a7060;
     font-size: 14px;
     line-height: 1.85;
 }
 
 .friend-list {
     display: grid;
-    gap: 11px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 16px;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -126,39 +128,40 @@ body:has(.friend-nav) {
 
 .friend-list li {
     display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 15px 17px;
-    border: 1px solid #eaeae2;
-    border-radius: 11px;
-    background: rgb(255 255 255 / 78%);
-    color: #354239;
-    box-shadow: 0 2px 7px rgb(45 52 44 / 3%);
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 18px;
+    border: 1px solid #d0e8d5;
+    border-radius: 14px;
+    background: rgb(245 252 246 / 90%);
+    color: #1e3d2a;
+    box-shadow: 0 2px 8px rgb(30 70 40 / 4%);
     transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
 }
 
 .friend-list li:hover {
-    transform: translateY(-1px);
-    border-color: #d3d9ce;
-    box-shadow: 0 7px 16px rgb(45 52 44 / 6%);
+    transform: translateY(-2px);
+    border-color: #8dc49a;
+    box-shadow: 0 8px 20px rgb(30 70 40 / 10%);
 }
 
 .friend-list li>span {
     display: inline-flex;
     align-items: center;
     gap: 12px;
-    font-weight: 550;
+    font-size: 16px;
+    font-weight: 650;
 }
 
 .friend-list li>span::before {
-    width: 8px;
-    height: 8px;
+    width: 9px;
+    height: 9px;
     flex: 0 0 auto;
     border: 2px solid #fff;
     border-radius: 50%;
-    background: #8d9d84;
-    box-shadow: 0 0 0 1px #dce2d8;
+    background: #4a9060;
+    box-shadow: 0 0 0 1px #a8d8b4;
     content: "";
 }
 
@@ -167,8 +170,37 @@ body:has(.friend-nav) {
     gap: 8px;
 }
 
+.user-habit,
+.user-goal {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: .02em;
+    white-space: nowrap;
+}
+
+.user-habit {
+    border: 1px solid #a8d8b4;
+    background: #e4f4e8;
+    color: #2d5240;
+}
+
+.user-goal {
+    border: 1px solid #b8d8c0;
+    background: #f0faf2;
+    color: #3a6b50;
+}
+
 .friend-list form {
     margin: 0;
+    width: 100%;
+}
+
+.friend-list form button {
+    width: 100%;
 }
 
 .friend-search {
@@ -177,40 +209,58 @@ body:has(.friend-nav) {
     gap: 12px;
     margin-bottom: 34px;
     padding: 21px;
-    border: 1px solid #e7e5d9;
+    border: 1px solid #c8dece;
     border-radius: 13px;
-    background: linear-gradient(115deg, #f5f5ee, #faf8f2);
+    background: linear-gradient(115deg, #eef6f0, #f4faf5);
 }
 
 .friend-search label {
     display: block;
     margin-bottom: 9px;
-    color: #56665b;
-    font-size: 13px;
+    color: #2d5240;
+    font-size: 15px;
     font-weight: 650;
     letter-spacing: .02em;
 }
 
+.friend-search select,
 .friend-search input {
     box-sizing: border-box;
     width: 100%;
+    height: 50px;
     padding: 13px 15px;
-    border: 1px solid #dcded5;
+    border: 1px solid #b8d8c0;
     border-radius: 8px;
     outline: none;
-    background: #fffefa;
-    color: #28372f;
+    background: #f8fdf9;
+    color: #1e3d2a;
     font: inherit;
+    font-size: 15px;
     transition: border-color .2s ease, box-shadow .2s ease;
 }
 
+.friend-search select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%232d5240' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 40px;
+}
+
+.friend-search select:focus,
+.friend-search input:focus {
+    border-color: #4a9060;
+    box-shadow: 0 0 0 3px rgb(74 144 96 / 14%);
+}
+
 .friend-search input::placeholder {
-    color: #a4aaa2;
+    color: #8aaa94;
 }
 
 .friend-search input:focus {
-    border-color: #718775;
-    box-shadow: 0 0 0 3px rgb(113 135 117 / 14%);
+    border-color: #4a9060;
+    box-shadow: 0 0 0 3px rgb(74 144 96 / 14%);
 }
 
 .friend-search>p {
@@ -221,16 +271,16 @@ body:has(.friend-nav) {
 .friend-panel button {
     flex: 0 0 auto;
     padding: 11px 17px;
-    border: 1px solid #304a3b;
+    border: 1px solid #2d5240;
     border-radius: 8px;
-    background: #304a3b;
+    background: #2d5240;
     color: #fff;
     font: inherit;
     font-size: 13px;
     font-weight: 600;
     letter-spacing: .015em;
     cursor: pointer;
-    transition: border-color .2s ease, background .2s ease, transform .2s ease;
+    transition: border-color .2s ease, background .2s ease, transform .2s ease, box-shadow .2s ease;
 }
 
 .friend-list button {
@@ -239,41 +289,42 @@ body:has(.friend-nav) {
 }
 
 .friend-panel button:hover {
-    transform: translateY(-1px);
-    border-color: #496552;
-    background: #496552;
+    transform: translateY(-2px);
+    border-color: #4a9060;
+    background: #4a9060;
+    box-shadow: 0 4px 12px rgb(74 144 96 / 25%);
 }
 
 .friend-list form[action*="/remove"] button,
 .friend-list form[action*="/reject"] button,
 .friend-list form[action*="/cancel"] button {
-    border-color: #dedfd8;
+    border-color: #c0d8c8;
     background: transparent;
-    color: #6d746e;
+    color: #5a7060;
 }
 
 .friend-list form[action*="/remove"] button:hover,
 .friend-list form[action*="/reject"] button:hover,
 .friend-list form[action*="/cancel"] button:hover {
-    border-color: #c9d0c8;
-    background: #f2f3ef;
-    color: #39453d;
+    border-color: #8dc49a;
+    background: #eef6f0;
+    color: #2d5240;
 }
 
 .friend-panel button:focus-visible,
 .friend-nav a:focus-visible {
-    outline: 3px solid #b9c9b9;
+    outline: 3px solid #8dc49a;
     outline-offset: 3px;
 }
 
 .friend-notices {
     margin: 0 0 18px;
     padding: 14px 18px;
-    border: 1px solid #dce5dc;
-    border-left: 3px solid #66836c;
+    border: 1px solid #c8dece;
+    border-left: 4px solid #4a9060;
     border-radius: 8px;
-    background: #f5f8f3;
-    color: #435d48;
+    background: #eef6f0;
+    color: #2d5240;
     font-size: 14px;
     list-style: none;
 }
@@ -410,12 +461,19 @@ body:has(.friend-nav) .friend-panel {
 .back a {
     display: inline-block;
     padding: 12px 22px;
-    background: #263445;
+    background: #2d5240;
     color: white;
-    border: 1px solid #263445;
+    border: 1px solid #2d5240;
     border-radius: 8px;
     text-decoration: none;
-    transition: background .2s ease, transform .2s ease;
+    transition: background .2s ease, transform .2s ease, box-shadow .2s ease;
+}
+
+.back a:hover {
+    background: #4a9060;
+    border-color: #4a9060;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgb(74 144 96 / 25%);
 }
 
 

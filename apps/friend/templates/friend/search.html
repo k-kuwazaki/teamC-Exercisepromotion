@@ -1,10 +1,10 @@
 {% extends "home/base.html" %}
-{% block title %}仲間を探す{% endblock %}
+{% block title %}フレンドを探す{% endblock %}
 {% block content %}
 {% include "friend/_navigation.html" %}
 <main class="friend-panel">
 
-    <h1>仲間を探す</h1>
+    <h1>フレンドを探す</h1>
 
     <form class="friend-search" method="get" action="{{ url_for('friend.search') }}">
         <p>
@@ -31,7 +31,7 @@
     <p>申請機能はログイン後に利用できます。</p>
     {% endif %}
 
-    <h2>ユーザー一覧</h2>
+    <h2>ユーザー一覧（{{ search_results | length }}件）</h2>
     <ul class="friend-list">
         {% for user in search_results %}
         <li>
@@ -45,10 +45,12 @@
                 <input type="hidden" name="habit" value="{{ habit }}">
                 <input type="hidden" name="goal" value="{{ goal_keyword }}">
                 <input type="hidden" name="username" value="{{ username }}">
-                <button type="submit">仲間申請</button>
+                <button type="submit">フレンド申請</button>
             </form>
             {% endif %}
         </li>
+        {% else %}
+        <p>該当するユーザーが見つかりませんでした。</p>
         {% endfor %}
     </ul>
 </main>
