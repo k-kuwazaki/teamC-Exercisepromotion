@@ -1,4 +1,4 @@
-#運動トレーナーの指示文、候補データの形式、AIへ渡す文章
+# 運動トレーナーの指示文、候補データの形式、AIへ渡す文章
 SYSTEM_INSTRUCTION = (
     "あなたは日本語で回答する運動トレーナーです。"
     "利用者の質問に直接答えてください。"
@@ -29,6 +29,17 @@ EXERCISE_OPTIONS_SCHEMA = {
                     },
                     "description": {"type": "STRING"},
                     "caution": {"type": "STRING"},
+                    "movement_steps": {
+                        "type": "ARRAY",
+                        "items": {
+                            "type": "OBJECT",
+                            "properties": {
+                                "phase": {"type": "STRING"},
+                                "instruction": {"type": "STRING"},
+                            },
+                            "required": ["phase", "instruction"],
+                        },
+                    },
                 },
                 "required": [
                     "name",
@@ -38,6 +49,7 @@ EXERCISE_OPTIONS_SCHEMA = {
                     "unit",
                     "description",
                     "caution",
+                    "movement_steps",
                 ],
             },
         },
@@ -70,7 +82,14 @@ def build_exercise_options_prompt(
 目安時間は指定された運動時間以内にしてください。
 初心者には無理のない内容を提案してください。
 標準目標値と単位も設定してください。
+
+各候補に、動きが分かる3段階の movement_steps を設定してください。
+各段階には phase（段階名）と instruction（その段階の姿勢・動作の説明）を含めてください。
+動きのある運動は「開始姿勢」「動作」「戻す」の流れにしてください。
+姿勢を保つ運動は「準備」「姿勢を保つ」「終了」の流れにしてください。
+各 instruction は、実際の運動方法と注意点に合う具体的で短い説明にしてください。
+
 身長や体重だけから健康状態を診断しないでください。
 痛みが出た場合は運動を中止するよう伝えてください。
-各候補の説明は簡潔にしてください。
+各候補の説明と各段階の指示は簡潔にしてください。
 """

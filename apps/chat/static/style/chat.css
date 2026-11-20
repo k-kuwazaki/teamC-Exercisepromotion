@@ -27,6 +27,45 @@
     line-height: 1.8;
 }
 
+/* タブ */
+.tab-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.tab-btn {
+    padding: 8px 20px;
+    border: 1px solid #c8ddd0;
+    border-radius: 999px;
+    background: #fff;
+    color: #607568;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.tab-btn.active {
+    background: #248b55;
+    color: #fff;
+    border-color: #248b55;
+}
+
+.tab-panel {
+    display: none;
+    margin: 12px 0;
+    padding: 28px;
+    border: 1px solid rgba(83, 160, 112, 0.15);
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: 0 8px 25px rgba(46, 100, 67, 0.07);
+}
+
+.tab-panel.active {
+    display: block;
+}
+
 /* 各セクション */
 .chat-page .panel {
     margin: 24px 0;
@@ -156,6 +195,77 @@
     line-height: 1.7;
 }
 
+/* AIが返した運動の3段階ガイド */
+.chat-page .movement-guide {
+    margin-top: 16px;
+    padding: 14px;
+    border: 1px solid #e0ece3;
+    border-radius: 12px;
+    background: #f8fcf9;
+}
+
+.chat-page .movement-guide-title {
+    display: block;
+    margin-bottom: 10px;
+    color: #245b3c;
+    font-size: 0.85rem;
+    font-weight: 800;
+}
+
+.chat-page .movement-steps {
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+}
+
+.chat-page .movement-step {
+    display: flex;
+    flex: 1 1 0;
+    min-width: 0;
+    gap: 8px;
+    padding: 10px;
+    border: 1px solid #e4eee6;
+    border-radius: 9px;
+    background: #fff;
+}
+
+.chat-page .movement-step-number {
+    display: flex;
+    flex: 0 0 22px;
+    width: 22px;
+    height: 22px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #e5f4e9;
+    color: #247443;
+    font-size: 0.75rem;
+    font-weight: 800;
+}
+
+.chat-page .movement-step strong {
+    color: #28563b;
+    font-size: 0.82rem;
+}
+
+.chat-page .movement-step p {
+    margin: 5px 0 0;
+    color: #65786b;
+    font-size: 0.78rem;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.chat-page .movement-arrow {
+    display: flex;
+    flex: 0 0 14px;
+    align-items: center;
+    justify-content: center;
+    color: #58a273;
+    font-size: 1.1rem;
+    font-weight: 800;
+}
+
 /* 回答・エラー */
 .chat-page .answer {
     min-height: 60px;
@@ -218,5 +328,13 @@
 
     .chat-page .exercise-options {
         grid-template-columns: 1fr;
+    }
+
+    .chat-page .movement-steps {
+        flex-direction: column;
+    }
+
+    .chat-page .movement-arrow {
+        transform: rotate(90deg);
     }
 }

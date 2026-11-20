@@ -85,13 +85,14 @@
 
 .menu-grid {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 12px;
 }
 
 /* ===== メニューカード ===== */
 .menu-card {
     display: flex;
+    flex: 1;
     align-items: center;
     gap: 16px;
     padding: 16px 20px;
@@ -104,7 +105,7 @@
 }
 
 .menu-card:hover {
-    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
     transform: translateY(-2px);
 }
 
@@ -119,9 +120,20 @@
     flex-shrink: 0;
 }
 
-.card-icon.green  { background: #e8f5e9; color: #43a047; }
-.card-icon.blue   { background: #e3f2fd; color: #1e88e5; }
-.card-icon.orange { background: #fff3e0; color: #fb8c00; }
+.card-icon.green {
+    background: #e8f5e9;
+    color: #43a047;
+}
+
+.card-icon.blue {
+    background: #e3f2fd;
+    color: #1e88e5;
+}
+
+.card-icon.orange {
+    background: #fff3e0;
+    color: #fb8c00;
+}
 
 .card-content {
     flex: 1;
@@ -144,6 +156,3 @@
     color: #bbb;
     font-size: 0.9rem;
 }
-
-
-

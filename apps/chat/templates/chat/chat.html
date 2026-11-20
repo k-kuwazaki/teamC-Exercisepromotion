@@ -8,15 +8,14 @@
 <div class="chat-page">
     <h1>AI運動トレーナー</h1>
 
-    <p class="description">
-        運動の目的を選ぶだけで、AIがあなたに合った運動メニューを提案します。
-    </p>
+    <div class="tab-bar">
+        <button type="button" class="tab-btn {% if not chat_answer %}active{% endif %}" data-tab="tab-plan">メニュー提案</button>
+        <button type="button" class="tab-btn {% if chat_answer %}active{% endif %}" data-tab="tab-coach">AIに相談</button>
+    </div>
 
-    <section class="panel">
+    <section class="tab-panel {% if not chat_answer %}active{% endif %}" id="tab-plan">
         <h2>運動カテゴリーを選択</h2>
-        <p class="description">
-            まずは今日取り組みたい運動を選んでください。
-        </p>
+        <p class="description">まずは今日取り組みたい運動を選んでください。</p>
 
         <form method="post" action="{{ url_for('chat.index') }}">
             {{ plan_form.hidden_tag() }}
@@ -39,14 +38,11 @@
 
         {% if plan_options %}
         <h2>候補から運動を選択</h2>
-        <p class="description">
-            取り入れたい運動を選んでください。複数選択できます。
-        </p>
+        <p class="description">取り入れたい運動を選んでください。複数選択できます。</p>
 
         <form method="post" action="{{ url_for('chat.index') }}">
             {{ plan_form.hidden_tag() }}
             <input type="hidden" name="action" value="select_exercises">
-
             <input type="hidden" name="category" value="{{ plan_conditions.category }}">
             <input type="hidden" name="experience" value="{{ plan_conditions.experience }}">
             <input type="hidden" name="duration" value="{{ plan_conditions.duration }}">
@@ -61,7 +57,27 @@
                     <p>セット数：{{ option.sets }}セット</p>
                     <p>標準目標：{{ option.target_value }}{{ option.unit }}</p>
                     <p>{{ option.description }}</p>
-                    <p>注意点：{{ option.caution }}</p>
+                    <details>
+                        <summary>やり方を見る</summary>
+                        <div class="movement-guide" aria-label="運動の動き">
+                            <span class="movement-guide-title">動きの流れ</span>
+                            <div class="movement-steps">
+                                {% for step in option.movement_steps %}
+                                <div class="movement-step">
+                                    <span class="movement-step-number">{{ loop.index }}</span>
+                                    <div>
+                                        <strong>{{ step.phase }}</strong>
+                                        <p>{{ step.instruction }}</p>
+                                    </div>
+                                </div>
+                                {% if not loop.last %}
+                                <span class="movement-arrow" aria-hidden="true">→</span>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <p>注意点：{{ option.caution }}</p>
+                    </details>
                 </label>
                 {% endfor %}
             </div>
@@ -73,26 +89,11 @@
         {% if plan_error %}
         <p class="status error" role="alert">{{ plan_error }}</p>
         {% endif %}
-
-        <h2>選択した運動メニュー</h2>
-        <div class="answer" aria-live="polite">
-            {% if plan_answer %}
-            {{ plan_answer }}
-            {% elif plan_options %}
-            候補を選択して「選択した運動を決定」を押してください。
-            {% else %}
-            カテゴリーを選んで提案ボタンを押してください。
-            {% endif %}
-        </div>
     </section>
 
-    <hr>
-
-    <section class="panel">
+    <section class="tab-panel {% if chat_answer %}active{% endif %}" id="tab-coach">
         <h2>AIに運動を相談</h2>
-        <p class="description">
-            運動の悩みや、提案されたメニューについて質問できます。
-        </p>
+        <p class="description">運動の悩みや、提案されたメニューについて質問できます。</p>
 
         <form method="post" action="{{ url_for('chat.index') }}">
             {{ coach_form.hidden_tag() }}
@@ -100,9 +101,9 @@
 
             {{ coach_form.question.label }}
             {{ coach_form.question(
-            rows=4,
-            maxlength=500,
-            placeholder="例：腕立て伏せの正しいフォームを教えて"
+                rows=4,
+                maxlength=500,
+                placeholder="例：腕立て伏せの正しいフォームを教えて"
             ) }}
 
             {{ coach_form.submit() }}
@@ -121,7 +122,19 @@
         </div>
     </section>
 </div>
+
 <div class="back">
     <a href="{{ url_for('home.index') }}">← トップページに戻る</a>
 </div>
+
+<script>
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+        btn.addEventListener("click", function () {
+            document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+            document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+            this.classList.add("active");
+            document.getElementById(this.dataset.tab).classList.add("active");
+        });
+    });
+</script>
 {% endblock %}
