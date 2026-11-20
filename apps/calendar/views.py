@@ -17,11 +17,12 @@ calendar_bp = Blueprint(
 
 
 class TodayCalendar(calendar.HTMLCalendar):
-    def __init__(self, today, year, month):
+    def __init__(self, today, year, month, exercised_days=None):
         super().__init__(firstweekday=6)
         self.today = today
         self.year = year
         self.month = month
+        self.exercised_days = exercised_days or set()
 
     def formatweekday(self, day):
         weekdays = ["月", "火", "水", "木", "金", "土", "日"]
@@ -41,6 +42,10 @@ class TodayCalendar(calendar.HTMLCalendar):
         selected_date = date(self.year, self.month, day)
         if jpholiday.is_holiday(selected_date):
             classes += " holiday"
+
+        # 運動実施済み
+        if day in self.exercised_days:
+            classes += " exercised"
 
         return f'<td class="{classes} clickable" data-day="{day}">{day}</td>'
 
@@ -69,7 +74,17 @@ def index():
 
     is_current_month = year == today.year and month == today.month
     cal_today = today if is_current_month else None
-    cal = TodayCalendar(cal_today, year, month)
+    exercised_days = {
+        r.created_at.day
+        for r in Situation.query.filter_by(user_id=user_id, kind="registration")
+        .filter(
+            func.strftime("%Y", Situation.created_at) == str(year),
+            func.strftime("%m", Situation.created_at) == f"{month:02d}",
+        )
+        .all()
+    }
+
+    cal = TodayCalendar(cal_today, year, month, exercised_days)
     calendar_html = cal.formatmonth(year, month)
 
     return render_template(
