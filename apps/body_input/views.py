@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, redirect, url_for, session, reques
 from apps.app import db
 from apps.user.models import User
 from apps.body_input.forms import EditProfileForm
+from datetime import date
 
 body_input = Blueprint("body_input", __name__, template_folder="templates", static_folder="static",url_prefix="/body_input")
 
@@ -15,10 +16,15 @@ def index():
     form = EditProfileForm(obj=user)
 
     if form.validate_on_submit():
+        user = User.query.get(session["user_id"])
+        today = date.today()
+        age = today.year - user.birthday.year - (
+            (today.month, today.day) < (user.birthday.month, user.birthday.day)
+        )
         session["edit_data"] = {
             "height": form.height.data,
             "weight": form.weight.data,
-            "age": form.age.data,
+            "age": age,
             "exercise_habit": form.exercise_habit.data,
             "goal": form.goal.data,
             "change_password": bool(form.password.data),
@@ -26,7 +32,11 @@ def index():
         }
         return redirect(url_for("body_input.confirm"))
 
-    return render_template("body_input/body_input.html", form=form)
+    today = date.today()
+    age = today.year - user.birthday.year - (
+        (today.month, today.day) < (user.birthday.month, user.birthday.day)
+    )
+    return render_template("body_input/body_input.html", form=form, age=age)
 
 
 @body_input.route("/body-input/confirm", methods=["GET", "POST"])

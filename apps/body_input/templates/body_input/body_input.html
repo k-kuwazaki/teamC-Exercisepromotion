@@ -42,14 +42,16 @@
             </div>
 
             <div class="body-form-group">
-                <label>{{ form.age.label }}</label>
-                {{ form.age() }}
+                <label>年齢</label>
+                <input type="text" value="{{ age }} 歳" readonly>
             </div>
+
 
             <div class="body-form-group">
                 <label>{{ form.exercise_habit.label }}</label>
                 {{ form.exercise_habit() }}
             </div>
+
 
             <div class="body-form-group">
                 <label>{{ form.goal.label }}</label>

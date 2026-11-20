@@ -16,11 +16,11 @@
         <p><span>メールアドレス</span>{{ user.email }}</p>
         <p><span>身長</span>{{ user.height }} cm</p>
         <p><span>体重</span>{{ user.weight }} kg</p>
-        <p><span>年齢</span>{{ user.age }} 歳</p>
+        <p><span>年齢</span>{{ age }} 歳</p>
         <p><span>運動習慣</span>{{ user.exercise_habit }}</p>
         <p><span>目標</span>{{ user.goal }}</p>
     </div>
-    <p class="register-link">
+    <p class="register-link2">
         <a href="{{ url_for('login.login') }}">ログインはこちら</a>
     </p>
     <a class="confirm-back" href="{{ url_for('register.register') }}">登録ページへ戻る</a>
