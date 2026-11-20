@@ -320,6 +320,12 @@
     background: #c0392b;
 }
 
+/* 運動実施済み */
+#cal-container td.exercised {
+    background-color: #d4f0e2;
+    border: 2px solid #52aa7c;
+}
+
 /* 祝日の日付を赤色にする */
 #cal-container td.holiday {
     color: #e05c5c;
