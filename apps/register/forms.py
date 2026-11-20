@@ -1,3 +1,5 @@
+from datetime import datetime
+
 def registration_form_data(form):
     """Read registration fields from a Werkzeug form object."""
     return {
@@ -6,7 +8,7 @@ def registration_form_data(form):
         "password": form.get("password", ""),
         "height": form.get("height", type=float),
         "weight": form.get("weight", type=float),
-        "age": form.get("age", type=int),
+        "birthday": form.get("birthday", ""),
         "exercise_habit": form.get("exercise_habit", ""),
         "goal": form.get("goal", "").strip(),
     }

@@ -10,13 +10,13 @@ class User(db.Model):
 
     # カラムを定義する
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String, index=True)
+    username = db.Column(db.String, index=False)
     email = db.Column(db.String, unique=True, index=True)
     password_hash = db.Column(db.String)
-    height = db.Column(db.Float, nullable=True)
-    weight = db.Column(db.Float, nullable=True)
-    age = db.Column(db.Integer, nullable=True)
-    exercise_habit = db.Column(db.String(50), nullable=True)
+    height = db.Column(db.Float, nullable=False)
+    weight = db.Column(db.Float, nullable=False)
+    birthday = db.Column(db.Date, nullable=False)
+    exercise_habit = db.Column(db.String(50), nullable=False)
     goal = db.Column(db.Text, nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(

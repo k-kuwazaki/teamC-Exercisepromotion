@@ -437,6 +437,58 @@
     transform: translateY(-1px);
 }
 
+.register-link2 a {
+    display: inline-block;
+    width: 100%;
+    padding: 8px 20px;
+    box-sizing: border-box;
+
+    background: #ffffff;
+    color: #075c3b;
+
+    border: 1px solid #dce8df;
+    border-radius: 8px;
+
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+
+    transition: 0.2s ease;
+}
+
+.register-link2 a:hover {
+    background: #f1f8f3;
+    border-color: #40b47d;
+    transform: translateY(-1px);
+}
+
+.confirm-back a {
+    display: inline-block;
+    width: 100%;
+    padding: 8px 20px;
+    box-sizing: border-box;
+
+    background: #ffffff;
+    color: #075c3b;
+
+    border: 1px solid #dce8df;
+    border-radius: 8px;
+
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+    text-decoration: none;
+
+    transition: 0.2s ease;
+}
+
+.confirm-back a:hover {
+    background: #f1f8f3;
+    border-color: #40b47d;
+    transform: translateY(-1px);
+}
+
 /* =========================
    スマートフォン対応
 ========================= */
