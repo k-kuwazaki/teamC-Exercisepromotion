@@ -9,6 +9,7 @@ from apps.chat.prompts import (
     build_exercise_options_prompt,
 )
 from apps.user.models import User
+from datetime import date
 
 chat = Blueprint(
     "chat",
@@ -28,6 +29,20 @@ def inject_chat_forms():
         }
     return {}
 
+def calculate_age(birthday):
+    if birthday is None:
+        return None
+
+    today = date.today()
+
+    age = today.year - birthday.year
+
+    # 今年の誕生日を迎えていなければ1歳引く
+    if (today.month, today.day) < (birthday.month, birthday.day):
+        age -= 1
+
+    return age
+
 
 def get_user_profile_text():
     user_id = session.get("user_id")
@@ -39,9 +54,11 @@ def get_user_profile_text():
 
     if user is None:
         return None
+    
+    age = calculate_age(user.birthday)
 
     return f"""
-年齢：{user.age if user.age is not None else "未登録"}
+年齢：{age if age is not None else "未登録"}
 身長：{user.height if user.height is not None else "未登録"} cm
 体重：{user.weight if user.weight is not None else "未登録"} kg
 運動習慣：{user.exercise_habit or "未登録"}
