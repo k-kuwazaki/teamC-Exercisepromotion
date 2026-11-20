@@ -1,0 +1,8 @@
+<form method="post" action="{{ url_for('home.set_mode') }}" class="mode-toggle-form">
+    <label class="mode-toggle" for="display-mode-toggle">
+        <span class="mode-toggle-label">本格モード</span>
+        <input id="display-mode-toggle" type="checkbox" name="simple_mode" value="1" {% if session.get("display_mode")
+            !="simple" %}checked{% endif %} onchange="this.form.submit()" aria-label="本格モードに切り替える">
+        <span class="mode-toggle-track" aria-hidden="true"></span>
+    </label>
+</form>

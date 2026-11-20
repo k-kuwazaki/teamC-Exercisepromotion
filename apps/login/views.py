@@ -22,6 +22,7 @@ def login():
             session.clear()
             session["user_id"] = user.id
             session["username"] = user.username
+            session["display_mode"] = "simple"
             return redirect(url_for("home.index"))
 
         return render_template(

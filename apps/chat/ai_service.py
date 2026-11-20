@@ -72,6 +72,20 @@ def generate_exercise_options(prompt):
         for index, option in enumerate(options, start=1):
             option["id"] = str(index)
 
+            movement_steps = option.get("movement_steps")
+            if not isinstance(movement_steps, list) or len(movement_steps) != 3:
+                raise ValueError("動作手順が3段階ではありません")
+
+            for step in movement_steps:
+                if (
+                    not isinstance(step, dict)
+                    or not isinstance(step.get("phase"), str)
+                    or not step["phase"].strip()
+                    or not isinstance(step.get("instruction"), str)
+                    or not step["instruction"].strip()
+                ):
+                    raise ValueError("動作手順の内容が正しくありません")
+
             if (
                 not isinstance(option["minutes"], int)
                 or option["minutes"] < 1

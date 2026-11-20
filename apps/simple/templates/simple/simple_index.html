@@ -2,19 +2,21 @@
 {% block title %}流れ確認{% endblock %}
 {% block content %}
 
-<link rel="stylesheet" href="{{ url_for('test.static', filename='style/test.css') }}">
+<link rel="stylesheet" href="{{ url_for('simple.static', filename='style/simple.css') }}">
+
+{% include "home/mode_toggle.html" %}
 
 <div class="history-container">
 
     <!-- ヘッダー -->
-    <div class="page-header">
+    <!-- <div class="page-header">
         <div class="header-icon">
             <i class="fa-solid fa-clock-rotate-left"></i>
         </div>
 
         <span class="header-label">ACTIVITY HISTORY</span>
 
-        <h1>最初の流れ確認</h1>
+        <h1>簡易モード</h1>
 
         <p>日々の運動を継続させ、健康的な毎日につなげましょう。</p>
 
@@ -23,7 +25,7 @@
             <span></span>
             <span></span>
         </div>
-    </div>
+    </div> -->
 
     <!-- メニュー -->
     <div class="menu-section">
@@ -61,7 +63,7 @@
                 </div>
             </a>
 
-            <a href="{{ url_for('home.index') }}" class="menu-card">
+            <!-- <a href="{{ url_for('home.index') }}" class="menu-card">
                 <div class="card-icon orange">
                     <i class="fa-solid fa-house"></i>
                 </div>
@@ -72,7 +74,7 @@
                 <div class="card-arrow">
                     <i class="fa-solid fa-arrow-right"></i>
                 </div>
-            </a>
+            </a> -->
 
         </div>
     </div>

@@ -45,19 +45,86 @@
     box-shadow: 0 8px 25px rgba(46, 100, 67, 0.07);
 }
 
+/* タブ */
+.tab-bar {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.tab-btn {
+    padding: 8px 20px;
+    border: 1px solid #c8ddd0;
+    border-radius: 999px;
+    background: #fff;
+    color: #607568;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.tab-btn.active {
+    background: #248b55;
+    color: #fff;
+    border-color: #248b55;
+}
+
+.tab-panel {
+    display: none;
+    margin: 12px 0;
+    padding: 28px;
+    border: 1px solid rgba(83, 160, 112, 0.15);
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.94);
+    box-shadow: 0 8px 25px rgba(46, 100, 67, 0.07);
+}
+
+.tab-panel.active {
+    display: block;
+}
+
 /* 運動メニューカード */
+.exercise-scroll {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    scrollbar-width: thin;
+}
+
 .implementation-page .exercise-card {
-    margin: 14px 0;
-    padding: 20px;
+    flex: 0 0 180px;
+    margin: 0;
+    padding: 16px;
     border: 1px solid #e0ece3;
     border-radius: 16px;
     background: #f8fcf9;
 }
 
-.implementation-page .exercise-card p {
-    margin: 8px 0;
+.implementation-page .exercise-card h3 {
+    margin: 0 0 8px;
+    font-size: 1rem;
+}
+
+.implementation-page .exercise-card > p {
+    margin: 0 0 8px;
     color: #607568;
-    line-height: 1.7;
+    font-size: 0.9rem;
+}
+
+.implementation-page .exercise-card details summary {
+    cursor: pointer;
+    color: #248b55;
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.implementation-page .exercise-card details p {
+    margin: 6px 0 0;
+    color: #607568;
+    font-size: 0.82rem;
+    line-height: 1.6;
 }
 
 /* フォーム */

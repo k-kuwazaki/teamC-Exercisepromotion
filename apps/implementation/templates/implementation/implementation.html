@@ -8,39 +8,53 @@
 <div class="implementation-page">
     <h1>運動実施</h1>
 
-    <section class="exercise-list">
-        <h2>今日の運動メニュー</h2>
+    <div class="tab-bar">
+        <button type="button" class="tab-btn active" data-tab="ai-menu">AIメニュー</button>
+        <button type="button" class="tab-btn" data-tab="self-menu">自主運動</button>
+    </div>
 
+    <section class="tab-panel active" id="ai-menu">
+        <h2>今日の運動メニュー</h2>
         {% if selected_exercises %}
-        {% for exercise in selected_exercises %}
-        <article class="exercise-card">
-            <h3>{{ exercise.name }}</h3>
-            <p>目安時間：{{ exercise.minutes }}分</p>
-            <p>セット数：{{ exercise.sets }}セット</p>
-            <p>標準目標：{{ exercise.target_value }}{{ exercise.unit }}</p>
-            <p>内容：{{ exercise.description }}</p>
-            <p>注意点：{{ exercise.caution }}</p>
-        </article>
-        {% endfor %}
+        <div class="exercise-scroll">
+            {% for exercise in selected_exercises %}
+            <article class="exercise-card">
+                <h3>{{ exercise.name }}</h3>
+                <p>⏱ {{ exercise.minutes }}分 ／ {{ exercise.sets }}セット</p>
+                <details>
+                    <summary>詳細</summary>
+                    <p>標準目標：{{ exercise.target_value }}{{ exercise.unit }}</p>
+                    <p>内容：{{ exercise.description }}</p>
+                    <p>注意点：{{ exercise.caution }}</p>
+                </details>
+            </article>
+            {% endfor %}
+        </div>
         {% else %}
         <p>選択した運動メニューはありません。自主的に行う運動を入力できます。</p>
         {% endif %}
     </section>
 
     <form method="post" action="{{ url_for('implementation.index') }}">
+
+        <section class="tab-panel" id="self-menu">
+            <h2>自主的に行う運動（任意）</h2>
+            <label for="self_exercises">運動内容</label>
+            <textarea id="self_exercises" name="self_exercises" rows="4"
+                placeholder="例：散歩、ストレッチなど">{{ self_exercises|default('') }}</textarea>
+        </section>
+
         <section class="timer-panel">
             <h2>運動時間</h2>
 
             <label for="goal_minutes">目標時間（分）</label>
-            <input type="number" id="goal_minutes" name="goal_minutes" min="1" max="300" value="10" required>
+            <input type="number" id="goal_minutes" name="goal_minutes" min="1" max="300"
+                value="{{ goal_minutes or 10 }}" required>
 
             <p id="timer" aria-live="polite">00:00</p>
 
             <div class="progress-area">
-                <p>
-                    目標まで：
-                    <span id="progress-text">目標時間を入力して開始してください</span>
-                </p>
+                <p>目標まで：<span id="progress-text">目標時間を入力して開始してください</span></p>
                 <progress id="progress-bar" value="0" max="100"></progress>
             </div>
 
@@ -54,12 +68,6 @@
             <input type="hidden" id="duration_seconds" name="duration_seconds" value="0">
         </section>
 
-        <section class="self-exercise-panel">
-            <h2>自主的に行う運動（任意）</h2>
-            <label for="self_exercises">運動内容</label>
-            <textarea id="self_exercises" name="self_exercises" rows="4"
-                placeholder="例：散歩、ストレッチなど">{{ self_exercises|default('') }}</textarea>
-        </section>
         {% if error %}
         <p class="error" role="alert">{{ error }}</p>
         {% endif %}
@@ -67,6 +75,7 @@
         <button type="submit" id="register-button" hidden disabled>
             登録画面へ進む
         </button>
+
         <label for="manual_minutes">タイマーを使わない場合の運動時間（分）</label>
         <input type="number" id="manual_minutes" name="manual_minutes" min="1" max="300" placeholder="例：20">
 
@@ -75,16 +84,28 @@
         </button>
     </form>
 </div>
+
 <div class="back">
     <a href="{{ url_for('home.index') }}">← トップページに戻る</a>
 </div>
+
 <script>
+    // タブ切り替え
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+        btn.addEventListener("click", function () {
+            document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+            document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+            this.classList.add("active");
+            document.getElementById(this.dataset.tab).classList.add("active");
+        });
+    });
+
+    // タイマー
     const timerElement = document.getElementById("timer");
     const goalMinutesInput = document.getElementById("goal_minutes");
     const durationInput = document.getElementById("duration_seconds");
     const progressBar = document.getElementById("progress-bar");
     const progressText = document.getElementById("progress-text");
-
     const startButton = document.getElementById("start-button");
     const pauseButton = document.getElementById("pause-button");
     const resumeButton = document.getElementById("resume-button");
@@ -97,73 +118,49 @@
     let timerInterval = null;
 
     function getElapsedSeconds() {
-        if (startedAt === null) {
-            return elapsedBeforePause;
-        }
-
-        return elapsedBeforePause +
-            Math.floor((Date.now() - startedAt) / 1000);
+        if (startedAt === null) return elapsedBeforePause;
+        return elapsedBeforePause + Math.floor((Date.now() - startedAt) / 1000);
     }
 
     function updateTimer() {
         const elapsed = getElapsedSeconds();
         const minutes = Math.floor(elapsed / 60);
         const seconds = elapsed % 60;
-
-        timerElement.textContent =
-            String(minutes).padStart(2, "0") + ":" +
-            String(seconds).padStart(2, "0");
-
+        timerElement.textContent = String(minutes).padStart(2, "0") + ":" + String(seconds).padStart(2, "0");
         durationInput.value = elapsed;
-
-        const percent = goalSeconds > 0
-            ? Math.min(100, Math.floor((elapsed / goalSeconds) * 100))
-            : 0;
-
+        const percent = goalSeconds > 0 ? Math.min(100, Math.floor((elapsed / goalSeconds) * 100)) : 0;
         progressBar.value = percent;
-
         if (goalSeconds > 0) {
             const remaining = Math.max(0, goalSeconds - elapsed);
-            const remainingMinutes = Math.floor(remaining / 60);
-            const remainingSeconds = remaining % 60;
-
             progressText.textContent = elapsed >= goalSeconds
                 ? "目標達成！"
-                : `達成率 ${percent}%（残り ${remainingMinutes}分${remainingSeconds}秒）`;
+                : `達成率 ${percent}%（残り ${Math.floor(remaining / 60)}分${remaining % 60}秒）`;
         }
     }
 
     startButton.addEventListener("click", function () {
         const goalMinutes = Number(goalMinutesInput.value);
-
-        if (!Number.isInteger(goalMinutes) ||
-            goalMinutes < 1 ||
-            goalMinutes > 300) {
+        if (!Number.isInteger(goalMinutes) || goalMinutes < 1 || goalMinutes > 300) {
             alert("目標時間を1〜300分で入力してください。");
             return;
         }
-
         goalSeconds = goalMinutes * 60;
         elapsedBeforePause = 0;
         startedAt = Date.now();
-
         startButton.disabled = true;
         goalMinutesInput.disabled = true;
         pauseButton.disabled = false;
         resumeButton.disabled = true;
         endButton.disabled = false;
-
         updateTimer();
         timerInterval = setInterval(updateTimer, 1000);
     });
 
     pauseButton.addEventListener("click", function () {
         if (startedAt === null) return;
-
         elapsedBeforePause = getElapsedSeconds();
         startedAt = null;
         clearInterval(timerInterval);
-
         pauseButton.disabled = true;
         resumeButton.disabled = false;
         updateTimer();
@@ -171,10 +168,8 @@
 
     resumeButton.addEventListener("click", function () {
         if (startedAt !== null) return;
-
         startedAt = Date.now();
         timerInterval = setInterval(updateTimer, 1000);
-
         pauseButton.disabled = false;
         resumeButton.disabled = true;
     });
@@ -184,14 +179,11 @@
             elapsedBeforePause = getElapsedSeconds();
             startedAt = null;
         }
-
         clearInterval(timerInterval);
         updateTimer();
-
         pauseButton.disabled = true;
         resumeButton.disabled = true;
         endButton.disabled = true;
-
         registerButton.hidden = false;
         registerButton.disabled = false;
     });
