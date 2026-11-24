@@ -1,0 +1,85 @@
+{% extends "home/base.html" %}
+{% block title %}{{ friend_user.username }}さんとの目標{% endblock %}
+{% block content %}
+{% include "friend/_navigation.html" %}
+<main class="friend-panel">
+    <h1>{{ friend_user.username }}さんとの目標</h1>
+
+    {% if goal %}
+    <section class="current-goal">
+        <h2>現在の目標</h2>
+        <p>
+            {% if goal.goal_type == "shared" %}共有目標
+            {% elif goal.goal_type == "declaration" %}宣言
+            {% else %}約束
+            {% endif %}
+            {% if goal.deadline %}（期限：{{ goal.deadline.strftime('%Y/%m/%d') }}まで）{% endif %}
+        </p>
+        <p>{{ goal.content }}</p>
+
+        {% if goal.status == "pending" %}
+        <p>承認待ちです...</p>
+        {% if goal.created_by != actor.id %}
+        <form method="post"
+            action="{{ url_for('friend.goal_promise_accept', friend_user_id=friend_user.id, goal_id=goal.id) }}">
+            {{ action_form.csrf_token }}
+            <button type="submit">約束を承認する</button>
+        </form>
+        <form method="post"
+            action="{{ url_for('friend.goal_promise_reject', friend_user_id=friend_user.id, goal_id=goal.id) }}">
+            {{ action_form.csrf_token }}
+            <button type="submit">拒否する</button>
+        </form>
+        {% endif %}
+
+        {% elif goal.status == "active" %}
+        {% if goal.goal_type == "declaration" and goal.created_by != actor.id and not goal.checked_by_friend %}
+        <form method="post" action="{{ url_for('friend.goal_check', friend_user_id=friend_user.id, goal_id=goal.id) }}">
+            {{ action_form.csrf_token }}
+            <button type="submit">達成を確認する</button>
+        </form>
+        {% endif %}
+        {% if goal.goal_type == "declaration" and goal.checked_by_friend %}
+        <p>フレンドが達成を確認済みです</p>
+        {% endif %}
+
+        {% if goal.created_by == actor.id %}
+        <form method="post"
+            action="{{ url_for('friend.goal_achieve', friend_user_id=friend_user.id, goal_id=goal.id) }}">
+            {{ action_form.csrf_token }}
+            <button type="submit">達成した</button>
+        </form>
+        <form method="post" action="{{ url_for('friend.goal_fail', friend_user_id=friend_user.id, goal_id=goal.id) }}">
+            {{ action_form.csrf_token }}
+            <button type="submit">未達成として記録する</button>
+        </form>
+        {% endif %}
+        {% endif %}
+    </section>
+
+    {% else %}
+    <p>現在進行中の目標はありません。</p>
+    <a href="{{ url_for('friend.goal_new', friend_user_id=friend_user.id) }}">目標を作成する</a>
+    {% endif %}
+
+    {% if past_goals %}
+    <section class="past-goals">
+        <h2>過去の目標</h2>
+        <ul>
+            {% for pg in past_goals %}
+            <li>
+                <span>
+                    {% if pg.goal_type == "shared" %}共有目標
+                    {% elif pg.goal_type == "declaration" %}宣言
+                    {% else %}約束
+                    {% endif %}
+                </span>
+                <span>{{ pg.content }}</span>
+                <span>{% if pg.status == "achieved" %}達成{% else %}未達成{% endif %}</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </section>
+    {% endif %}
+</main>
+{% endblock %}

@@ -15,9 +15,9 @@ from sqlalchemy.exc import IntegrityError
 
 from apps.app import db
 from apps.friend.forms import FriendActionForm
-from apps.friend.models import Friend
+from apps.friend.models import Friend, FriendGoal, FriendReaction
 from apps.user.models import User
-from datetime import date
+from datetime import date, datetime, timedelta
 from apps.lookingback.models import LookingBack
 from apps.situation.models import Situation
 
@@ -72,8 +72,18 @@ def _action_form_is_valid():
 @friend.route("/")
 def index():
     friends = []
+    done_count = 0
+    total_count = 0
+    i_did_today = False
+
     if g.friend_user is not None:
         user_id = g.friend_user.id
+        today = date.today()
+
+        i_did_today = LookingBack.query.filter_by(
+            user_id=user_id, date=today
+        ).first() is not None
+
         relationships = Friend.query.filter(
             Friend.status == "accepted",
             or_(Friend.requester_id == user_id, Friend.addressee_id == user_id),
@@ -83,14 +93,34 @@ def index():
             for item in relationships
         ]
         if friend_ids:
-            today = date.today()
-            done_today_ids = {
-                r.user_id
+            done_today_map = {
+                r.user_id: r
                 for r in LookingBack.query.filter(
                     LookingBack.user_id.in_(friend_ids),
                     LookingBack.date == today,
                 ).all()
             }
+
+            # 今日のlookingback_idに対して自分が送ったリアクションを取得
+            today_lookingback_ids = [r.id for r in done_today_map.values()]
+            my_reactions = set()
+            if today_lookingback_ids:
+                my_reactions = {
+                    (r.lookingback_id, r.reaction_type)
+                    for r in FriendReaction.query.filter(
+                        FriendReaction.from_user_id == user_id,
+                        FriendReaction.lookingback_id.in_(today_lookingback_ids),
+                    ).all()
+                }
+
+            # フレンドの各記録に対するリアクション集計
+            reaction_counts = {}
+            if today_lookingback_ids:
+                for r in FriendReaction.query.filter(
+                    FriendReaction.lookingback_id.in_(today_lookingback_ids)
+                ).all():
+                    key = (r.lookingback_id, r.reaction_type)
+                    reaction_counts[key] = reaction_counts.get(key, 0) + 1
 
             latest_situations = {}
             for s in (
@@ -110,18 +140,31 @@ def index():
                 .order_by(User.username)
                 .all()
             )
-            friends = [
-                {
-                    "user": u,
-                    "done_today": u.id in done_today_ids,
-                    "latest_situation": latest_situations.get(u.id),
-                }
-                for u in friend_users
-            ]
+            friends = sorted(
+                [
+                    {
+                        "user": u,
+                        "done_today": u.id in done_today_map,
+                        "lookingback": done_today_map.get(u.id),
+                        "latest_situation": latest_situations.get(u.id),
+                        "my_reactions": my_reactions,
+                        "reaction_counts": reaction_counts,
+                    }
+                    for u in friend_users
+                ],
+                key=lambda x: x["done_today"],
+                reverse=True,
+            )
+            total_count = len(friends)
+            done_count = sum(1 for f in friends if f["done_today"])
+
     return render_template(
         "friend/friend.html",
         friends=friends,
         action_form=FriendActionForm(),
+        done_count=done_count,
+        total_count=total_count,
+        i_did_today=i_did_today,
     )
 
 
@@ -355,3 +398,288 @@ def remove_friend(friend_user_id):
     db.session.commit()
     flash("フレンドを解除しました。", "success")
     return redirect(url_for("friend.index"))
+
+
+@friend.route("/reactions/<int:lookingback_id>/<reaction_type>", methods=["POST"])
+def send_reaction(lookingback_id, reaction_type):
+    actor = _current_user_for_action()
+    if actor is None:
+        return redirect(url_for("friend.index"))
+    if not _action_form_is_valid():
+        return redirect(url_for("friend.index"))
+
+    if reaction_type not in ("like",):
+        abort(400)
+
+    lookingback = LookingBack.query.get_or_404(lookingback_id)
+
+    # フレンドの記録かどうか確認
+    relationship = _get_active_friend_relationship(actor.id, lookingback.user_id)
+    if relationship is None:
+        abort(403)
+
+    # 重複チェック
+    existing = FriendReaction.query.filter_by(
+        from_user_id=actor.id,
+        lookingback_id=lookingback_id,
+        reaction_type=reaction_type,
+    ).first()
+    if existing is None:
+        db.session.add(FriendReaction(
+            from_user_id=actor.id,
+            lookingback_id=lookingback_id,
+            reaction_type=reaction_type,
+        ))
+        db.session.commit()
+
+    return redirect(url_for("friend.index"))
+
+
+def _get_active_friend_relationship(actor_id, friend_user_id):
+    return Friend.query.filter(
+        Friend.status == "accepted",
+        or_(
+            (Friend.requester_id == actor_id) & (Friend.addressee_id == friend_user_id),
+            (Friend.requester_id == friend_user_id) & (Friend.addressee_id == actor_id),
+        ),
+    ).first()
+
+
+def _calc_deadline(choice):
+    now = datetime.now()
+    if choice == "today":
+        return now.replace(hour=23, minute=59, second=59, microsecond=0)
+    if choice == "week":
+        days_until_sunday = 6 - now.weekday() if now.weekday() != 6 else 0
+        return (now + timedelta(days=days_until_sunday)).replace(hour=23, minute=59, second=59, microsecond=0)
+    if choice == "month":
+        next_month = now.replace(day=28) + timedelta(days=4)
+        last_day = (next_month - timedelta(days=next_month.day)).day
+        return now.replace(day=last_day, hour=23, minute=59, second=59, microsecond=0)
+    return None
+
+
+@friend.route("/<int:friend_user_id>/goals")
+def goal_index(friend_user_id):
+    actor = _current_user_for_action()
+    if actor is None:
+        return redirect(url_for("friend.index"))
+
+    relationship = _get_active_friend_relationship(actor.id, friend_user_id)
+    if relationship is None:
+        abort(404)
+
+    friend_user = db.session.get(User, friend_user_id)
+    if friend_user is None:
+        abort(404)
+
+    goal = FriendGoal.query.filter(
+        FriendGoal.friend_id == relationship.id,
+        FriendGoal.status.in_(["active", "pending"]),
+    ).first()
+
+    past_goals = FriendGoal.query.filter(
+        FriendGoal.friend_id == relationship.id,
+        FriendGoal.status.in_(["achieved", "failed"]),
+    ).order_by(FriendGoal.created_at.desc()).all()
+
+    return render_template(
+        "friend/goal.html",
+        friend_user=friend_user,
+        relationship=relationship,
+        goal=goal,
+        past_goals=past_goals,
+        actor=actor,
+        action_form=FriendActionForm(),
+    )
+
+
+@friend.route("/<int:friend_user_id>/goals/new", methods=["GET", "POST"])
+def goal_new(friend_user_id):
+    actor = _current_user_for_action()
+    if actor is None:
+        return redirect(url_for("friend.index"))
+
+    relationship = _get_active_friend_relationship(actor.id, friend_user_id)
+    if relationship is None:
+        abort(404)
+
+    existing = FriendGoal.query.filter(
+        FriendGoal.friend_id == relationship.id,
+        FriendGoal.status.in_(["active", "pending"]),
+    ).first()
+    if existing is not None:
+        flash("現在進行中の目標があります。達成または未達成にしてから新しい目標を作成してください。", "error")
+        return redirect(url_for("friend.goal_index", friend_user_id=friend_user_id))
+
+    if request.method == "POST":
+        if not FriendActionForm().validate_on_submit():
+            flash("操作を確認できませんでした。もう一度お試しください。", "error")
+            return redirect(url_for("friend.goal_new", friend_user_id=friend_user_id))
+
+        goal_type = request.form.get("goal_type")
+        content = request.form.get("content", "").strip()
+        deadline_choice = request.form.get("deadline", "")
+
+        if goal_type not in ("shared", "declaration", "promise"):
+            flash("目標タイプを選択してください。", "error")
+            return redirect(url_for("friend.goal_new", friend_user_id=friend_user_id))
+        if not content:
+            flash("目標内容を入力してください。", "error")
+            return redirect(url_for("friend.goal_new", friend_user_id=friend_user_id))
+
+        status = "pending" if goal_type == "promise" else "active"
+        deadline = _calc_deadline(deadline_choice)
+
+        db.session.add(FriendGoal(
+            friend_id=relationship.id,
+            goal_type=goal_type,
+            content=content,
+            created_by=actor.id,
+            status=status,
+            deadline=deadline,
+        ))
+        db.session.commit()
+        flash("目標を作成しました。", "success")
+        return redirect(url_for("friend.goal_index", friend_user_id=friend_user_id))
+
+    friend_user = db.session.get(User, friend_user_id)
+    return render_template(
+        "friend/goal_new.html",
+        friend_user=friend_user,
+        action_form=FriendActionForm(),
+    )
+
+
+@friend.route("/<int:friend_user_id>/goals/<int:goal_id>/promise_accept", methods=["POST"])
+def goal_promise_accept(friend_user_id, goal_id):
+    actor = _current_user_for_action()
+    if actor is None:
+        return redirect(url_for("friend.index"))
+    if not _action_form_is_valid():
+        return redirect(url_for("friend.goal_index", friend_user_id=friend_user_id))
+
+    relationship = _get_active_friend_relationship(actor.id, friend_user_id)
+    if relationship is None:
+        abort(404)
+
+    goal = FriendGoal.query.filter_by(
+        id=goal_id, friend_id=relationship.id, status="pending"
+    ).first_or_404()
+
+    if goal.created_by == actor.id:
+        flash("自分が作成した約束は自分で承認できません。", "error")
+        return redirect(url_for("friend.goal_index", friend_user_id=friend_user_id))
+
+    goal.status = "active"
+    db.session.commit()
+    flash("約束を承認しました。", "success")
+    return redirect(url_for("friend.goal_index", friend_user_id=friend_user_id))
+
+
+@friend.route("/<int:friend_user_id>/goals/<int:goal_id>/promise_reject", methods=["POST"])
+def goal_promise_reject(friend_user_id, goal_id):
+    actor = _current_user_for_action()
+    if actor is None:
+        return redirect(url_for("friend.index"))
+    if not _action_form_is_valid():
+        return redirect(url_for("friend.goal_index", friend_user_id=friend_user_id))
+
+    relationship = _get_active_friend_relationship(actor.id, friend_user_id)
+    if relationship is None:
+        abort(404)
+
+    goal = FriendGoal.query.filter_by(
+        id=goal_id, friend_id=relationship.id, status="pending"
+    ).first_or_404()
+
+    if goal.created_by == actor.id:
+        flash("自分が作成した約束は自分で拒否できません。", "error")
+        return redirect(url_for("friend.goal_index", friend_user_id=friend_user_id))
+
+    db.session.delete(goal)
+    db.session.commit()
+    flash("約束を拒否しました。", "success")
+    return redirect(url_for("friend.goal_index", friend_user_id=friend_user_id))
+
+
+@friend.route("/<int:friend_user_id>/goals/<int:goal_id>/check", methods=["POST"])
+def goal_check(friend_user_id, goal_id):
+    actor = _current_user_for_action()
+    if actor is None:
+        return redirect(url_for("friend.index"))
+    if not _action_form_is_valid():
+        return redirect(url_for("friend.goal_index", friend_user_id=friend_user_id))
+
+    relationship = _get_active_friend_relationship(actor.id, friend_user_id)
+    if relationship is None:
+        abort(404)
+
+    goal = FriendGoal.query.filter_by(
+        id=goal_id, friend_id=relationship.id, status="active", goal_type="declaration"
+    ).first_or_404()
+
+    if goal.created_by == actor.id:
+        flash("自分の宣言は自分でチェックできません。", "error")
+        return redirect(url_for("friend.goal_index", friend_user_id=friend_user_id))
+
+    goal.checked_by_friend = True
+    db.session.commit()
+    flash("達成を確認しました。", "success")
+    return redirect(url_for("friend.goal_index", friend_user_id=friend_user_id))
+
+
+@friend.route("/<int:friend_user_id>/goals/<int:goal_id>/achieve", methods=["POST"])
+def goal_achieve(friend_user_id, goal_id):
+    actor = _current_user_for_action()
+    if actor is None:
+        return redirect(url_for("friend.index"))
+    if not _action_form_is_valid():
+        return redirect(url_for("friend.goal_index", friend_user_id=friend_user_id))
+
+    relationship = _get_active_friend_relationship(actor.id, friend_user_id)
+    if relationship is None:
+        abort(404)
+
+    goal = FriendGoal.query.filter_by(
+        id=goal_id, friend_id=relationship.id, status="active"
+    ).first_or_404()
+
+    if goal.created_by != actor.id:
+        flash("目標の達成は作成者のみ記録できます。", "error")
+        return redirect(url_for("friend.goal_index", friend_user_id=friend_user_id))
+
+    if goal.goal_type == "declaration" and not goal.checked_by_friend:
+        flash("フレンドのチェックが必要です。", "error")
+        return redirect(url_for("friend.goal_index", friend_user_id=friend_user_id))
+
+    goal.status = "achieved"
+    db.session.commit()
+    flash("目標を達成しました！おめでとうございます🎉", "success")
+    return redirect(url_for("friend.goal_index", friend_user_id=friend_user_id))
+
+
+@friend.route("/<int:friend_user_id>/goals/<int:goal_id>/fail", methods=["POST"])
+def goal_fail(friend_user_id, goal_id):
+    actor = _current_user_for_action()
+    if actor is None:
+        return redirect(url_for("friend.index"))
+    if not _action_form_is_valid():
+        return redirect(url_for("friend.goal_index", friend_user_id=friend_user_id))
+
+    relationship = _get_active_friend_relationship(actor.id, friend_user_id)
+    if relationship is None:
+        abort(404)
+
+    goal = FriendGoal.query.filter_by(
+        id=goal_id, friend_id=relationship.id, status="active"
+    ).first_or_404()
+
+    if goal.created_by != actor.id:
+        flash("目標の未達成記録は作成者のみできます。", "error")
+        return redirect(url_for("friend.goal_index", friend_user_id=friend_user_id))
+
+    goal.status = "failed"
+    db.session.commit()
+    flash("目標を未達成として記録しました。次は頑張りましょう！", "success")
+    return redirect(url_for("friend.goal_index", friend_user_id=friend_user_id))

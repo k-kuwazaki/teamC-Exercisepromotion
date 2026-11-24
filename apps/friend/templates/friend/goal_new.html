@@ -1,0 +1,33 @@
+{% extends "home/base.html" %}
+{% block title %}目標を作成する{% endblock %}
+{% block content %}
+{% include "friend/_navigation.html" %}
+<main class="friend-panel">
+    <h1>{{ friend_user.username }}さんとの目標を作成</h1>
+
+    <form method="post">
+        {{ action_form.csrf_token }}
+        <p>
+            <label>目標タイプ</label><br>
+            <label><input type="radio" name="goal_type" value="shared" required>共有目標（お互いで同じ目標に取り組む）</label><br>
+            <label><input type="radio" name="goal_type" value="declaration">宣言（自分の目標をフレンドに宣言する）</label><br>
+            <label><input type="radio" name="goal_type" value="promise">約束（フレンドの承認が必要）</label>
+        </p>
+        <p>
+            <label for="content">目標内容</label><br>
+            <textarea id="content" name="content" rows="3" placeholder="例：今週3回運動する" required></textarea>
+        </p>
+        <p>
+            <label for="deadline">期限</label><br>
+            <select id="deadline" name="deadline">
+                <option value="">なし</option>
+                <option value="today">今日中</option>
+                <option value="week">今週中</option>
+                <option value="month">今月中</option>
+            </select>
+        </p>
+        <button type="submit">作成する</button>
+        <a href="{{ url_for('friend.goal_index', friend_user_id=friend_user.id) }}">キャンセル</a>
+    </form>
+</main>
+{% endblock %}
