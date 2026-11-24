@@ -8,12 +8,16 @@
 <div class="implementation-page">
     <h1>運動実施</h1>
 
+    {% if error %}
+    <p class="error" role="alert">{{ error }}</p>
+    {% endif %}
+
     <div class="tab-bar">
-        <button type="button" class="tab-btn active" data-tab="ai-menu">AIメニュー</button>
-        <button type="button" class="tab-btn" data-tab="self-menu">自主運動</button>
+        <button type="button" class="tab-btn {% if default_tab == 'ai-menu' %}active{% endif %}" data-tab="ai-menu">AIメニュー</button>
+        <button type="button" class="tab-btn {% if default_tab == 'self-menu' %}active{% endif %}" data-tab="self-menu">自主運動</button>
     </div>
 
-    <section class="tab-panel active" id="ai-menu">
+    <section class="tab-panel {% if default_tab == 'ai-menu' %}active{% endif %}" id="ai-menu">
         <h2>今日の運動メニュー</h2>
         {% if selected_exercises %}
         <div class="exercise-scroll">
@@ -37,7 +41,7 @@
 
     <form method="post" action="{{ url_for('implementation.index') }}">
 
-        <section class="tab-panel" id="self-menu">
+        <section class="tab-panel {% if default_tab == 'self-menu' %}active{% endif %}" id="self-menu">
             <h2>自主的に行う運動（任意）</h2>
             <label for="self_exercises">運動内容</label>
             <textarea id="self_exercises" name="self_exercises" rows="4"
@@ -48,8 +52,8 @@
             <h2>運動時間</h2>
 
             <label for="goal_minutes">目標時間（分）</label>
-            <input type="number" id="goal_minutes" name="goal_minutes" min="1" max="300"
-                value="{{ goal_minutes or 10 }}" required>
+            <input type="number" id="goal_minutes" name="goal_minutes" min="1" max="30" value="{{ goal_minutes or 10 }}"
+                required>
 
             <p id="timer" aria-live="polite">00:00</p>
 
@@ -68,16 +72,12 @@
             <input type="hidden" id="duration_seconds" name="duration_seconds" value="0">
         </section>
 
-        {% if error %}
-        <p class="error" role="alert">{{ error }}</p>
-        {% endif %}
-
         <button type="submit" id="register-button" hidden disabled>
             登録画面へ進む
         </button>
 
         <label for="manual_minutes">タイマーを使わない場合の運動時間（分）</label>
-        <input type="number" id="manual_minutes" name="manual_minutes" min="1" max="300" placeholder="例：20">
+        <input type="number" id="manual_minutes" name="manual_minutes" min="1" max="30" placeholder="例：20">
 
         <button type="submit" name="use_manual_time" value="1">
             タイマーを使わず登録する
@@ -140,8 +140,8 @@
 
     startButton.addEventListener("click", function () {
         const goalMinutes = Number(goalMinutesInput.value);
-        if (!Number.isInteger(goalMinutes) || goalMinutes < 1 || goalMinutes > 300) {
-            alert("目標時間を1〜300分で入力してください。");
+        if (!Number.isInteger(goalMinutes) || goalMinutes < 1 || goalMinutes > 30) {
+            alert("目標時間を1〜30分で入力してください。");
             return;
         }
         goalSeconds = goalMinutes * 60;

@@ -3,8 +3,9 @@ from apps.app import db
 from apps.user.models import User
 from apps.body_input.forms import EditProfileForm
 from datetime import date
+from werkzeug.security import generate_password_hash
 
-body_input = Blueprint("body_input", __name__, template_folder="templates", static_folder="static",url_prefix="/body_input")
+body_input = Blueprint("body_input", __name__, template_folder="templates", static_folder="static", url_prefix="/body_input")
 
 
 @body_input.route("/body-input", methods=["GET", "POST"])
@@ -12,11 +13,10 @@ def index():
     if "user_id" not in session:
         return redirect(url_for("login.login"))
 
-    user = User.query.get(session["user_id"])
+    user = db.session.get(User, session["user_id"])
     form = EditProfileForm(obj=user)
 
     if form.validate_on_submit():
-        user = User.query.get(session["user_id"])
         today = date.today()
         age = today.year - user.birthday.year - (
             (today.month, today.day) < (user.birthday.month, user.birthday.day)
@@ -45,7 +45,7 @@ def confirm():
         return redirect(url_for("body_input.index"))
 
     if request.method == "POST":
-        user = User.query.get(session["user_id"])
+        user = db.session.get(User, session["user_id"])
         data = session.pop("edit_data")
         user.height = data["height"]
         user.weight = data["weight"]
@@ -53,7 +53,7 @@ def confirm():
         user.exercise_habit = data["exercise_habit"]
         user.goal = data["goal"]
         if data["change_password"] and data["password"]:
-            user.password = data["password"]
+            user.password_hash = generate_password_hash(data["password"])
         db.session.commit()
         return render_template("body_input/body_update.html")
 

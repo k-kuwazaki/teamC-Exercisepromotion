@@ -409,6 +409,26 @@ def remove_friend(friend_user_id):
     flash("フレンドを解除しました。", "success")
     return redirect(url_for("friend.index"))
 
+@friend.route("/<int:friend_user_id>/confirm_remove")
+def confirm_remove_friend(friend_user_id):
+    actor = _current_user_for_action()
+    if actor is None:
+        return redirect(url_for("friend.index"))
+
+    # 本当にフレンド関係があるか確認
+    relationship = _get_active_friend_relationship(
+        actor.id, friend_user_id
+    )
+    if relationship is None:
+        abort(404)
+
+    friend_user = db.session.get(User, friend_user_id)
+
+    return render_template(
+        "friend/confirm_remove_friend.html",
+        friend_user=friend_user,
+        action_form=FriendActionForm(),
+    )
 
 @friend.route("/reactions/<int:lookingback_id>/<reaction_type>", methods=["POST"])
 def send_reaction(lookingback_id, reaction_type):
