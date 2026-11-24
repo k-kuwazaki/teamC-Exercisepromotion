@@ -12,6 +12,17 @@
         <h1><i class="fas fa-home"></i> 運動継続促進システム</h1>
         <p>ようこそ！今日も一緒に運動を続けましょう。</p>
     </div>
+
+
+    <a href="{{ url_for('home.help') }}" class="help-link">
+        <i class="fas fa-circle-question"></i>
+        <span>ヘルプ・使い方</span>
+    </a>
+    <!-- <a href="{{ url_for('login.logout') }}" class="btn btn-outline-danger logout-btn">
+            <i class="fas fa-sign-out-alt"></i> ログアウト
+        </a> -->
+
+
 </div>
 
 <!-- モード切り替え -->
@@ -75,7 +86,7 @@
             <!-- AIチャット -->
             <a href="{{ url_for('chat.index') }}" class="menu-card">
                 <div class="card-icon green">
-                    <i class="fa-solid fa-chart-line"></i>
+                    <i class="fas fa-robot"></i>
                 </div>
                 <div class="card-content">
                     <h3>AIチャット</h3>
@@ -99,6 +110,35 @@
                     <i class="fa-solid fa-arrow-right"></i>
                 </div>
             </a>
+
+
+            <a href="{{ url_for('home.history') }}" class="menu-card">
+                <div class="card-icon orange">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <div class="card-content">
+                    <h3>履歴機能</h3>
+                    <p>日々の運動状況や成果を確認できます。</p>
+                </div>
+                <div class="card-arrow">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </a>
+
+            <!-- <a href="{{ url_for('home.index') }}" class="menu-card">
+                <div class="card-icon orange">
+                    <i class="fa-solid fa-house"></i>
+                </div>
+                <div class="card-content">
+                    <h3>トップページ</h3>
+                    <p>トップページに戻ります。</p>
+                </div>
+                <div class="card-arrow">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </a> -->
+
+
 
         </div>
     </div>
