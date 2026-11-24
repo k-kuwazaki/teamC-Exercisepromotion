@@ -22,8 +22,11 @@ class User(db.Model):
     updated_at = db.Column(
         db.DateTime, default=datetime.now, onupdate=datetime.now
     ) 
-   
+    
+    # 最終アクセス時刻（オンライン状態の判定に使用）
+    last_seen = db.Column(db.DateTime, nullable=True)
 
+    
     # パスワードをセットするためのプロパティ
     @property
     def password(self):
