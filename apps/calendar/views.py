@@ -119,6 +119,20 @@ def day_detail(year, month, day):
         .order_by(Situation.created_at.desc())
         .all()
     )
+    
+    # その日の消費カロリーを合計
+    has_calorie_records = any(
+        exercise_record.calories is not None
+        for exercise_record in exercise_records
+    )
+
+    total_calories = round(
+        sum(
+            exercise_record.calories or 0
+            for exercise_record in exercise_records
+        ),
+        1,
+    )
 
     return render_template(
         "calendar/day_detail.html",
