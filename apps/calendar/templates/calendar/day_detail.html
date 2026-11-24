@@ -20,6 +20,20 @@
     消費カロリーを見る
 </button>
 
+
+        {% if exercise_record.duration %}
+        <p>運動時間：{{ exercise_record.duration }}分</p>
+        {% endif %}
+    </section>
+
+    {% if exercise_record.id in calories_map %}
+    <p>消費カロリー（概算）：約{{ calories_map[exercise_record.id] }} kcal</p>
+    {% endif %}
+
+    {% endfor %}
+    {% else %}
+    <p class="no-record">この日の運動記録はありません。</p>
+
 {% for exercise_record in exercise_records %}
 <section class="exercise-record">
 
@@ -28,6 +42,7 @@
     {% if exercise_record.answer %}
     <h4>選択した運動メニュー</h4>
     <p>{{ exercise_record.answer }}</p>
+
     {% endif %}
 
     {% if exercise_record.self_exercises %}
@@ -72,11 +87,14 @@
         {% endif %}
     </ul>
 
-        <a href="{{ url_for('calendar.index', year=year, month=month) }}">← カレンダーに戻る</a>
-    </div>
-    <div class="back">
-        <a href="{{ url_for('home.index') }}">← トップページに戻る</a>
-    </div>
+    <a href="{{ url_for('calendar.index', year=year, month=month) }}">← カレンダーに戻る</a>
+</div>
+<div class="back">
+    <a href="{{ url_for('home.index') }}">← トップページに戻る</a>
+</div>
+
+
+{% endblock %}
 
     <script>
     function toggleCalories() {
@@ -97,3 +115,4 @@
     </script>
 
     {% endblock %}
+

@@ -6,6 +6,7 @@ from apps.lookingback.models import LookingBack
 from apps.app import db
 from sqlalchemy import func
 from apps.situation.models import Situation
+from apps.user.models import User
 
 calendar_bp = Blueprint(
     "calendar",
@@ -98,6 +99,16 @@ def index():
         calendar_html=calendar_html,
     )
 
+CATEGORY_METS = {
+    "筋力トレーニング": 3.5,
+    "ダイエット": 4.0,
+    "柔軟性・ストレッチ": 2.5,
+    "体力づくり": 5.0,
+    "運動不足の解消": 3.0,
+    "AIにおまかせ": 3.5,
+}
+DEFAULT_METS = 3.5
+
 
 # 変更　履歴を追加できるように
 @calendar_bp.route("/day/<int:year>/<int:month>/<int:day>")
@@ -120,6 +131,21 @@ def day_detail(year, month, day):
         .all()
     )
     
+
+    user = db.session.get(User, user_id)
+    weight = user.weight if user and user.weight else 60
+
+    calories_map = {
+        r.id: round(
+            CATEGORY_METS.get(r.category, DEFAULT_METS)
+            * weight
+            * (int(r.duration) / 60)
+        )
+        for r in exercise_records
+        if r.duration and r.duration.isdigit()
+    }
+    
+
     # その日の消費カロリーを合計
     has_calorie_records = any(
         exercise_record.calories is not None
@@ -134,6 +160,7 @@ def day_detail(year, month, day):
         1,
     )
 
+
     return render_template(
         "calendar/day_detail.html",
         year=year,
@@ -141,6 +168,7 @@ def day_detail(year, month, day):
         day=day,
         record=record,
         exercise_records=exercise_records,
+        calories_map=calories_map,
     )
 
 

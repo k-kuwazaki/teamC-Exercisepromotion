@@ -119,7 +119,7 @@ body:has(.friend-nav) {
 
 .friend-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 16px;
     margin: 0;
     padding: 0;
@@ -186,14 +186,15 @@ body:has(.friend-nav) {
 .friend-list .friend-card {
     display: flex;
     flex-direction: column;
-    gap: 18px;
-    padding: 22px;
+    gap: 10px;
+    padding: 16px;
     border: 1px solid #dce8de;
     border-radius: 16px;
     background: linear-gradient(145deg, #ffffff, #f7fbf7);
     box-shadow: 0 3px 10px rgb(35 75 45 / 4%);
     transition: .25s ease;
 }
+
 
 .friend-list .friend-card:hover {
     transform: translateY(-4px);
@@ -220,6 +221,11 @@ body:has(.friend-nav) {
     color: #315b40;
     font-size: 19px;
     font-weight: 750;
+}
+
+.friend-avatar.avatar-pending {
+    background: linear-gradient(135deg, #d0d8d2, #b8c4bc);
+    color: #5a7060;
 }
 
 .friend-user-info {
@@ -270,12 +276,13 @@ body:has(.friend-nav) {
 /* 運動情報 */
 .friend-details {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 14px;
-    border-radius: 11px;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-radius: 8px;
     background: #f0f6f0;
 }
+
 
 .friend-detail {
     display: flex;
@@ -286,8 +293,9 @@ body:has(.friend-nav) {
 
 .detail-label {
     color: #718174;
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 650;
+    white-space: nowrap;
 }
 
 .user-habit,
@@ -300,13 +308,13 @@ body:has(.friend-nav) {
     border-radius: 7px;
     background: #fff;
     color: #355b40;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 650;
     overflow-wrap: anywhere;
 }
 
 /* フレンド申請 */
-.friend-list .friend-card form {
+.friend-list .friend-card form:not(.reaction-form) {
     width: 100%;
     margin: 0;
 }
@@ -657,4 +665,130 @@ div.friend-avatar {
     color: #315b40;
     font-size: 18px;
     font-weight: 750;
+}
+
+/* フレンド一覧：今日のサマリー */
+.today-summary {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 28px;
+    padding: 18px 22px;
+    border: 1px solid #c8dece;
+    border-left: 4px solid #4a9060;
+    border-radius: 12px;
+    background: linear-gradient(115deg, #eef6f0, #f4faf5);
+}
+
+.today-summary-main {
+    color: #1e3d2a;
+    font-size: 15px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.today-summary-sub {
+    color: #5a7060;
+    font-size: 13px;
+    margin: 0;
+}
+
+/* 実施状態バッジ */
+.done-today {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: #d4edda;
+    color: #2d6a4f;
+    font-size: 12px;
+    font-weight: 650;
+}
+
+.not-yet {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: #f0f0f0;
+    color: #888;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* リアクション */
+.friend-reactions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.reaction-sent {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: #e8f5e9;
+    color: #2d6a4f;
+    font-size: 13px;
+    font-weight: 650;
+    border: 1px solid #c8dece;
+}
+
+.reaction-btn {
+    flex: none !important;
+    padding: 4px 10px !important;
+    border-radius: 20px !important;
+    font-size: 12px !important;
+    line-height: 1.4 !important;
+}
+
+/* 目標・解除ボタンエリア */
+.friend-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    width: 100%;
+
+    padding-top: 12px;
+    border-top: 1px solid #e0ede3;
+}
+
+.friend-status-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+
+.goal-link {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 14px;
+    border: 1px solid #4a9060;
+    border-radius: 8px;
+    background: transparent;
+    color: #2d5240;
+    font-size: 13px;
+    font-weight: 650;
+    text-decoration: none;
+    transition: background .2s ease, color .2s ease;
+}
+
+.goal-link:hover {
+    background: #eef6f0;
+    color: #1e3d2a;
+}
+
+.friend-actions form {
+    margin: 0;
+}
+
+/* フレンド申請ボタン用（リアクションフォームには適用しない） */
+.friend-list .friend-card form:not(.reaction-form) {
+    width: 100%;
+    margin: 0;
 }
