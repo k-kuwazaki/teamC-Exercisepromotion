@@ -140,12 +140,6 @@ body:has(.friend-nav) {
     transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
 }
 
-.friend-list li:hover {
-    transform: translateY(-2px);
-    border-color: #8dc49a;
-    box-shadow: 0 8px 20px rgb(30 70 40 / 10%);
-}
-
 .friend-list li>span {
     display: inline-flex;
     align-items: center;
@@ -154,53 +148,202 @@ body:has(.friend-nav) {
     font-weight: 650;
 }
 
-.friend-list li>span::before {
-    width: 9px;
-    height: 9px;
-    flex: 0 0 auto;
-    border: 2px solid #fff;
-    border-radius: 50%;
-    background: #4a9060;
-    box-shadow: 0 0 0 1px #a8d8b4;
-    content: "";
+/* ===== ユーザー名・オンライン状態 ===== */
+.friend-list .user-heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
-.friend-list li>div {
+.friend-list .user-name {
+    color: #1e3d2a;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+/* 共通ドット */
+.friend-list .status-dot {
+    width: 10px;
+    height: 10px;
+    flex: 0 0 10px;
+    border-radius: 50%;
+}
+
+/* オンライン：青 */
+.friend-list .status-dot.online {
+    background: #3985d6;
+    box-shadow: 0 0 0 3px rgb(57 133 214 / 13%);
+}
+
+/* オフライン：赤 */
+.friend-list .status-dot.offline {
+    background: #e34b4b;
+    box-shadow: 0 0 0 3px rgb(227 75 75 / 13%);
+}
+
+
+/* ===== フレンドカード ===== */
+.friend-list .friend-card {
     display: flex;
-    gap: 8px;
+    flex-direction: column;
+    gap: 18px;
+    padding: 22px;
+    border: 1px solid #dce8de;
+    border-radius: 16px;
+    background: linear-gradient(145deg, #ffffff, #f7fbf7);
+    box-shadow: 0 3px 10px rgb(35 75 45 / 4%);
+    transition: .25s ease;
+}
+
+.friend-list .friend-card:hover {
+    transform: translateY(-4px);
+    border-color: #a9cbb0;
+    box-shadow: 0 10px 25px rgb(35 75 45 / 10%);
+}
+
+/* ユーザー情報 */
+.friend-user {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+}
+
+.friend-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #dceee0, #c5dfcb);
+    color: #315b40;
+    font-size: 19px;
+    font-weight: 750;
+}
+
+.friend-user-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.friend-username {
+    color: #263e2e;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+/* オンライン状態 */
+.friend-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+/* オンライン：青 */
+.friend-status.online {
+    color: #3985d6;
+}
+
+.friend-status.online .status-dot {
+    background: #3985d6;
+}
+
+/* オフライン：赤 */
+.friend-status.offline {
+    color: #e34b4b;
+}
+
+.friend-status.offline .status-dot {
+    background: #e34b4b;
+}
+
+/* 運動情報 */
+.friend-details {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 14px;
+    border-radius: 11px;
+    background: #f0f6f0;
+}
+
+.friend-detail {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.detail-label {
+    color: #718174;
+    font-size: 12px;
+    font-weight: 650;
 }
 
 .user-habit,
 .user-goal {
     display: inline-flex;
     align-items: center;
-    padding: 4px 10px;
-    border-radius: 20px;
+    max-width: 70%;
+    padding: 6px 11px;
+    border: 1px solid #d4e5d7;
+    border-radius: 7px;
+    background: #fff;
+    color: #355b40;
     font-size: 12px;
-    font-weight: 600;
-    letter-spacing: .02em;
-    white-space: nowrap;
+    font-weight: 650;
+    overflow-wrap: anywhere;
 }
 
-.user-habit {
-    border: 1px solid #a8d8b4;
-    background: #e4f4e8;
-    color: #2d5240;
-}
-
-.user-goal {
-    border: 1px solid #b8d8c0;
-    background: #f0faf2;
-    color: #3a6b50;
-}
-
-.friend-list form {
+/* フレンド申請 */
+.friend-list .friend-card form {
+    width: 100%;
     margin: 0;
-    width: 100%;
 }
 
-.friend-list form button {
+.friend-list .friend-request-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
     width: 100%;
+    padding: 12px;
+    border: 1px solid #315b40;
+    border-radius: 10px;
+    background: #315b40;
+    color: white;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.friend-list .friend-request-btn:hover {
+    transform: translateY(-2px);
+    background: #477453;
+    border-color: #477453;
+    box-shadow: 0 5px 12px rgb(49 91 64 / 18%);
+}
+
+/* スマホ対応 */
+@media (max-width: 768px) {
+    .friend-list .friend-card {
+        padding: 17px;
+    }
+
+    .friend-detail {
+        align-items: flex-start;
+    }
 }
 
 .friend-search {
@@ -307,7 +450,7 @@ body:has(.friend-nav) {
 .friend-list form[action*="/reject"] button:hover,
 .friend-list form[action*="/cancel"] button:hover {
     border-color: #8dc49a;
-    background: #eef6f0;
+    background: #288a40;
     color: #2d5240;
 }
 
@@ -412,17 +555,6 @@ body:has(.friend-nav) .friend-panel {
         border-radius: 14px;
     }
 
-    /* フレンド情報 */
-    .friend-list li {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 12px;
-    }
-
-    .friend-list li>div {
-        flex-wrap: wrap;
-    }
-
     /* 検索欄 */
     .friend-search {
         flex-direction: column;
@@ -441,14 +573,6 @@ body:has(.friend-nav) .friend-panel {
         flex: none;
     }
 
-    .friend-list li {
-        padding: 13px;
-        box-sizing: border-box;
-    }
-
-    .friend-list li>span {
-        overflow-wrap: anywhere;
-    }
 }
 
 .back {
@@ -495,4 +619,42 @@ body:has(.friend-nav) .friend-panel {
         padding: 10px;
         font-size: 11px;
     }
+}
+
+
+/* ===== 受信したフレンド申請 ===== */
+
+.friend-request-actions {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.friend-request-actions form {
+    flex: 1;
+    margin: 0;
+}
+
+.friend-request-actions button {
+    width: 100%;
+}
+
+/* プロフィール写真 */
+.friend-avatar {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    object-fit: cover;
+}
+
+/* 写真がない場合のアイコン */
+div.friend-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #dceee0, #c5dfcb);
+    color: #315b40;
+    font-size: 18px;
+    font-weight: 750;
 }

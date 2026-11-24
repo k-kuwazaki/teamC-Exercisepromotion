@@ -17,7 +17,7 @@ from apps.app import db
 from apps.friend.forms import FriendActionForm
 from apps.friend.models import Friend
 from apps.user.models import User
-from datetime import date
+from datetime import date, datetime, timedelta
 from apps.lookingback.models import LookingBack
 from apps.situation.models import Situation
 
@@ -156,6 +156,16 @@ def search():
 
     search_results = users_query.order_by(User.username).limit(50).all()
 
+    # オンライン状態の判定
+    now = datetime.now()
+    online_threshold = now - timedelta(minutes=5)
+
+    for user in search_results:
+        user.is_online = (
+            user.last_seen is not None
+            and user.last_seen >= online_threshold
+        )
+    
     return render_template(
         "friend/search.html",
         habit=habit,

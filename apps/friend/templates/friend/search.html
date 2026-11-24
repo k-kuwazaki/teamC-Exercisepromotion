@@ -34,20 +34,70 @@
     <h2>ユーザー一覧（{{ search_results | length }}件）</h2>
     <ul class="friend-list">
         {% for user in search_results %}
-        <li>
-            <span>{{ user.username }}</span>
-            <span class="user-habit">{{ {"rarely": "ほとんどしない", "sometimes": "週に1〜2回", "often":
-                "週に3回以上"}.get(user.exercise_habit, "未設定") }}</span>
-            {% if user.goal %}<span class="user-goal">目標：{{ user.goal }}</span>{% endif %}
+        <li class="friend-card">
+
+            <!-- ユーザー名・オンライン状態 -->
+            <div class="friend-user">
+                <div class="friend-avatar">
+                    <span>{{ user.username[0] | upper }}</span>
+                </div>
+
+                <div class="friend-user-info">
+                    <strong class="friend-username">
+                        {{ user.username }}
+                    </strong>
+
+                    {% if user.is_online %}
+                    <span class="friend-status online">
+                        <span class="status-dot"></span>
+                        オンライン
+                    </span>
+                    {% else %}
+                    <span class="friend-status offline">
+                        <span class="status-dot"></span>
+                        オフライン
+                    </span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- 運動情報 -->
+            <div class="friend-details">
+
+                <div class="friend-detail">
+                    <span class="detail-label">運動頻度</span>
+                    <span class="user-habit">
+                        {{ {"rarely": "ほとんどしない",
+                        "sometimes": "週に1〜2回",
+                        "often": "週に3回以上"}.get(user.exercise_habit, "未設定") }}
+                    </span>
+                </div>
+
+                {% if user.goal %}
+                <div class="friend-detail">
+                    <span class="detail-label">目標</span>
+                    <span class="user-goal">{{ user.goal }}</span>
+                </div>
+                {% endif %}
+
+            </div>
+
+            <!-- フレンド申請 -->
             {% if g.friend_user %}
             <form method="post" action="{{ url_for('friend.send_request', target_user_id=user.id) }}">
+
                 {{ action_form.csrf_token }}
+
                 <input type="hidden" name="habit" value="{{ habit }}">
                 <input type="hidden" name="goal" value="{{ goal_keyword }}">
                 <input type="hidden" name="username" value="{{ username }}">
-                <button type="submit">フレンド申請</button>
+
+                <button type="submit" class="friend-request-btn">
+                    <span>＋</span> フレンド申請
+                </button>
             </form>
             {% endif %}
+
         </li>
         {% else %}
         <p>該当するユーザーが見つかりませんでした。</p>
