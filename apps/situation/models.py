@@ -27,3 +27,5 @@ class Situation(db.Model):
         default=datetime.now,
     )
     self_exercises = db.Column(db.Text, nullable=True)
+    
+    # 修正のためのコメントです。
