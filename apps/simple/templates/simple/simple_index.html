@@ -1,14 +1,18 @@
 {% extends "home/base.html" %}
+
 {% block title %}シンプルページ{% endblock %}
+
 {% block content %}
 
 <link rel="stylesheet" href="{{ url_for('simple.static', filename='style/simple.css') }}">
 
+<!-- ヘッダー -->
 <div class="header-row">
     <div class="page-header">
         <h1><i class="fas fa-home"></i> 運動継続促進システム</h1>
         <p>ようこそ！今日も一緒に運動を続けましょう。</p>
     </div>
+
 
     <a href="{{ url_for('home.help') }}" class="help-link">
         <i class="fas fa-circle-question"></i>
@@ -17,66 +21,69 @@
     <!-- <a href="{{ url_for('login.logout') }}" class="btn btn-outline-danger logout-btn">
             <i class="fas fa-sign-out-alt"></i> ログアウト
         </a> -->
+
+
 </div>
+
+<!-- モード切り替え -->
 {% include "home/mode_toggle.html" %}
+
+<!-- ダッシュボード -->
 <div class="dashboard">
+
     <div class="dashboard-card">
-        <div class="dashboard-icon"><i class="fas fa-fire"></i></div>
+        <div class="dashboard-icon">
+            <i class="fas fa-fire"></i>
+        </div>
         <div class="dashboard-info">
             <span class="dashboard-label">今日の運動</span>
             <span class="dashboard-value">{{ today_minutes }}分</span>
         </div>
     </div>
+
     <div class="dashboard-card">
-        <div class="dashboard-icon"><i class="fas fa-bullseye"></i></div>
+        <div class="dashboard-icon">
+            <i class="fas fa-bullseye"></i>
+        </div>
         <div class="dashboard-info">
             <span class="dashboard-label">本日の入力</span>
             <span class="dashboard-value">
-                {% if today_input %}入力済み{% else %}未入力{% endif %}
+                {% if today_input %}
+                入力済み
+                {% else %}
+                未入力
+                {% endif %}
             </span>
         </div>
     </div>
+
     <div class="dashboard-card">
-        <div class="dashboard-icon"><i class="fas fa-calendar-check"></i></div>
+        <div class="dashboard-icon">
+            <i class="fas fa-calendar-check"></i>
+        </div>
         <div class="dashboard-info">
             <span class="dashboard-label">今週の運動日数</span>
             <span class="dashboard-value">{{ week_days }}日</span>
         </div>
     </div>
+
 </div>
 
-
+<!-- メニューエリア -->
 <div class="history-container">
 
-    <!-- ヘッダー -->
-    <!-- <div class="page-header">
-        <div class="header-icon">
-            <i class="fa-solid fa-clock-rotate-left"></i>
-        </div>
-
-        <span class="header-label">ACTIVITY HISTORY</span>
-
-        <h1>簡易モード</h1>
-
-        <p>日々の運動を継続させ、健康的な毎日につなげましょう。</p>
-
-        <div class="header-decoration">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-    </div> -->
-
-    <!-- メニュー -->
     <div class="menu-section">
 
+        <!-- セクションタイトル -->
         <div class="section-title">
             <h2>メニュー</h2>
             <p>実施したい項目を選択してください</p>
         </div>
 
+        <!-- メニューカード -->
         <div class="menu-grid">
 
+            <!-- AIチャット -->
             <a href="{{ url_for('chat.index') }}" class="menu-card">
                 <div class="card-icon green">
                     <i class="fas fa-robot"></i>
@@ -90,6 +97,7 @@
                 </div>
             </a>
 
+            <!-- 運動実施 -->
             <a href="{{ url_for('implementation.index') }}" class="menu-card">
                 <div class="card-icon blue">
                     <i class="fa-solid fa-calendar-days"></i>
@@ -102,6 +110,7 @@
                     <i class="fa-solid fa-arrow-right"></i>
                 </div>
             </a>
+
 
             <a href="{{ url_for('home.history') }}" class="menu-card">
                 <div class="card-icon orange">
@@ -129,10 +138,11 @@
                 </div>
             </a> -->
 
+
+
         </div>
     </div>
 
 </div>
-
 
 {% endblock %}
