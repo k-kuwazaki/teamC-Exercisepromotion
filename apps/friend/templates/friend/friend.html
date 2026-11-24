@@ -8,6 +8,18 @@
     {% if not g.friend_user %}
     <p>ユーザー情報と連携すると、フレンド一覧が表示されます。</p>
     {% endif %}
+
+    {% if total_count > 0 %}
+    <div class="today-summary">
+        <p>今日はフレンド{{ total_count }}人中{{ done_count }}人が運動済み！</p>
+        {% if i_did_today %}
+        <p>今日もお疲れ様！{{ done_count }}人と一緒に運動できました</p>
+        {% else %}
+        <p>{{ done_count }}人がもう運動しています！あなたも始めませんか？</p>
+        {% endif %}
+    </div>
+    {% endif %}
+
     {% if friends %}
     <ul class="friend-list">
         {% for item in friends %}
@@ -16,17 +28,39 @@
             {% if item.done_today %}
             <span class="done-today">今日は実施済みです</span>
             {% else %}
-            <span class="not-yet">まだ実施されていません...</span>
+            <span class="not-yet">今日はまだかも...</span>
             {% endif %}
             {% if item.latest_situation %}
             {% set lines = item.latest_situation.answer.strip().splitlines() %}
             <span class="latest-menu">
                 最近の運動：{{ lines[0] }}
                 {% if lines|length > 1 %}他{{ lines|length - 1 }}種目{% endif %}
-                （{{ item.latest_situation.duration }}）
+                （{{ item.latest_situation.duration }}分）
             </span>
             {% endif %}
+
+            {% if item.done_today and item.lookingback and g.friend_user %}
+            <div class="reactions">
+                {% set lb_id = item.lookingback.id %}
+                {% for reaction, label in [("like", "👍")] %}
+                {% set count = item.reaction_counts.get((lb_id, reaction), 0) %}
+                {% set already_sent = (lb_id, reaction) in item.my_reactions %}
+                {% if already_sent %}
+                <span class="reaction-sent">{{ label }} {{ count }}</span>
+                {% else %}
+                <form method="post"
+                    action="{{ url_for('friend.send_reaction', lookingback_id=lb_id, reaction_type=reaction) }}"
+                    style="display:inline">
+                    {{ action_form.csrf_token }}
+                    <button type="submit">{{ label }} {{ count }}</button>
+                </form>
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
+
             {% if g.friend_user %}
+            <a href="{{ url_for('friend.goal_index', friend_user_id=item.user.id) }}">目標を見る・設定する</a>
             <form method="post" action="{{ url_for('friend.remove_friend', friend_user_id=item.user.id) }}">
                 {{ action_form.csrf_token }}
                 <button type="submit">フレンド解除</button>
@@ -38,7 +72,6 @@
     {% else %}
     <p>フレンドはいません。</p>
     {% endif %}
-
 </main>
 <div class="back">
     <a href="{{ url_for('home.index') }}">← トップページに戻る</a>
