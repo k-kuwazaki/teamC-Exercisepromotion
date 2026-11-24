@@ -82,7 +82,7 @@ def save_registration():
             selected_exercises=selected_exercises,
             self_exercises=self_exercises,
             actual_minutes=actual_minutes_text,
-            error="運動時間を1〜300分で入力してください。",
+            error="運動時間を1〜30分で入力してください。",
         )
 
     actual_minutes = int(actual_minutes_text)

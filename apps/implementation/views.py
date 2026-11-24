@@ -23,6 +23,7 @@ def index():
 
     selected_exercises = session.get("selected_exercises", [])
     conditions = session.get("selected_plan_conditions", {})
+    default_tab = "ai-menu" if selected_exercises else "self-menu"
 
     raw_goal = str(conditions.get("duration", "0分")).replace("分", "")
     goal_minutes = int(raw_goal) if raw_goal.isdigit() else 0
@@ -41,9 +42,9 @@ def index():
         elif request.form.get("use_manual_time") == "1":
             if (
                 not manual_minutes_text.isdigit()
-                or not 1 <= int(manual_minutes_text) <= 300
+                or not 1 <= int(manual_minutes_text) <= 30
             ):
-                error = "運動時間を1〜300分で入力してください。"
+                error = "運動時間を1〜30分で入力してください。"
             else:
                 actual_minutes = int(manual_minutes_text)
                 duration_seconds = actual_minutes * 60
@@ -89,4 +90,5 @@ def index():
         goal_minutes=goal_minutes,
         self_exercises="",
         manual_minutes="",
+        default_tab=default_tab,
     )
