@@ -36,8 +36,3 @@ class Situation(db.Model):
     )
 
     self_exercises = db.Column(db.Text, nullable=True)
-
-    # 消費カロリー計算用
-    mets = db.Column(db.Float, nullable=True)
-    weight_at_exercise = db.Column(db.Float, nullable=True)
-    calories = db.Column(db.Float, nullable=True)

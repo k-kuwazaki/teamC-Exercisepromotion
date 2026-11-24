@@ -356,34 +356,3 @@
 .lb-wrapper .lb-confirm-actions button:hover {
     background: #c0392b;
 }
-
-/* 消費カロリー表示ボタン */
-.calorie-toggle-button {
-    background-color: #4caf80;
-    color: #ffffff;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 20px;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.2s, transform 0.2s;
-    margin-bottom: 15px;
-}
-
-/* マウスを乗せたとき */
-.calorie-toggle-button:hover {
-    background-color: #39966b;
-    transform: translateY(-2px);
-}
-
-/* ボタンを押したとき */
-.calorie-toggle-button:active {
-    transform: translateY(0);
-}
-
-/* キーボード操作時 */
-.calorie-toggle-button:focus-visible {
-    outline: 3px solid #a5d6bd;
-    outline-offset: 3px;
-}
