@@ -8,6 +8,10 @@
 <div class="chat-page">
     <h1>AI運動トレーナー</h1>
 
+    {% if plan_error or chat_error %}
+    <p class="error" role="alert">{{ plan_error or chat_error }}</p>
+    {% endif %}
+
     <div class="tab-bar">
         <button type="button" class="tab-btn {% if not chat_answer %}active{% endif %}" data-tab="tab-plan">メニュー提案</button>
         <button type="button" class="tab-btn {% if chat_answer %}active{% endif %}" data-tab="tab-coach">AIに相談</button>
@@ -86,9 +90,6 @@
         </form>
         {% endif %}
 
-        {% if plan_error %}
-        <p class="status error" role="alert">{{ plan_error }}</p>
-        {% endif %}
     </section>
 
     <section class="tab-panel {% if chat_answer %}active{% endif %}" id="tab-coach">
@@ -108,10 +109,6 @@
 
             {{ coach_form.submit() }}
         </form>
-
-        {% if chat_error %}
-        <p class="status error" role="alert">{{ chat_error }}</p>
-        {% endif %}
 
         <div class="answer" aria-live="polite">
             {% if chat_answer %}
