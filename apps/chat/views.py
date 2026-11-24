@@ -54,7 +54,7 @@ def get_user_profile_text():
 
     if user is None:
         return None
-    
+
     age = calculate_age(user.birthday)
 
     return f"""
@@ -186,11 +186,11 @@ def index():
                 plan_error = next(
                     (
                         message
-                        for errors in plan_form.errors.values()
-                        for message in errors
+                        for field in ("category", "experience", "duration", "equipment")
+                        for message in plan_form.errors.get(field, [])
                     ),
                     "入力内容を確認してください。",
-                    )
+                )
         elif action == "select_exercises":
             plan_options = session.get("plan_options", [])
             plan_conditions = session.get("plan_conditions", {})

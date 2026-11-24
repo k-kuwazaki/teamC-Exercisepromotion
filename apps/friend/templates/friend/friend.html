@@ -84,6 +84,18 @@
             </div>
             {% endif %}
 
+
+
+            {% if g.friend_user %}
+            <a href="{{ url_for('friend.goal_index', friend_user_id=item.user.id) }}">目標を見る・設定する</a>
+            <form method="post" action="{{ url_for('friend.remove_friend', friend_user_id=item.user.id) }}">
+                {{ action_form.csrf_token }}
+                <a href="{{ url_for('friend.confirm_remove_friend', friend_user_id=item.user.id) }}">
+                    フレンド解除
+                </a>
+            </form>
+            {% endif %}
+
         </li>
         {% endfor %}
     </ul>

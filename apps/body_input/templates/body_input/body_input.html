@@ -14,6 +14,14 @@
 
         <p class="body-en-title">BODY INFORMATION</p>
         <h1>身体情報入力</h1>
+        {% if form.height.errors or form.weight.errors or form.password.errors or form.password_confirm.errors %}
+        <p class="body-error">
+            {% for error in form.height.errors %}{{ error }}{% endfor %}
+            {% for error in form.weight.errors %}{{ error }}{% endfor %}
+            {% for error in form.password.errors %}{{ error }}{% endfor %}
+            {% for error in form.password_confirm.errors %}{{ error }}{% endfor %}
+        </p>
+        {% endif %}
         <p class="body-description">
             あなたの身体情報を登録して、<br>
             健康的な毎日につなげましょう。
@@ -61,23 +69,11 @@
             <div class="body-form-group">
                 <label>{{ form.password.label }}</label>
                 {{ form.password() }}
-
-                {% if form.password.errors %}
-                <p class="body-error">
-                    {{ form.password.errors[0] }}
-                </p>
-                {% endif %}
             </div>
 
             <div class="body-form-group">
                 <label>{{ form.password_confirm.label }}</label>
                 {{ form.password_confirm() }}
-
-                {% if form.password_confirm.errors %}
-                <p class="body-error">
-                    {{ form.password_confirm.errors[0] }}
-                </p>
-                {% endif %}
             </div>
 
             {{ form.submit(class_="body-submit") }}

@@ -1,0 +1,19 @@
+{% extends "home/base.html" %}
+{% block title %}フレンド{% endblock %}
+{% block content %}
+
+{% include "friend/_navigation.html" %}
+
+<h2>フレンド解除の確認</h2>
+
+<p>本当にこのフレンドを解除しますか？</p>
+
+<form method="post" action="{{ url_for('friend.remove_friend', friend_user_id=friend_user.id) }}">
+    {{ action_form.csrf_token }}
+
+    <button type="submit">解除する</button>
+</form>
+
+<a href="{{ url_for('friend.index') }}">キャンセル</a>
+
+{% endblock %}

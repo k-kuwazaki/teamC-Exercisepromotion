@@ -131,6 +131,7 @@ def day_detail(year, month, day):
         .all()
     )
     
+
     user = db.session.get(User, user_id)
     weight = user.weight if user and user.weight else 60
 
@@ -144,6 +145,21 @@ def day_detail(year, month, day):
         if r.duration and r.duration.isdigit()
     }
     
+
+    # その日の消費カロリーを合計
+    has_calorie_records = any(
+        exercise_record.calories is not None
+        for exercise_record in exercise_records
+    )
+
+    total_calories = round(
+        sum(
+            exercise_record.calories or 0
+            for exercise_record in exercise_records
+        ),
+        1,
+    )
+
 
     return render_template(
         "calendar/day_detail.html",

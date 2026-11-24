@@ -132,6 +132,7 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1rem;
+    padding-left: 60px;
 }
 
 .header-row .page-header {
@@ -382,6 +383,7 @@ h1 {
 
 .dashboard-value {
     display: block;
+
     font-size: 1.4rem;
     font-weight: bold;
     color: #1e3a5f;

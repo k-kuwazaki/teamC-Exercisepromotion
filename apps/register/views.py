@@ -23,6 +23,20 @@ def register():
         # 生年月日の未入力チェック
         birthday_str = form_data.get("birthday")
 
+        height = form_data.get("height")
+        weight = form_data.get("weight")
+
+        errors = []
+        if height is None or not (100.0 <= height <= 250.0):
+            errors.append("身長は100.0〜250.0cmの範囲で入力してください。")
+        if weight is None or not (20.0 <= weight <= 300.0):
+            errors.append("体重は20.0〜300.0kgの範囲で入力してください。")
+        if errors:
+            return render_template(
+                "register/register.html",
+                error=" ".join(errors)
+            )
+
         if not birthday_str:
             return render_template(
                 "register/register.html",
