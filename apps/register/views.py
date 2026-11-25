@@ -17,92 +17,97 @@ register_bp = Blueprint(
 
 @register_bp.route("/register", methods=["GET", "POST"])
 def register():
-    if request.method == "POST":
-        form_data = registration_form_data(request.form)
+    if request.method != "POST":
+        return render_template("register/register.html")
 
-        # 生年月日の未入力チェック
-        birthday_str = form_data.get("birthday")
+    form_data = registration_form_data(request.form)
 
-        height = form_data.get("height")
-        weight = form_data.get("weight")
+    birthday_str = form_data.get("birthday")
+    height = form_data.get("height")
+    weight = form_data.get("weight")
 
-        errors = []
-        if height is None or not (100.0 <= height <= 250.0):
-            errors.append("身長は100.0〜250.0cmの範囲で入力してください。")
-        if weight is None or not (20.0 <= weight <= 300.0):
-            errors.append("体重は20.0〜300.0kgの範囲で入力してください。")
-        if errors:
-            return render_template(
-                "register/register.html",
-                error=" ".join(errors)
-            )
+    errors = []
 
-        if not birthday_str:
-            return render_template(
-                "register/register.html",
-                error="生年月日を入力してください。"
-            )
+    if height is None or not (100.0 <= height <= 250.0):
+        errors.append("身長は100.0〜250.0cmの範囲で入力してください。")
 
-        # 生年月日の形式チェック
-        try:
-            birthday = datetime.strptime(
-                birthday_str, "%Y-%m-%d"
-            ).date()
+    if weight is None or not (20.0 <= weight <= 300.0):
+        errors.append("体重は20.0〜300.0kgの範囲で入力してください。")
 
-            # 未来の日付を禁止
-            if birthday > date.today():
-                return render_template(
-                    "register/register.html",
-                    error="生年月日に未来の日付は入力できません。"
-                )
+    if errors:
+        return render_template(
+            "register/register.html",
+            error=" ".join(errors),
+        )
 
-        except (ValueError, TypeError):
-            return render_template(
-                "register/register.html",
-                error="正しい生年月日を入力してください。"
-            )
+    if not birthday_str:
+        return render_template(
+            "register/register.html",
+            error="生年月日を入力してください。",
+        )
 
-        try:
-            user = User(
-                username=form_data["username"],
-                email=form_data["email"],
-                height=form_data["height"],
-                weight=form_data["weight"],
-                birthday=birthday,
-                exercise_habit=form_data["exercise_habit"],
-                goal=form_data["goal"],
-            )
+    try:
+        birthday = datetime.strptime(birthday_str, "%Y-%m-%d").date()
+    except (ValueError, TypeError):
+        return render_template(
+            "register/register.html",
+            error="正しい生年月日を入力してください。",
+        )
 
-            user.password = form_data["password"]
+    today = date.today()
 
-            db.session.add(user)
-            db.session.commit()
+    if birthday > today:
+        return render_template(
+            "register/register.html",
+            error="生年月日に未来の日付は入力できません。",
+        )
 
-            today = date.today()
-            age = today.year - birthday.year - (
-                (today.month, today.day) < (birthday.month, birthday.day)
-            )
-            return render_template(
-                "register/confirmation.html",
-                user=user,
-                age=age
-            )
+    age = today.year - birthday.year - (
+        (today.month, today.day) < (birthday.month, birthday.day)
+    )
 
-        except IntegrityError:
-            db.session.rollback()
-            return render_template(
-                "register/register.html",
-                error="このメールアドレスは既に登録されています。"
-            )
+    # DB保存より前に年齢をチェックする
+    if age < 12:
+        return render_template(
+            "register/register.html",
+            error="12歳未満の方は登録できません。",
+        )
 
-        except Exception:
-            db.session.rollback()
-            return render_template(
-                "register/register.html",
-                error="登録中に予期せぬエラーが発生しました。もう一度お試しください。"
-            )
+    try:
+        user = User(
+            username=form_data["username"],
+            email=form_data["email"],
+            height=height,
+            weight=weight,
+            birthday=birthday,
+            exercise_habit=form_data["exercise_habit"],
+            goal=form_data["goal"],
+        )
 
-    return render_template("register/register.html")
+        user.password = form_data["password"]
+
+        db.session.add(user)
+        db.session.commit()
+
+        return render_template(
+            "register/confirmation.html",
+            user=user,
+            age=age,
+        )
+
+    except IntegrityError:
+        db.session.rollback()
+        return render_template(
+            "register/register.html",
+            error="このメールアドレスは既に登録されています。",
+        )
+
+    except Exception:
+        db.session.rollback()
+        return render_template(
+            "register/register.html",
+            error="登録中に予期せぬエラーが発生しました。もう一度お試しください。",
+        )
 
 
 # 削除用のルート

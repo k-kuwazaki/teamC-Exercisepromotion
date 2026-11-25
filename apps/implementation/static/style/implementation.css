@@ -48,6 +48,7 @@
 /* タブ */
 .tab-bar {
     display: flex;
+    align-items: center;
     gap: 12px;
     margin: 0 0 12px;
 }
@@ -64,6 +65,18 @@
     font-weight: 700;
     cursor: pointer;
     transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.implementation-page a.tab-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.implementation-page .repeat-menu-btn {
+    margin-left: auto;
 }
 
 .implementation-page .tab-btn.active {
