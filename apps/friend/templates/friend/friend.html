@@ -34,9 +34,9 @@
                     <span class="friend-username">{{ item.user.username }}</span>
                     <div class="friend-status-row">
                         {% if item.done_today %}
-                        <span class="done-today">実施済み</span>
+                        <span class="done-today">今日は実施済みです</span>
                         {% else %}
-                        <span class="not-yet">まだかも...</span>
+                        <span class="not-yet">今日はまだかも...</span>
                         {% endif %}
 
                         {% if item.done_today and item.lookingback and g.friend_user %}
@@ -82,18 +82,6 @@
                     <button type="submit">フレンド解除</button>
                 </form>
             </div>
-            {% endif %}
-
-
-
-            {% if g.friend_user %}
-            <a href="{{ url_for('friend.goal_index', friend_user_id=item.user.id) }}">目標を見る・設定する</a>
-            <form method="post" action="{{ url_for('friend.remove_friend', friend_user_id=item.user.id) }}">
-                {{ action_form.csrf_token }}
-                <a href="{{ url_for('friend.confirm_remove_friend', friend_user_id=item.user.id) }}">
-                    フレンド解除
-                </a>
-            </form>
             {% endif %}
 
         </li>
