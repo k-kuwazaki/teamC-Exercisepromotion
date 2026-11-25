@@ -35,16 +35,13 @@ class TodayCalendar(calendar.HTMLCalendar):
 
         classes = self.cssclasses[weekday]
 
-        # 今日の日付
         if self.today and day == self.today.day:
             classes += " today"
 
-        # 日本の祝日
         selected_date = date(self.year, self.month, day)
         if jpholiday.is_holiday(selected_date):
             classes += " holiday"
 
-        # 運動実施済み
         if day in self.exercised_days:
             classes += " exercised"
 
@@ -99,6 +96,7 @@ def index():
         calendar_html=calendar_html,
     )
 
+# カロリー計算用変数
 CATEGORY_METS = {
     "筋力トレーニング": 3.5,
     "ダイエット": 4.0,
@@ -130,7 +128,6 @@ def day_detail(year, month, day):
         .order_by(Situation.created_at.desc())
         .all()
     )
-    
 
     user = db.session.get(User, user_id)
     weight = user.weight if user and user.weight else 60
@@ -144,22 +141,6 @@ def day_detail(year, month, day):
         for r in exercise_records
         if r.duration and r.duration.isdigit()
     }
-    
-
-    # その日の消費カロリーを合計
-    has_calorie_records = any(
-        exercise_record.calories is not None
-        for exercise_record in exercise_records
-    )
-
-    total_calories = round(
-        sum(
-            exercise_record.calories or 0
-            for exercise_record in exercise_records
-        ),
-        1,
-    )
-
 
     return render_template(
         "calendar/day_detail.html",
