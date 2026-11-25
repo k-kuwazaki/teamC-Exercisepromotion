@@ -9,70 +9,34 @@
 
     <h2>運動実施内容</h2>
 
-{% if exercise_records %}
+    {% if exercise_records %}
+    {% for exercise_record in exercise_records %}
+    <section class="exercise-record">
+        <h3>{{ exercise_record.created_at.strftime('%H:%M') }}の記録</h3>
 
-<button
-    type="button"
-    id="calorie-button"
-    class="calorie-toggle-button"
-    onclick="toggleCalories()"
->
-    消費カロリーを見る
-</button>
+        {% if exercise_record.answer %}
+        <h4>選択した運動メニュー</h4>
+        <p>{{ exercise_record.answer }}</p>
+        {% endif %}
 
+        {% if exercise_record.self_exercises %}
+        <h4>自主的に行った運動</h4>
+        <p>{{ exercise_record.self_exercises }}</p>
+        {% endif %}
 
-        {% if exercise_record.duration %}
-        <p>運動時間：{{ exercise_record.duration }}分</p>
+        {% if exercise_record.id in calories_map %}
+        <button class="calorie-toggle-btn" onclick="toggleCalorie(this)"
+            data-calories="{{ calories_map[exercise_record.id] }}">消費カロリーを表示</button>
+        <p class="calorie-display" style="display:none; margin-top:6px; color:#218653; font-weight:bold;">消費カロリー（概算）：約{{
+            calories_map[exercise_record.id] }} kcal</p>
+
         {% endif %}
     </section>
-
-    {% if exercise_record.id in calories_map %}
-    <p>消費カロリー（概算）：約{{ calories_map[exercise_record.id] }} kcal</p>
-    {% endif %}
 
     {% endfor %}
     {% else %}
     <p class="no-record">この日の運動記録はありません。</p>
-
-{% for exercise_record in exercise_records %}
-<section class="exercise-record">
-
-    <h3>{{ exercise_record.created_at.strftime('%H:%M') }}の記録</h3>
-
-    {% if exercise_record.answer %}
-    <h4>選択した運動メニュー</h4>
-    <p>{{ exercise_record.answer }}</p>
-
     {% endif %}
-
-    {% if exercise_record.self_exercises %}
-    <h4>自主的に行った運動</h4>
-    <p>{{ exercise_record.self_exercises }}</p>
-    {% endif %}
-
-    {% if exercise_record.duration %}
-    <p>運動時間：{{ exercise_record.duration }}分</p>
-    {% endif %}
-
-    <!-- 消費カロリー -->
-    <div class="calorie-info" style="display: none;">
-        {% if exercise_record.calories is not none %}
-        <p>
-            <strong>
-                消費カロリー：{{ exercise_record.calories }} kcal
-            </strong>
-        </p>
-        {% else %}
-        <p>消費カロリー：未計算</p>
-        {% endif %}
-    </div>
-
-</section>
-{% endfor %}
-
-{% else %}
-<p class="no-record">この日の運動記録はありません。</p>
-{% endif %}
 
     <h2>振り返り</h2>
     <ul class="lb-list">
@@ -93,26 +57,30 @@
     <a href="{{ url_for('home.index') }}">← トップページに戻る</a>
 </div>
 
+<style>
+    .calorie-toggle-btn {
+        margin-top: 8px;
+        padding: 5px 14px;
+        background: #52aa7c;
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        font-size: 0.85rem;
+        cursor: pointer;
+    }
+
+    .calorie-toggle-btn:hover {
+        background: #218653;
+    }
+</style>
+
+<script>
+    function toggleCalorie(btn) {
+        const display = btn.nextElementSibling;
+        const isHidden = display.style.display === 'none';
+        display.style.display = isHidden ? 'block' : 'none';
+        btn.textContent = isHidden ? '消費カロリーを非表示' : '消費カロリーを表示';
+    }
+</script>
 
 {% endblock %}
-
-    <script>
-    function toggleCalories() {
-        const calorieInfos = document.querySelectorAll(".calorie-info");
-        const calorieButton = document.getElementById("calorie-button");
-
-        const isHidden = calorieInfos.length > 0 &&
-            calorieInfos[0].style.display === "none";
-
-        calorieInfos.forEach(function(info) {
-            info.style.display = isHidden ? "block" : "none";
-        });
-
-        calorieButton.textContent = isHidden
-            ? "消費カロリーを隠す"
-            : "消費カロリーを見る";
-    }
-    </script>
-
-    {% endblock %}
-
