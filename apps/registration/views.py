@@ -12,84 +12,6 @@ from apps.app import db
 from apps.situation.models import Situation
 from apps.user.models import User
 
-def calculate_mets(category, experience, planned_duration, exercise_count):
-    """運動条件からMETsを算出する"""
-
-    mets_table = {
-        "筋力トレーニング": {
-            "初心者": [3.0, 3.0, 3.0, 3.0],
-            "中級者": [3.5, 3.5, 3.5, 3.5],
-            "上級者": [3.5, 3.5, 4.0, 4.0],
-        },
-        "ダイエット": {
-            "初心者": [2.5, 3.0, 3.0, 3.5],
-            "中級者": [3.5, 3.5, 3.5, 4.0],
-            "上級者": [3.5, 5.0, 5.0, 5.0],
-        },
-        "柔軟性・ストレッチ": {
-            "初心者": [2.0, 2.0, 2.0, 2.0],
-            "中級者": [2.5, 2.5, 2.5, 2.5],
-            "上級者": [2.5, 3.0, 3.0, 3.0],
-        },
-        "体力づくり": {
-            "初心者": [2.5, 3.0, 3.0, 3.0],
-            "中級者": [3.5, 4.0, 4.0, 4.5],
-            "上級者": [4.5, 4.5, 4.5, 4.5],
-        },
-        "運動不足の解消": {
-            "初心者": [2.5, 2.5, 3.0, 3.0],
-            "中級者": [3.0, 3.5, 4.0, 4.0],
-            "上級者": [5.0, 4.5, 4.5, 4.5],
-        },
-    }
-
-    # 経験レベルの表記を統一
-    experience_map = {
-        "beginner": "初心者",
-        "intermediate": "中級者",
-        "advanced": "上級者",
-        "初心者": "初心者",
-        "中級者": "中級者",
-        "上級者": "上級者",
-    }
-
-    experience = experience_map.get(experience)
-
-    # 予定時間を数値に変換
-    try:
-        planned_duration = int(
-            str(planned_duration).replace("分", "").strip()
-        )
-    except (ValueError, TypeError):
-        return None
-
-    duration_index = {
-        5: 0,
-        10: 1,
-        20: 2,
-        30: 3,
-    }.get(planned_duration)
-
-    if (
-        category not in mets_table
-        or experience not in mets_table[category]
-        or duration_index is None
-    ):
-        return None
-
-    if exercise_count not in (1, 2, 3):
-        return None
-
-    base_mets = mets_table[category][experience][duration_index]
-
-    # 種目数による調整
-    adjustment = {
-        1: -0.5,
-        2: 0.0,
-        3: 0.5,
-    }
-
-    return round(base_mets + adjustment[exercise_count], 1)
 
 # 各種リンク先は後々それ用のファイルに移動させる
 registration = Blueprint(
@@ -154,7 +76,7 @@ def save_registration():
 
     if (
         not actual_minutes_text.isdigit()
-        or not 1 <= int(actual_minutes_text) <= 300
+        or not 1 <= int(actual_minutes_text) <= 30
     ):
         return render_template(
             "registration/registration.html",
@@ -175,33 +97,6 @@ def save_registration():
         for index, exercise in enumerate(selected_exercises, start=1)
     )
     
-    # ユーザー情報を取得
-    user = db.session.get(User, user_id)
-
-    # METsを計算
-    if self_exercises:
-        # 自主運動の場合は固定METs 5.0を使用
-        mets = 5.0
-    else:
-        # AI提案メニューの場合は既存の条件別METsを使用
-        mets = calculate_mets(
-            category=conditions.get("category"),
-            experience=conditions.get("experience"),
-            planned_duration=conditions.get("duration"),
-            exercise_count=len(selected_exercises),
-        )
-
-    # 運動時の体重を取得
-    weight = user.weight if user else None
-
-    # 消費カロリーを計算
-    calories = None
-
-    if mets is not None and weight is not None and weight > 0:
-        calories = round(
-            mets * weight * (actual_minutes / 60) * 1.05,
-            1,
-        )
 
     try:
         record = Situation(
@@ -213,11 +108,6 @@ def save_registration():
             experience=conditions.get("experience"),
             duration=str(actual_minutes),
             equipment=conditions.get("equipment"),
-            
-            # 消費カロリー関連
-            mets=mets,
-            weight_at_exercise=weight,
-            calories=calories,
         )
 
         db.session.add(record)

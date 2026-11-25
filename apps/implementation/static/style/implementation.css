@@ -48,26 +48,43 @@
 /* タブ */
 .tab-bar {
     display: flex;
-    gap: 8px;
-    margin-bottom: 4px;
+    gap: 12px;
+    margin: 0 0 12px;
 }
 
-.tab-btn {
-    padding: 8px 20px;
-    border: 1px solid #c8ddd0;
+.implementation-page .tab-btn {
+    position: relative;
+    min-width: 150px;
+    padding: 12px 28px;
+    border: 1px solid #c9dfd2;
     border-radius: 999px;
     background: #fff;
-    color: #607568;
+    color: #74877b;
     font: inherit;
     font-weight: 700;
     cursor: pointer;
-    transition: background 0.2s, color 0.2s;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
 }
 
-.tab-btn.active {
+.implementation-page .tab-btn.active {
+    border-color: #248b55;
     background: #248b55;
     color: #fff;
-    border-color: #248b55;
+}
+
+/* .tab-btn:not(.active):hover {
+    border-color: #b9cbbf;
+    background: #edf3ef;
+    transform: translateY(-1px);
+} */
+.implementation-page .tab-btn:not(.active):hover {
+    border-color: #a9cbb7;
+    background: #fff;
+}
+
+.implementation-page .tab-btn:focus-visible {
+    outline: 3px solid #8bc9a2;
+    outline-offset: 3px;
 }
 
 .tab-panel {
@@ -107,7 +124,7 @@
     font-size: 1rem;
 }
 
-.implementation-page .exercise-card > p {
+.implementation-page .exercise-card>p {
     margin: 0 0 8px;
     color: #607568;
     font-size: 0.9rem;
@@ -281,6 +298,16 @@
 
     .implementation-page .timer-buttons {
         grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .tab-bar {
+        gap: 8px;
+    }
+
+    .implementation-page .tab-btn {
+        flex: 1;
+        min-width: 0;
+        padding: 12px 14px;
     }
 
     .implementation-page #timer {

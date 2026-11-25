@@ -23,7 +23,17 @@ def index():
 
     selected_exercises = session.get("selected_exercises", [])
     conditions = session.get("selected_plan_conditions", {})
-    default_tab = "ai-menu" if selected_exercises else "self-menu"
+    source = (
+        request.form.get("source", "")
+        if request.method == "POST"
+        else request.args.get("source", "")
+    )
+    if source == "home":
+        default_tab = "self-menu"
+    elif source == "chat":
+        default_tab = "ai-menu"
+    else:
+        default_tab = "ai-menu" if selected_exercises else "self-menu"
 
     raw_goal = str(conditions.get("duration", "0分")).replace("分", "")
     goal_minutes = int(raw_goal) if raw_goal.isdigit() else 0
@@ -73,6 +83,8 @@ def index():
                 self_exercises=self_exercises,
                 manual_minutes=manual_minutes_text,
                 error=error,
+                default_tab=default_tab,
+                source=source,
             )
 
         session["implementation_result"] = {
@@ -91,4 +103,5 @@ def index():
         self_exercises="",
         manual_minutes="",
         default_tab=default_tab,
+        source=source,
     )

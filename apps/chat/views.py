@@ -233,7 +233,7 @@ def index():
                         session.pop("plan_conditions", None)
 
                         return redirect(
-                        url_for("implementation.index")
+                        url_for("implementation.index", source="chat")
                         )
 
                         

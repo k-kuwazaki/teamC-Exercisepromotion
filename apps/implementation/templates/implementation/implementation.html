@@ -13,8 +13,8 @@
     {% endif %}
 
     <div class="tab-bar">
-        <button type="button" class="tab-btn {% if default_tab == 'ai-menu' %}active{% endif %}" data-tab="ai-menu">AIメニュー</button>
-        <button type="button" class="tab-btn {% if default_tab == 'self-menu' %}active{% endif %}" data-tab="self-menu">自主運動</button>
+        <button type="button" class="tab-btn {% if default_tab == 'ai-menu' %}active{% endif %}" data-tab="ai-menu" aria-pressed="{{ 'true' if default_tab == 'ai-menu' else 'false' }}">AIメニュー</button>
+        <button type="button" class="tab-btn {% if default_tab == 'self-menu' %}active{% endif %}" data-tab="self-menu" aria-pressed="{{ 'true' if default_tab == 'self-menu' else 'false' }}">自主運動</button>
     </div>
 
     <section class="tab-panel {% if default_tab == 'ai-menu' %}active{% endif %}" id="ai-menu">
@@ -40,6 +40,7 @@
     </section>
 
     <form method="post" action="{{ url_for('implementation.index') }}">
+        <input type="hidden" name="source" value="{{ source|default('') }}">
 
         <section class="tab-panel {% if default_tab == 'self-menu' %}active{% endif %}" id="self-menu">
             <h2>自主的に行う運動（任意）</h2>
@@ -96,6 +97,7 @@
             document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
             document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
             this.classList.add("active");
+            document.querySelectorAll(".tab-btn").forEach(b => b.setAttribute("aria-pressed", String(b === this)));
             document.getElementById(this.dataset.tab).classList.add("active");
         });
     });
