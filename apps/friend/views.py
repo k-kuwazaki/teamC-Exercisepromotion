@@ -392,44 +392,95 @@ def remove_friend(friend_user_id):
     actor = _current_user_for_action()
     if actor is None:
         return redirect(url_for("friend.index"))
+
     if not _action_form_is_valid():
         return redirect(url_for("friend.index"))
 
-    relationship = Friend.query.filter(
-        Friend.status == "accepted",
-        or_(
-            (Friend.requester_id == actor.id)
-            & (Friend.addressee_id == friend_user_id),
-            (Friend.requester_id == friend_user_id)
-            & (Friend.addressee_id == actor.id),
-        ),
-    ).first_or_404()
-    db.session.delete(relationship)
-    db.session.commit()
-    flash("フレンドを解除しました。", "success")
-    return redirect(url_for("friend.index"))
-
-@friend.route("/<int:friend_user_id>/confirm_remove")
-def confirm_remove_friend(friend_user_id):
-    actor = _current_user_for_action()
-    if actor is None:
-        return redirect(url_for("friend.index"))
-
-    # 本当にフレンド関係があるか確認
     relationship = _get_active_friend_relationship(
         actor.id, friend_user_id
     )
     if relationship is None:
         abort(404)
 
+    try:
+        # 進行中・承認待ちの目標があるか確認
+        active_goal = FriendGoal.query.filter(
+            FriendGoal.friend_id == relationship.id,
+            FriendGoal.status.in_(["active", "pending"])
+        ).first()
+
+        if active_goal is not None:
+            flash(
+                "目標を立てているフレンドは解除できません。先に目標を終了してください。",
+                "error"
+            )
+            return redirect(url_for("friend.index"))
+
+        # 過去の目標（達成済み・未達成）を削除
+        FriendGoal.query.filter(
+            FriendGoal.friend_id == relationship.id
+        ).delete(synchronize_session=False)
+
+        # フレンド関係を削除
+        db.session.delete(relationship)
+
+        db.session.commit()
+
+        flash("フレンドを解除しました。", "success")
+
+    except IntegrityError:
+        db.session.rollback()
+        flash(
+            "データベースエラーが発生したため、フレンドを解除できませんでした。",
+            "error"
+        )
+
+    except Exception:
+        db.session.rollback()
+        flash(
+            "予期しないエラーが発生しました。",
+            "error"
+        )
+
+    return redirect(url_for("friend.index"))
+
+@friend.route("/<int:friend_user_id>/confirm_remove", methods=["GET"])
+def confirm_remove_friend(friend_user_id):
+    actor = _current_user_for_action()
+    if actor is None:
+        return redirect(url_for("friend.index"))
+
+    # フレンド関係があるか確認
+    relationship = _get_active_friend_relationship(
+        actor.id, friend_user_id
+    )
+    if relationship is None:
+        abort(404)
+
+    # 進行中の目標があるか確認
+    goal = FriendGoal.query.filter(
+        FriendGoal.friend_id == relationship.id,
+        FriendGoal.status.in_(["active", "pending"])
+    ).first()
+
+    if goal is not None:
+        flash(
+            "目標を立てているフレンドは解除できません。先に目標を終了してください。",
+            "error"
+        )
+        return redirect(url_for("friend.index"))
+
     friend_user = db.session.get(User, friend_user_id)
+
+    if friend_user is None:
+        abort(404)
 
     return render_template(
         "friend/confirm_remove_friend.html",
         friend_user=friend_user,
         action_form=FriendActionForm(),
     )
-
+    
 @friend.route("/reactions/<int:lookingback_id>/<reaction_type>", methods=["POST"])
 def send_reaction(lookingback_id, reaction_type):
     actor = _current_user_for_action()

@@ -77,8 +77,7 @@
             <div class="friend-actions">
                 <a href="{{ url_for('friend.goal_index', friend_user_id=item.user.id) }}"
                     class="goal-link">フレンドとの目標を見る・設定する</a>
-                <form method="post" action="{{ url_for('friend.remove_friend', friend_user_id=item.user.id) }}">
-                    {{ action_form.csrf_token }}
+                <form method="get" action="{{ url_for('friend.confirm_remove_friend', friend_user_id=item.user.id) }}">
                     <button type="submit">フレンド解除</button>
                 </form>
             </div>
