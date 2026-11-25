@@ -11,14 +11,25 @@
     {% if pending_requests %}
     <ul class="friend-list">
         {% for friend_request in pending_requests %}
-        <li>
-            <span>{{ friend_request.username }}さん（承認待ち）</span>
+        <li class="friend-card">
+
+            <div class="friend-user">
+                <div class="friend-avatar avatar-pending">{{ friend_request.username[0] | upper }}</div>
+                <div class="friend-user-info">
+                    <span class="friend-username">{{ friend_request.username }}</span>
+                    <span class="request-label">承認待ち</span>
+                </div>
+            </div>
+
             {% if g.friend_user %}
-            <form method="post" action="{{ url_for('friend.cancel_request', request_id=friend_request.id) }}">
-                {{ action_form.csrf_token }}
-                <button type="submit">申請を取り消す</button>
-            </form>
+            <div class="friend-actions">
+                <form method="post" action="{{ url_for('friend.cancel_request', request_id=friend_request.id) }}">
+                    {{ action_form.csrf_token }}
+                    <button type="submit" class="btn-reject">申請を取り消す</button>
+                </form>
+            </div>
             {% endif %}
+
         </li>
         {% endfor %}
     </ul>

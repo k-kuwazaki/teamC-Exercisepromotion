@@ -16,40 +16,24 @@
         {% for friend_request in incoming_requests %}
         <li class="friend-card">
 
-            <!-- ユーザー情報 -->
             <div class="friend-user">
-
-                {% if friend_request.profile_image %}
-                <img src="{{ url_for('static', filename=friend_request.profile_image) }}" alt="プロフィール写真"
-                    class="friend-avatar">
-                {% else %}
-                <div class="friend-avatar">
-                    {{ friend_request.username[0] }}
-                </div>
-                {% endif %}
-
+                <div class="friend-avatar">{{ friend_request.username[0] | upper }}</div>
                 <div class="friend-user-info">
-                    <span class="friend-username">
-                        {{ friend_request.username }}
-                    </span>
+                    <span class="friend-username">{{ friend_request.username }}</span>
+                    <span class="request-label">フレンド申請が届いています</span>
                 </div>
-
             </div>
 
-            <!-- 承認・拒否ボタン -->
             {% if g.friend_user %}
             <div class="friend-request-actions">
-
                 <form method="post" action="{{ url_for('friend.accept_request', request_id=friend_request.id) }}">
                     {{ action_form.csrf_token }}
-                    <button type="submit">承認</button>
+                    <button type="submit" class="btn-accept">承認</button>
                 </form>
-
                 <form method="post" action="{{ url_for('friend.reject_request', request_id=friend_request.id) }}">
                     {{ action_form.csrf_token }}
-                    <button type="submit">拒否</button>
+                    <button type="submit" class="btn-reject">拒否</button>
                 </form>
-
             </div>
             {% endif %}
 
