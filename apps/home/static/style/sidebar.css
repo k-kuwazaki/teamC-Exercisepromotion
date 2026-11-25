@@ -133,7 +133,7 @@ body {
     justify-content: center;
     position: relative;
     padding: 40px 24px 32px;
-    background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
+    background: transparent;
     border-radius: 16px;
     margin-bottom: 32px;
     box-sizing: border-box;
@@ -618,6 +618,7 @@ h1 {
     background: #278653;
     transform: translateX(4px);
 }
+
 
 /* スマホ対応 */
 @media screen and (max-width: 850px) {

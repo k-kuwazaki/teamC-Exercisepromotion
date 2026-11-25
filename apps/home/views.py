@@ -125,7 +125,7 @@ def friend():
 @home.route("/implementation")
 @login_required
 def implementation():
-    return render_template("implementation/implementation.html")
+    return redirect(url_for("implementation.index", source="home"))
 
 
 @home.route("/help")
