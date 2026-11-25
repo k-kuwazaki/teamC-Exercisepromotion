@@ -11,7 +11,7 @@ from flask import (
 from apps.app import db
 from apps.situation.models import Situation
 from apps.user.models import User
-
+import json
 
 # 各種リンク先は後々それ用のファイルに移動させる
 registration = Blueprint(
@@ -108,6 +108,7 @@ def save_registration():
             experience=conditions.get("experience"),
             duration=str(actual_minutes),
             equipment=conditions.get("equipment"),
+            question=json.dumps(selected_exercises, ensure_ascii=False),
         )
 
         db.session.add(record)

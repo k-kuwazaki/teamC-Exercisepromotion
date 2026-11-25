@@ -8,17 +8,30 @@
 <div class="implementation-page">
     <h1>運動実施</h1>
 
-    {% if error %}
-    <p class="error" role="alert">{{ error }}</p>
-    {% endif %}
-
     <div class="tab-bar">
-        <button type="button" class="tab-btn {% if default_tab == 'ai-menu' %}active{% endif %}" data-tab="ai-menu" aria-pressed="{{ 'true' if default_tab == 'ai-menu' else 'false' }}">AIメニュー</button>
-        <button type="button" class="tab-btn {% if default_tab == 'self-menu' %}active{% endif %}" data-tab="self-menu" aria-pressed="{{ 'true' if default_tab == 'self-menu' else 'false' }}">自主運動</button>
+        <button type="button" class="tab-btn {% if default_tab == 'ai-menu' %}active{% endif %}" data-tab="ai-menu"
+            aria-pressed="{{ 'true' if default_tab == 'ai-menu' else 'false' }}">
+            AIメニュー
+        </button>
+
+        <button type="button" class="tab-btn {% if default_tab == 'self-menu' %}active{% endif %}" data-tab="self-menu"
+            aria-pressed="{{ 'true' if default_tab == 'self-menu' else 'false' }}">
+            自主運動
+        </button>
+
+        {% if can_repeat_yesterday %}
+        <a class="tab-btn repeat-menu-btn" href="{{ url_for('implementation.index', repeat='yesterday') }}">
+            前日と同じメニューを使う
+        </a>
+        {% endif %}
     </div>
 
     <section class="tab-panel {% if default_tab == 'ai-menu' %}active{% endif %}" id="ai-menu">
         <h2>今日の運動メニュー</h2>
+        {% if error and default_tab == 'ai-menu' %}
+        <p class="error" role="alert">{{ error }}</p>
+        {% endif %}
+
         {% if selected_exercises %}
         <div class="exercise-scroll">
             {% for exercise in selected_exercises %}
@@ -41,9 +54,14 @@
 
     <form method="post" action="{{ url_for('implementation.index') }}">
         <input type="hidden" name="source" value="{{ source|default('') }}">
+        <input type="hidden" id="validate_goal" name="validate_goal" value="0">
+        <input type="hidden" id="active_tab" name="active_tab" value="{{ default_tab }}">
 
         <section class="tab-panel {% if default_tab == 'self-menu' %}active{% endif %}" id="self-menu">
             <h2>自主的に行う運動（任意）</h2>
+            {% if error and default_tab == 'self-menu' %}
+            <p class="error" role="alert">{{ error }}</p>
+            {% endif %}
             <label for="self_exercises">運動内容</label>
             <textarea id="self_exercises" name="self_exercises" rows="4"
                 placeholder="例：散歩、ストレッチなど">{{ self_exercises|default('') }}</textarea>
@@ -53,8 +71,8 @@
             <h2>運動時間</h2>
 
             <label for="goal_minutes">目標時間（分）</label>
-            <input type="number" id="goal_minutes" name="goal_minutes" min="1" max="30" value="{{ goal_minutes or 10 }}"
-                required>
+            <input type="number" id="goal_minutes" name="goal_minutes" min="1" max="30"
+                value="{{ goal_minutes_input if goal_minutes_input is defined else (goal_minutes or 10) }}" required>
 
             <p id="timer" aria-live="polite">00:00</p>
 
@@ -92,19 +110,33 @@
 
 <script>
     // タブ切り替え
-    document.querySelectorAll(".tab-btn").forEach(btn => {
+    const activeTabInput = document.getElementById("active_tab");
+
+    document.querySelectorAll(".tab-btn[data-tab]").forEach(btn => {
         btn.addEventListener("click", function () {
-            document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
-            document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+            document.querySelectorAll(".tab-btn[data-tab]").forEach(button => {
+                button.classList.remove("active");
+            });
+
+            document.querySelectorAll(".tab-panel").forEach(panel => {
+                panel.classList.remove("active");
+            });
+
             this.classList.add("active");
-            document.querySelectorAll(".tab-btn").forEach(b => b.setAttribute("aria-pressed", String(b === this)));
+            activeTabInput.value = this.dataset.tab;
+
+            document.querySelectorAll(".tab-btn[data-tab]").forEach(button => {
+                button.setAttribute("aria-pressed", String(button === this));
+            });
+
             document.getElementById(this.dataset.tab).classList.add("active");
         });
     });
 
-    // タイマー
+    // タイマー要素
     const timerElement = document.getElementById("timer");
     const goalMinutesInput = document.getElementById("goal_minutes");
+    const validateGoalInput = document.getElementById("validate_goal");
     const durationInput = document.getElementById("duration_seconds");
     const progressBar = document.getElementById("progress-bar");
     const progressText = document.getElementById("progress-text");
@@ -120,7 +152,10 @@
     let timerInterval = null;
 
     function getElapsedSeconds() {
-        if (startedAt === null) return elapsedBeforePause;
+        if (startedAt === null) {
+            return elapsedBeforePause;
+        }
+
         return elapsedBeforePause + Math.floor((Date.now() - startedAt) / 1000);
     }
 
@@ -128,12 +163,22 @@
         const elapsed = getElapsedSeconds();
         const minutes = Math.floor(elapsed / 60);
         const seconds = elapsed % 60;
-        timerElement.textContent = String(minutes).padStart(2, "0") + ":" + String(seconds).padStart(2, "0");
+
+        timerElement.textContent =
+            String(minutes).padStart(2, "0") + ":" +
+            String(seconds).padStart(2, "0");
+
         durationInput.value = elapsed;
-        const percent = goalSeconds > 0 ? Math.min(100, Math.floor((elapsed / goalSeconds) * 100)) : 0;
+
+        const percent = goalSeconds > 0
+            ? Math.min(100, Math.floor((elapsed / goalSeconds) * 100))
+            : 0;
+
         progressBar.value = percent;
+
         if (goalSeconds > 0) {
             const remaining = Math.max(0, goalSeconds - elapsed);
+
             progressText.textContent = elapsed >= goalSeconds
                 ? "目標達成！"
                 : `達成率 ${percent}%（残り ${Math.floor(remaining / 60)}分${remaining % 60}秒）`;
@@ -142,36 +187,52 @@
 
     startButton.addEventListener("click", function () {
         const goalMinutes = Number(goalMinutesInput.value);
+
         if (!Number.isInteger(goalMinutes) || goalMinutes < 1 || goalMinutes > 30) {
-            alert("目標時間を1〜30分で入力してください。");
+            validateGoalInput.value = "1";
+            startButton.form.submit();
             return;
         }
+
+        validateGoalInput.value = "0";
+
         goalSeconds = goalMinutes * 60;
         elapsedBeforePause = 0;
         startedAt = Date.now();
+
         startButton.disabled = true;
         goalMinutesInput.disabled = true;
         pauseButton.disabled = false;
         resumeButton.disabled = true;
         endButton.disabled = false;
+
         updateTimer();
         timerInterval = setInterval(updateTimer, 1000);
     });
 
     pauseButton.addEventListener("click", function () {
-        if (startedAt === null) return;
+        if (startedAt === null) {
+            return;
+        }
+
         elapsedBeforePause = getElapsedSeconds();
         startedAt = null;
         clearInterval(timerInterval);
+
         pauseButton.disabled = true;
         resumeButton.disabled = false;
+
         updateTimer();
     });
 
     resumeButton.addEventListener("click", function () {
-        if (startedAt !== null) return;
+        if (startedAt !== null) {
+            return;
+        }
+
         startedAt = Date.now();
         timerInterval = setInterval(updateTimer, 1000);
+
         pauseButton.disabled = false;
         resumeButton.disabled = true;
     });
@@ -181,8 +242,10 @@
             elapsedBeforePause = getElapsedSeconds();
             startedAt = null;
         }
+
         clearInterval(timerInterval);
         updateTimer();
+
         pauseButton.disabled = true;
         resumeButton.disabled = true;
         endButton.disabled = true;
