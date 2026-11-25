@@ -126,38 +126,142 @@ body {
     margin-top: 30px;
 }
 
-/* ヘッダー行（タイトル＋ログアウト） */
+/* ===== ヘッダー行（タイトル） ===== */
 .header-row {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
-    padding-left: 60px;
+    justify-content: center;
+    position: relative;
+    padding: 40px 24px 32px;
+    background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
+    border-radius: 16px;
+    margin-bottom: 32px;
+    box-sizing: border-box;
 }
 
 .header-row .page-header {
     margin-bottom: 0;
 }
 
-.logout-btn {
-    white-space: nowrap;
-    flex-shrink: 0;
+/* ===== タイトル部分 ===== */
+.page-header {
+    flex: 1;
+    min-width: 0;
+    width: auto;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.header-icon {
+    font-size: 2rem;
+    color: #66bb6a;
+    margin-bottom: 8px;
+}
+
+.header-label {
+    font-size: 0.75rem;
+    letter-spacing: 0.15em;
+    color: #81c784;
+    font-weight: 600;
+}
+
+.page-header h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #2e7d32;
+    margin: 8px 0 4px;
+    overflow-wrap: anywhere;
+}
+
+.page-header p {
+    font-size: 0.95rem;
+    color: #555;
+    margin: 0;
+}
+
+.header-decoration {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-top: 16px;
+}
+
+.header-decoration span {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #a5d6a7;
+}
+
+.header-decoration span:nth-child(2) {
+    background: #66bb6a;
 }
 
 @media screen and (max-width: 768px) {
     .header-row {
-        flex-direction: column;
-        align-items: flex-end;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        padding: 40px 24px 32px;
+        background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
+        border-radius: 16px;
+        margin-bottom: 32px;
+        box-sizing: border-box;
     }
 
-    .header-row .page-header {
-        width: 100%;
-        order: 2;
-        margin-top: 0.5rem;
+    /* タイトル部分 */
+    .page-header {
+        flex: 1;
+        min-width: 0;
+        width: auto;
+        text-align: center;
+        box-sizing: border-box;
     }
 
-    .logout-btn {
-        order: 1;
+    .header-icon {
+        font-size: 2rem;
+        color: #66bb6a;
+        margin-bottom: 8px;
+    }
+
+    .header-label {
+        font-size: 0.75rem;
+        letter-spacing: 0.15em;
+        color: #81c784;
+        font-weight: 600;
+    }
+
+    .page-header h1 {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #2e7d32;
+        margin: 8px 0 4px;
+        overflow-wrap: anywhere;
+    }
+
+    .page-header p {
+        font-size: 0.95rem;
+        color: #555;
+        margin: 0;
+    }
+
+    .header-decoration {
+        display: flex;
+        justify-content: center;
+        gap: 6px;
+        margin-top: 16px;
+    }
+
+    .header-decoration span {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #a5d6a7;
+    }
+
+    .header-decoration span:nth-child(2) {
+        background: #66bb6a;
     }
 }
 
@@ -332,23 +436,6 @@ h1 {
         padding-right: 12px;
     }
 
-}
-
-/* ホーム画面 */
-
-.page-header {
-    margin-bottom: 28px;
-}
-
-.page-header h1 {
-    font-size: 1.6rem;
-    color: #1e3a5f;
-    margin-bottom: 6px;
-}
-
-.page-header p {
-    color: #666;
-    font-size: 0.95rem;
 }
 
 /* ダッシュボード */
@@ -626,5 +713,72 @@ h1 {
         max-width: none;
         margin: 0 auto;
 
+    }
+}
+
+.help-link {
+    position: absolute;
+    top: 15px;
+    right: 18px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 7px 12px;
+
+    background-color: #2e7d32 !important;
+    color: #ffffff !important;
+    border: 1px solid #2e7d32 !important;
+
+    border-radius: 12px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: bold;
+    white-space: nowrap;
+    transition: 0.2s;
+}
+
+.help-link:hover {
+    background-color: #1b5e20 !important;
+    border-color: #1b5e20 !important;
+    color: #ffffff !important;
+}
+
+/* ===== スマートフォン（480px以下） ===== */
+@media screen and (max-width: 480px) {
+
+    .header-row {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 50px 16px 24px;
+        gap: 10px;
+    }
+
+    /* ヘルプを右上に配置 */
+    .help-link {
+        top: 12px;
+        right: 12px;
+        padding: 4px 8px;
+        font-size: 11px;
+        gap: 4px;
+        margin: 0;
+    }
+
+    /* タイトル */
+    .page-header {
+        width: 100%;
+        min-width: 0;
+        text-align: center;
+    }
+
+    .page-header h1 {
+        font-size: 20px;
+        line-height: 1.5;
+    }
+
+    .page-header p {
+        font-size: 12px;
+        line-height: 1.6;
     }
 }

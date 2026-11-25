@@ -11,18 +11,15 @@
     <div class="page-header">
         <h1><i class="fas fa-home"></i> 運動継続促進システム</h1>
         <p>ようこそ！今日も一緒に運動を続けましょう。</p>
+        <a href="{{ url_for('home.help') }}" class="help-link">
+            <i class="fas fa-circle-question"></i>
+            <span>ヘルプ</span>
+        </a>
+
     </div>
-
-
-    <a href="{{ url_for('home.help') }}" class="help-link">
-        <i class="fas fa-circle-question"></i>
-        <span>ヘルプ・使い方</span>
-    </a>
     <!-- <a href="{{ url_for('login.logout') }}" class="btn btn-outline-danger logout-btn">
             <i class="fas fa-sign-out-alt"></i> ログアウト
         </a> -->
-
-
 </div>
 
 <!-- モード切り替え -->
