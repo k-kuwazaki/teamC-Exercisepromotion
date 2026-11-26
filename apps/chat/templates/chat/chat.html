@@ -13,7 +13,8 @@
     {% endif %}
 
     <div class="tab-bar">
-        <button type="button" class="tab-btn {% if not chat_answer %}active{% endif %}" data-tab="tab-plan">メニュー提案</button>
+        <button type="button" class="tab-btn {% if not chat_answer %}active{% endif %}"
+            data-tab="tab-plan">メニュー提案</button>
         <button type="button" class="tab-btn {% if chat_answer %}active{% endif %}" data-tab="tab-coach">AIに相談</button>
     </div>
 
@@ -102,9 +103,9 @@
 
             {{ coach_form.question.label }}
             {{ coach_form.question(
-                rows=4,
-                maxlength=500,
-                placeholder="例：腕立て伏せの正しいフォームを教えて"
+            rows=4,
+            maxlength=500,
+            placeholder="例：腕立て伏せの正しいフォームを教えて"
             ) }}
 
             {{ coach_form.submit() }}
@@ -124,6 +125,13 @@
     <a href="{{ url_for('home.index') }}">← トップページに戻る</a>
 </div>
 
+<div id="loading-overlay" aria-hidden="true">
+    <div class="loading-box">
+        <div class="loading-spinner"></div>
+        <p>AIがメニューを考えています…</p>
+    </div>
+</div>
+
 <script>
     document.querySelectorAll(".tab-btn").forEach(btn => {
         btn.addEventListener("click", function () {
@@ -133,5 +141,12 @@
             document.getElementById(this.dataset.tab).classList.add("active");
         });
     });
+
+    document.querySelectorAll("form").forEach(form => {
+        form.addEventListener("submit", function () {
+            document.getElementById("loading-overlay").removeAttribute("aria-hidden");
+        });
+    });
 </script>
+
 {% endblock %}
