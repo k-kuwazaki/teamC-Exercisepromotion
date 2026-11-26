@@ -38,7 +38,11 @@
 
         <div class="body-confirm-item">
             <strong>運動習慣</strong>
-            {{ data.exercise_habit }}
+            {{ {
+            "rarely": "ほとんどしない",
+            "sometimes": "週に1〜2回",
+            "often": "週に3回以上"
+            }.get(data.exercise_habit, "未設定") }}
         </div>
 
         <div class="body-confirm-item">

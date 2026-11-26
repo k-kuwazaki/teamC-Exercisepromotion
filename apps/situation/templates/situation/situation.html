@@ -25,10 +25,10 @@
         {% if item.kind == "chat" %}
         <p>質問：{{ item.question }}</p>
         {% else %}
-        <p>カテゴリー：{{ item.category }}</p>
-        <p>運動経験：{{ item.experience }}</p>
-        <p>運動時間：{{ item.duration }}</p>
-        <p>器具：{{ item.equipment }}</p>
+        <p>カテゴリー：{{ item.category or "未選択" }}</p>
+        <p>運動経験：{{ item.experience or "未選択" }}</p>
+        <p>運動時間：{{ item.duration or "未選択" }}</p>
+        <p>器具：{{ item.equipment or "未選択" }}</p>
         {% endif %}
 
         <h3>回答</h3>
