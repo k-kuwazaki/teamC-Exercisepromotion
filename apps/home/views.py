@@ -156,3 +156,28 @@ def help():
 @home.route("/register")
 def register():
     return render_template("register/register.html")
+
+@home.route("/calendar")
+def calendar():
+    return redirect(url_for("calendar.index"))
+
+@home.route("/situation")
+def situation():
+    user_id = session.get("user_id")
+
+    if user_id is None:
+        return redirect(url_for("login.login"))
+
+    situations = (
+        Situation.query
+        .filter_by(user_id=user_id)
+        .order_by(Situation.created_at.desc())
+        .all()
+    )
+
+    return render_template(
+        "situation/situation.html",
+        situations=situations,
+    )
+
+    return render_template("situation/situation.html")
