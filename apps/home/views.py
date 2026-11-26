@@ -9,9 +9,12 @@ from flask import (
     session,
     url_for,
 )
-from sqlalchemy import func
+from sqlalchemy import func, or_
 
 from apps.situation.models import Situation
+from apps.friend.models import Friend
+from apps.lookingback.models import LookingBack
+from apps.user.models import User
 
 
 home = Blueprint(
@@ -36,7 +39,6 @@ def login_required(view):
 @home.route("/")
 @login_required
 def index():
-    # ホームへ戻ったとき、未登録の運動内容を破棄
     session.pop("selected_exercises", None)
     session.pop("selected_plan_conditions", None)
     session.pop("implementation_result", None)
@@ -45,40 +47,56 @@ def index():
 
     today_date = date.today()
     week_start = today_date - timedelta(days=today_date.weekday())
+    user_id = session["user_id"]
 
     exercise_records = (
         Situation.query
-        .filter_by(
-            user_id=session["user_id"],
-            kind="registration",
-        )
+        .filter_by(user_id=user_id, kind="registration")
         .filter(func.date(Situation.created_at) >= week_start.isoformat())
         .filter(func.date(Situation.created_at) <= today_date.isoformat())
         .all()
     )
 
     today_records = [
-        record
-        for record in exercise_records
+        record for record in exercise_records
         if record.created_at.date() == today_date
     ]
-
     today_minutes = sum(
         int(record.duration)
         for record in today_records
         if record.duration and record.duration.isdigit()
     )
-
     today_input = bool(today_records)
-    week_days = len({
-        record.created_at.date()
-        for record in exercise_records
-    })
+    week_days = len({record.created_at.date() for record in exercise_records})
+
+    # フレンドの今日の運動状況を取得
+    relationships = Friend.query.filter(
+        Friend.status == "accepted",
+        or_(Friend.requester_id == user_id, Friend.addressee_id == user_id),
+    ).all()
+    friend_ids = [
+        r.addressee_id if r.requester_id == user_id else r.requester_id
+        for r in relationships
+    ]
+    friend_status = []
+    if friend_ids:
+        done_today_ids = {
+            r.user_id
+            for r in LookingBack.query.filter(
+                LookingBack.user_id.in_(friend_ids),
+                LookingBack.date == today_date,
+            ).all()
+        }
+        friend_users = User.query.filter(User.id.in_(friend_ids)).order_by(User.username).all()
+        friend_status = [
+            {"username": u.username, "done_today": u.id in done_today_ids}
+            for u in friend_users
+        ]
 
     template = (
-       "simple/simple_index.html"
-       if session.get("display_mode") == "simple"
-       else "home/index.html"
+        "simple/simple_index.html"
+        if session.get("display_mode") == "simple"
+        else "home/index.html"
     )
 
     return render_template(
@@ -86,6 +104,7 @@ def index():
         today_minutes=today_minutes,
         today_input=today_input,
         week_days=week_days,
+        friend_status=friend_status,
     )
 
 

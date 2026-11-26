@@ -22,6 +22,7 @@ class Friend(db.Model):
         default="pending",
         server_default="pending",
     )
+    request_message = db.Column(db.String(200), nullable=True)
     goals = db.relationship("FriendGoal", backref="friend", lazy=True)
 
 

@@ -54,15 +54,37 @@
         </div>
     </div>
 
-    <div class="dashboard-card">
-        <div class="dashboard-icon">
-            <i class="fas fa-calendar-check"></i>
-        </div>
-        <div class="dashboard-info">
-            <span class="dashboard-label">今週の運動日数</span>
-            <span class="dashboard-value">{{ week_days }}日</span>
-        </div>
-    </div>
+    <!-- フレンドの運動状況 -->
+    {% if friend_status %}
+    <details class="home-friend-status">
+        <summary class="home-friend-summary">
+            <div class="home-friend-summary-icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="home-friend-summary-info">
+                <span class="home-friend-summary-label">フレンドの今日の運動状況</span>
+                <span class="home-friend-summary-value">
+                    {{ friend_status | selectattr("done_today") | list | length }} / {{ friend_status | length }}人が実施済み
+                </span>
+            </div>
+        </summary>
+
+        <ul class="home-friend-list">
+            {% for f in friend_status %}
+            <li class="home-friend-item {% if f.done_today %}done{% else %}not-yet{% endif %}">
+                <div class="home-friend-avatar">{{ f.username[0] | upper }}</div>
+                <span class="home-friend-name">{{ f.username }}</span>
+                {% if f.done_today %}
+                <span class="home-friend-badge done">実施済み</span>
+                {% else %}
+                <span class="home-friend-badge not-yet">まだかも...</span>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+        <a href="{{ url_for('friend.index') }}" class="home-friend-link">フレンド一覧を見る →</a>
+    </details>
+    {% endif %}
 
 </div>
 

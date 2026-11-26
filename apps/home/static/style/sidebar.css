@@ -204,7 +204,6 @@ body {
         justify-content: center;
         position: relative;
         padding: 40px 24px 32px;
-        background: linear-gradient(135deg, #e8f5e9, #f1f8e9);
         border-radius: 16px;
         margin-bottom: 32px;
         box-sizing: border-box;
@@ -745,7 +744,7 @@ h1 {
     color: #ffffff !important;
 }
 
-/* ===== スマートフォン（480px以下） ===== */
+/* スマートフォン（480px以下） */
 @media screen and (max-width: 480px) {
 
     .header-row {
@@ -782,4 +781,150 @@ h1 {
         font-size: 12px;
         line-height: 1.6;
     }
+}
+
+
+/* ホーム画面：フレンド運動状況 */
+.home-friend-status {
+    margin-bottom: 0;
+    border-radius: 12px;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+    border-left: 4px solid #2563eb;
+    overflow: hidden;
+}
+
+.home-friend-summary {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 20px;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+    margin: 0;
+}
+
+.home-friend-summary::-webkit-details-marker {
+    display: none;
+}
+
+.home-friend-summary-icon {
+    font-size: 1.8rem;
+    color: #2563eb;
+    flex-shrink: 0;
+}
+
+.home-friend-summary-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.home-friend-summary-label {
+    display: block;
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.home-friend-summary-value {
+    display: block;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #1e3a5f;
+}
+
+.home-friend-summary::after {
+    content: "▼";
+    font-size: 10px;
+    color: #888;
+    flex-shrink: 0;
+    transition: transform .2s ease;
+}
+
+.home-friend-status[open] .home-friend-summary::after {
+    transform: rotate(-180deg);
+}
+
+.home-friend-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    list-style: none;
+    margin: 0;
+    padding: 0 20px 16px;
+}
+
+.home-friend-item {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 6px 10px;
+    border-radius: 10px;
+    border: 1px solid #e0e0e0;
+    background: #f9f9f9;
+}
+
+.home-friend-item.done {
+    border-color: #a5d6a7;
+    background: #f1f8f1;
+}
+
+.home-friend-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    flex-shrink: 0;
+    border-radius: 7px;
+    background: linear-gradient(135deg, #c5dfcb, #a5d6a7);
+    color: #2e7d32;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.home-friend-item.not-yet .home-friend-avatar {
+    background: linear-gradient(135deg, #d0d8d2, #b8c4bc);
+    color: #5a7060;
+}
+
+.home-friend-name {
+    font-size: 12px;
+    font-weight: 600;
+    color: #294b37;
+}
+
+.home-friend-badge {
+    font-size: 11px;
+    font-weight: 650;
+    padding: 2px 7px;
+    border-radius: 20px;
+}
+
+.home-friend-badge.done {
+    background: #d4edda;
+    color: #2d6a4f;
+}
+
+.home-friend-badge.not-yet {
+    background: #f0f0f0;
+    color: #888;
+}
+
+.home-friend-link {
+    display: inline-block;
+    margin: 0 20px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #2563eb;
+    text-decoration: none;
+}
+
+.home-friend-link:hover {
+    text-decoration: underline;
+}
+
+.dashboard-card,
+.home-friend-status {
+    min-height: 84px;
 }
