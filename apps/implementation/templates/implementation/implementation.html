@@ -3,7 +3,7 @@
 {% block title %}運動実施{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="{{ url_for('implementation.static', filename='style/implementation.css') }}">
+<link rel="stylesheet" href="{{ url_for('implementation.static', filename='style/implementation.css', v='20261126') }}">
 
 <div class="implementation-page">
     <h1>運動実施</h1>
@@ -20,11 +20,17 @@
         </button>
 
         {% if can_repeat_yesterday %}
-        <a class="tab-btn repeat-menu-btn" href="{{ url_for('implementation.index', repeat='yesterday') }}">
+        <a class="tab-btn repeat-menu-btn {% if source == 'repeat' %}loaded{% endif %}"
+            href="{{ url_for('implementation.index', repeat='yesterday') }}">
             前日と同じメニューを使う
         </a>
         {% endif %}
     </div>
+    {% if source == 'repeat' %}
+    <p class="repeat-menu-notice" role="status">
+        前日のメニューを読み込みました。
+    </p>
+    {% endif %}
 
     <section class="tab-panel {% if default_tab == 'ai-menu' %}active{% endif %}" id="ai-menu">
         <h2>今日の運動メニュー</h2>
