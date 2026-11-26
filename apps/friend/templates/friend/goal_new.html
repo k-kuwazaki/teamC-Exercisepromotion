@@ -2,32 +2,222 @@
 {% block title %}目標を作成する{% endblock %}
 {% block content %}
 {% include "friend/_navigation.html" %}
-<main class="friend-panel">
-    <h1>{{ friend_user.username }}さんとの目標を作成</h1>
 
-    <form method="post">
+<main class="friend-panel friend-goal-panel goal-create-panel">
+
+    <div class="goal-page-heading">
+        <span class="goal-page-label">FRIEND GOAL</span>
+        <h1>{{ friend_user.username }}さんとの目標を作成</h1>
+        <p>一緒に取り組みたい目標を設定しましょう。</p>
+    </div>
+
+    <form method="post" class="goal-create-form">
         {{ action_form.csrf_token }}
-        <p>
-            <label>目標タイプ</label><br>
-            <label><input type="radio" name="goal_type" value="shared" required>共有目標（お互いで同じ目標に取り組む）</label><br>
-            <label><input type="radio" name="goal_type" value="declaration">宣言（自分の目標をフレンドに宣言する）</label><br>
-            <label><input type="radio" name="goal_type" value="promise">約束（フレンドの承認が必要）</label>
-        </p>
-        <p>
-            <label for="content">目標内容</label><br>
-            <textarea id="content" name="content" rows="3" placeholder="例：今週3回運動する" required></textarea>
-        </p>
-        <p>
-            <label for="deadline">期限</label><br>
+
+        <section class="goal-create-section">
+            <h2>目標タイプ</h2>
+            <p class="goal-form-description">どのような目標に取り組みますか？</p>
+
+
+            <div class="goal-type-options">
+
+                <label class="goal-type-option">
+                    <input type="radio" name="goal_type" value="shared" required>
+                    <span class="goal-option-content">
+                        <span class="goal-option-icon">👥</span>
+                        <strong>共有目標</strong>
+                        <small>お互いで同じ目標に取り組む</small>
+                    </span>
+                </label>
+
+                <label class="goal-type-option">
+                    <input type="radio" name="goal_type" value="declaration">
+                    <span class="goal-option-content">
+                        <span class="goal-option-icon">🚩</span>
+                        <strong>宣言</strong>
+                        <small>自分の目標をフレンドに宣言する</small>
+                    </span>
+                </label>
+
+                <label class="goal-type-option">
+                    <input type="radio" name="goal_type" value="promise">
+                    <span class="goal-option-content">
+                        <span class="goal-option-icon">🤝</span>
+                        <strong>約束</strong>
+                        <small>フレンドの承認を得て約束する</small>
+                    </span>
+                </label>
+
+            </div>
+
+        </section>
+
+        <section class="goal-create-section">
+            <label class="goal-form-label" for="content">目標内容</label>
+            <p class="goal-form-description">達成したいことを具体的に入力してください。</p>
+
+            <textarea id="content" name="content" rows="4" placeholder="例：今週3回運動する" required></textarea>
+        </section>
+
+        <section class="goal-create-section">
+            <label class="goal-form-label" for="deadline">期限</label>
+            <p class="goal-form-description">目標を達成する期限を設定できます。</p>
+
             <select id="deadline" name="deadline">
-                <option value="">なし</option>
+                <option value="">期限を設定しない</option>
                 <option value="today">今日中</option>
                 <option value="week">今週中</option>
                 <option value="month">今月中</option>
             </select>
-        </p>
-        <button type="submit">作成する</button>
-        <a href="{{ url_for('friend.goal_index', friend_user_id=friend_user.id) }}">キャンセル</a>
+        </section>
+
+        <!-- 目標プレビュー -->
+        <div class="goal-preview-section">
+            <h3>目標プレビュー</h3>
+
+            <div class="goal-preview-card">
+                <div class="goal-preview-header">
+                    <span id="preview-icon">🎯</span>
+                    <strong id="preview-type">目標タイプを選択してください</strong>
+                    <span class="goal-preview-status">進行前</span>
+                </div>
+
+                <p id="preview-content">ここに目標内容が表示されます</p>
+
+                <span id="preview-deadline">期限：なし</span>
+            </div>
+        </div>
+
+        <div class="goal-create-actions">
+            <button type="button" class="goal-submit-btn" id="open-confirm">
+                目標を作成する
+            </button>
+
+            <a href="{{ url_for('friend.goal_index', friend_user_id=friend_user.id) }}" class="goal-cancel-btn">
+                キャンセル
+            </a>
+        </div>
+
+        <!-- ★ここに作成確認ダイアログを入れる -->
+        <div class="goal-confirm-overlay" id="goal-confirm">
+            <div class="goal-confirm-modal">
+                <h3>目標を作成しますか？</h3>
+                <p>以下の内容で目標を作成します。</p>
+
+                <div class="goal-confirm-preview">
+                    <div class="goal-preview-header">
+                        <span id="confirm-icon">🎯</span>
+                        <strong id="confirm-type">目標タイプ</strong>
+                    </div>
+
+                    <p id="confirm-content">目標内容</p>
+                    <span id="confirm-deadline">期限：なし</span>
+                </div>
+
+                <div class="goal-confirm-actions">
+                    <button type="button" id="close-confirm">戻る</button>
+                    <button type="submit" class="goal-confirm-submit">作成する</button>
+                </div>
+            </div>
+        </div>
+
     </form>
 </main>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const form = document.querySelector(".goal-create-form");
+
+        const contentInput = document.getElementById("content");
+        const deadlineInput = document.getElementById("deadline");
+
+        const previewType = document.getElementById("preview-type");
+        const previewIcon = document.getElementById("preview-icon");
+        const previewContent = document.getElementById("preview-content");
+        const previewDeadline = document.getElementById("preview-deadline");
+
+        const goalTypes = {
+            shared: { name: "共有目標", icon: "👥" },
+            declaration: { name: "宣言", icon: "🚩" },
+            promise: { name: "約束", icon: "🤝" }
+        };
+
+        const deadlines = {
+            today: "今日中",
+            week: "今週中",
+            month: "今月中"
+        };
+
+        function updatePreview() {
+            const selectedType = document.querySelector(
+                'input[name="goal_type"]:checked'
+            );
+
+            const type = selectedType
+                ? goalTypes[selectedType.value]
+                : null;
+
+            previewType.textContent = type
+                ? type.name
+                : "目標タイプを選択してください";
+
+            previewIcon.textContent = type ? type.icon : "🎯";
+
+            previewContent.textContent =
+                contentInput.value.trim() || "ここに目標内容が表示されます";
+
+            previewDeadline.textContent =
+                "期限：" + (deadlines[deadlineInput.value] || "なし");
+        }
+
+        function updateConfirm() {
+            document.getElementById("confirm-icon").textContent =
+                previewIcon.textContent;
+
+            document.getElementById("confirm-type").textContent =
+                previewType.textContent;
+
+            document.getElementById("confirm-content").textContent =
+                previewContent.textContent;
+
+            document.getElementById("confirm-deadline").textContent =
+                previewDeadline.textContent;
+        }
+
+        // プレビューのリアルタイム更新
+        document.querySelectorAll('input[name="goal_type"]').forEach(input => {
+            input.addEventListener("change", updatePreview);
+        });
+
+        contentInput.addEventListener("input", updatePreview);
+        deadlineInput.addEventListener("change", updatePreview);
+
+        // 確認ダイアログを開く
+        document.getElementById("open-confirm").addEventListener("click", () => {
+            if (!form.reportValidity()) {
+                return;
+            }
+
+            updatePreview();
+            updateConfirm();
+
+            document.getElementById("goal-confirm").classList.add("is-visible");
+        });
+
+        // 戻る
+        document.getElementById("close-confirm").addEventListener("click", () => {
+            document.getElementById("goal-confirm").classList.remove("is-visible");
+        });
+
+        // 背景をクリックして閉じる
+        document.getElementById("goal-confirm").addEventListener("click", (event) => {
+            if (event.target.id === "goal-confirm") {
+                event.currentTarget.classList.remove("is-visible");
+            }
+        });
+
+        updatePreview();
+    });
+</script>
+
 {% endblock %}

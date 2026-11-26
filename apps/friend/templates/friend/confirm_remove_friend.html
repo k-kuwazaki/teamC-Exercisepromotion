@@ -1,19 +1,50 @@
 {% extends "home/base.html" %}
-{% block title %}フレンド{% endblock %}
+{% block title %}フレンド解除{% endblock %}
 {% block content %}
 
 {% include "friend/_navigation.html" %}
 
-<h2>フレンド解除の確認</h2>
+<main class="friend-panel friend-remove-panel">
 
-<p>本当にこのフレンドを解除しますか？</p>
+    <div class="remove-icon">
+        <span>!</span>
+    </div>
 
-<form method="post" action="{{ url_for('friend.remove_friend', friend_user_id=friend_user.id) }}">
-    {{ action_form.csrf_token }}
+    <h1>フレンド解除の確認</h1>
 
-    <button type="submit">解除する</button>
-</form>
+    <div class="remove-message">
+        <p class="remove-question">
+            本当にフレンドを解除しますか？
+        </p>
 
-<a href="{{ url_for('friend.index') }}">キャンセル</a>
+        <p class="remove-description">
+            このフレンドをほんとうに解除しますか？ほんとうに解除しますか？
+            苦渋の決断で解除します
+        </p>
+    </div>
+
+    <div class="remove-user">
+        <div class="remove-user-avatar">
+            {{ friend_user.username[0] }}
+        </div>
+
+        <span>{{ friend_user.username }}</span>
+    </div>
+
+    <div class="remove-actions">
+        <form method="post" action="{{ url_for('friend.remove_friend', friend_user_id=friend_user.id) }}">
+            {{ action_form.csrf_token }}
+
+            <button type="submit" class="remove-confirm-btn">
+                フレンドを解除する
+            </button>
+        </form>
+
+        <a href="{{ url_for('friend.index') }}" class="remove-cancel-btn">
+            キャンセル
+        </a>
+    </div>
+
+</main>
 
 {% endblock %}

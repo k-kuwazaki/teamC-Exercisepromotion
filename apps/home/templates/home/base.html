@@ -100,6 +100,30 @@
             localStorage.setItem("sidebarClosed", isClosed);
         }
 
+        // オンライン状態の定期更新
+        document.addEventListener("DOMContentLoaded", function () {
+            const heartbeatUrl = "{{ url_for('login.heartbeat') }}";
+
+            function updateOnlineStatus() {
+                if (document.visibilityState !== "visible") {
+                    return;
+                }
+
+                fetch(heartbeatUrl, {
+                    method: "POST",
+                    credentials: "same-origin"
+                }).catch(error => {
+                    console.error("オンライン状態の更新に失敗しました:", error);
+                });
+            }
+
+            // ページを開いたときに更新
+            updateOnlineStatus();
+
+            // 30秒ごとに更新
+            setInterval(updateOnlineStatus, 30000);
+        });
+
     </script>
 
 </body>

@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&display=swap');
+
 body:has(.friend-nav) {
     width: 100%;
     max-width: none;
@@ -667,6 +669,7 @@ div.friend-avatar {
     font-weight: 750;
 }
 
+
 /* フレンド一覧：今日のサマリー */
 .today-summary {
     display: flex;
@@ -791,4 +794,1078 @@ div.friend-avatar {
 .friend-list .friend-card form:not(.reaction-form) {
     width: 100%;
     margin: 0;
+}
+
+/* =================================
+   フレンド解除確認画面
+================================= */
+
+.friend-remove-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    max-width: 700px;
+    min-height: 480px;
+    margin: 0 auto;
+}
+
+/* 注意アイコン */
+.remove-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 65px;
+    height: 65px;
+    margin-bottom: 22px;
+    border-radius: 50%;
+    background: #fff0ed;
+    color: #d65b50;
+    font-size: 32px;
+    font-weight: 700;
+}
+
+.remove-icon span {
+    line-height: 1;
+}
+
+/* 説明 */
+.friend-remove-panel h1 {
+    margin-bottom: 20px;
+}
+
+.remove-message {
+    margin-bottom: 25px;
+}
+
+.remove-question {
+    color: #2d5240 !important;
+    font-size: 18px !important;
+    font-weight: 700;
+}
+
+.remove-description {
+    max-width: 430px;
+    margin: 10px auto 0;
+    color: #718174 !important;
+    font-size: 13px !important;
+}
+
+/* フレンド情報 */
+.remove-user {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 30px;
+    padding: 14px 24px;
+    border: 1px solid #d0e8d5;
+    border-radius: 12px;
+    background: #f0f6f0;
+    color: #2d5240;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.remove-user-avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #dceee0, #c5dfcb);
+    color: #315b40;
+    font-size: 18px;
+}
+
+/* ボタン */
+.remove-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    max-width: 300px;
+}
+
+.remove-actions form {
+    width: 100%;
+    margin: 0;
+}
+
+.remove-actions button,
+.remove-actions a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 46px;
+    padding: 12px;
+    border-radius: 9px;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+/* 解除ボタン */
+.remove-confirm-btn {
+    border: 1px solid #d65b50 !important;
+    background: #d65b50 !important;
+    color: white !important;
+}
+
+.remove-confirm-btn:hover {
+    transform: translateY(-2px);
+    border-color: #b9443b !important;
+    background: #b9443b !important;
+    box-shadow: 0 5px 12px rgb(214 91 80 / 20%);
+}
+
+/* キャンセル */
+.remove-cancel-btn {
+    border: 1px solid #c8dece;
+    background: #fff;
+    color: #2d5240;
+}
+
+.remove-cancel-btn:hover {
+    border-color: #8dc49a;
+    background: #eef6f0;
+}
+
+/* スマホ対応 */
+@media (max-width: 768px) {
+    .friend-remove-panel {
+        min-height: 400px;
+        padding: 30px 18px;
+    }
+
+    .remove-actions {
+        max-width: 100%;
+    }
+}
+
+
+/* =========================================
+フレンドとの目標画面
+========================================= */
+
+.friend-goal-panel {
+    background: #ffffff;
+}
+
+/* ページタイトル */
+.goal-page-heading {
+    margin-bottom: 36px;
+}
+
+.goal-page-heading .goal-page-label {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #54836b;
+    margin-bottom: 12px;
+}
+
+.goal-page-heading h1 {
+    font-family: 'M PLUS Rounded 1c', sans-serif;
+    font-size: 34px;
+    font-weight: 800;
+    line-height: 1.4;
+    color: #263b35;
+}
+
+.goal-page-heading p {
+    font-size: 17px;
+    line-height: 1.8;
+    color: #52645c;
+    font-weight: 500;
+    margin-top: 18px;
+}
+
+/* セクション見出し */
+.goal-section-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.goal-section-heading h2 {
+    flex: 1;
+    margin: 0;
+    color: #34473a;
+    font-size: 19px;
+    font-weight: 750;
+}
+
+.goal-section-heading h2::after {
+    display: none;
+}
+
+.goal-history-label {
+    color: #a0aaa3;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .14em;
+}
+
+/* 現在の目標カード */
+.goal-main-card {
+    padding: 26px;
+    border: 1px solid #e5eae6;
+    border-radius: 15px;
+    background: linear-gradient(145deg, #ffffff, #fafcfb);
+    box-shadow: 0 5px 20px rgb(30 50 35 / 5%);
+}
+
+/* 目標の種類・期限 */
+.goal-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 22px;
+}
+
+.goal-type-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.goal-type-badge.shared {
+    background: #edf3ff;
+    color: #5274a5;
+}
+
+.goal-type-badge.declaration {
+    background: #fff3e8;
+    color: #b77942;
+}
+
+.goal-type-badge.promise {
+    background: #f3efff;
+    color: #8066a8;
+}
+
+.goal-deadline {
+    color: #626f66;
+    font-size: 13px;
+    font-weight: 650;
+}
+
+.goal-deadline span {
+    margin-right: 5px;
+    color: #98a19a;
+    font-size: 11px;
+}
+
+/* ステータス */
+.goal-status {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.goal-status.pending {
+    background: #fff5e6;
+    color: #ad7834;
+}
+
+.goal-status.active {
+    background: #eaf4ed;
+    color: #477d57;
+}
+
+/* 目標の内容 */
+.goal-content {
+    margin: 0 0 25px !important;
+    color: #26382d !important;
+    font-size: 20px !important;
+    font-weight: 700;
+    line-height: 1.8 !important;
+    overflow-wrap: anywhere;
+}
+
+/* お知らせ */
+.goal-notice {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 20px 0;
+    padding: 15px 17px;
+    border: 1px solid #e4eae6;
+    border-radius: 10px;
+    background: #f7f9f7;
+}
+
+.goal-notice.pending-notice {
+    border-color: #f0e3ca;
+    background: #fffaf1;
+}
+
+.goal-notice.checked-notice {
+    border-color: #d7e9dc;
+    background: #f3f8f4;
+}
+
+.notice-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #e9eee9;
+    color: #54745d;
+    font-weight: 800;
+}
+
+.pending-notice .notice-icon {
+    background: #f8ebd3;
+    color: #ad7834;
+}
+
+.goal-notice strong {
+    color: #45564a;
+    font-size: 13px;
+}
+
+.goal-notice p {
+    margin: 4px 0 0;
+    color: #87918a;
+    font-size: 12px;
+}
+
+/* 操作ボタン */
+.goal-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.goal-actions form {
+    flex: 1 1 180px;
+    margin: 0;
+}
+
+.goal-actions .goal-btn {
+    width: 100%;
+    min-height: 44px;
+    padding: 11px 16px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    transition: .2s ease;
+}
+
+.goal-actions .goal-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* 承認 */
+.goal-btn.accept {
+    background: #477d57;
+    border-color: #477d57;
+    color: #fff;
+}
+
+.goal-btn.accept:hover {
+    background: #386747;
+}
+
+/* 拒否 */
+.goal-actions .goal-btn.reject {
+    background: #fff;
+    border-color: #e5d6d4;
+    color: #a35e58;
+}
+
+.goal-actions .goal-btn.reject:hover {
+    background: #fff5f3;
+    border-color: #d9aaa5;
+}
+
+/* 達成確認 */
+.goal-btn.check {
+    background: #5479a5;
+    border-color: #5479a5;
+    color: #fff;
+}
+
+.goal-btn.check:hover {
+    background: #41658f;
+}
+
+/* 達成 */
+.goal-btn.achieve {
+    background: #477d57;
+    border-color: #477d57;
+    color: #fff;
+}
+
+.goal-btn.achieve:hover {
+    background: #386747;
+}
+
+/* 未達成 */
+.goal-actions .goal-btn.fail {
+    background: #fff;
+    border-color: #e5d6d4;
+    color: #a35e58;
+}
+
+.goal-actions .goal-btn.fail:hover {
+    background: #fff5f3;
+}
+
+/* 目標がない場合 */
+.goal-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 290px;
+    padding: 30px 20px;
+    border: 1px dashed #dce4de;
+    border-radius: 15px;
+    background: #fafcfb;
+    text-align: center;
+}
+
+.goal-empty-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 62px;
+    height: 62px;
+    margin-bottom: 17px;
+    border-radius: 50%;
+    background: #edf3ef;
+    color: #64816c;
+    font-size: 32px;
+}
+
+.goal-empty h2 {
+    display: block;
+    margin-bottom: 8px;
+    color: #34473a;
+    font-size: 17px;
+}
+
+.goal-empty h2::after {
+    display: none;
+}
+
+.goal-empty p {
+    margin-bottom: 20px;
+    color: #89938d;
+    font-size: 13px;
+}
+
+.goal-create-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 22px;
+    border-radius: 8px;
+    background: #477d57;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: .2s ease;
+}
+
+.goal-create-btn:hover {
+    transform: translateY(-2px);
+    background: #386747;
+}
+
+/* 過去の目標 */
+.past-goals {
+    margin-top: 42px;
+}
+
+.goal-history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+}
+
+.goal-history-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 17px 19px;
+    border: 1px solid #e7ebe8;
+    border-radius: 11px;
+    background: #fff;
+    transition: .2s ease;
+}
+
+.goal-history-card:hover {
+    border-color: #cbd9ce;
+    background: #fcfdfc;
+}
+
+.history-main {
+    min-width: 0;
+}
+
+.history-main p {
+    margin: 9px 0 0;
+    color: #38483d;
+    font-size: 14px;
+    font-weight: 650;
+    overflow-wrap: anywhere;
+}
+
+.history-result {
+    flex-shrink: 0;
+    padding: 6px 11px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 750;
+}
+
+.history-result.achieved {
+    background: #eaf4ed;
+    color: #477d57;
+}
+
+.history-result.failed {
+    background: #f5eeee;
+    color: #a36b66;
+}
+
+/* スマホ対応 */
+@media (max-width: 768px) {
+    .goal-page-heading {
+        margin-bottom: 27px;
+    }
+
+    .goal-main-card {
+        padding: 19px;
+    }
+
+    .goal-content {
+        font-size: 17px !important;
+    }
+
+    .goal-actions {
+        flex-direction: column;
+    }
+
+    .goal-actions form {
+        flex: auto;
+        width: 100%;
+    }
+
+    .goal-history-card {
+        align-items: flex-start;
+        padding: 14px;
+    }
+
+    .goal-section-heading h2 {
+        font-size: 17px;
+    }
+}
+
+/* FRIEND GOAL */
+.goal-page-heading .eyebrow {
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #54836b;
+    margin-bottom: 12px;
+}
+
+
+/* =================================
+   目標作成画面
+================================= */
+
+.goal-create-panel {
+    background: #fff;
+}
+
+.goal-create-form {
+    max-width: 850px;
+}
+
+.goal-create-section {
+    margin-bottom: 32px;
+}
+
+.goal-create-section h2 {
+    margin-bottom: 8px;
+}
+
+.goal-form-label {
+    display: block;
+    margin-bottom: 8px;
+    color: #34473a;
+    font-size: 16px;
+    font-weight: 750;
+}
+
+.goal-form-description {
+    margin: 0 0 14px !important;
+    color: #87918a !important;
+    font-size: 13px !important;
+}
+
+/* 目標タイプ */
+
+.goal-type-options {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.goal-type-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    min-height: 85px;
+    padding: 17px;
+    border: 1px solid #e1e9e3;
+    border-radius: 12px;
+    background: #fafcfb;
+    cursor: pointer;
+    transition: .2s ease;
+}
+
+.goal-type-option:hover {
+    border-color: #8db69a;
+    background: #f4f9f5;
+}
+
+.goal-type-option:has(input:checked) {
+    border-color: #548b63;
+    background: #f0f7f1;
+    box-shadow: 0 0 0 2px rgb(84 139 99 / 10%);
+}
+
+.goal-type-option input {
+    margin-top: 4px;
+    accent-color: #477d57;
+}
+
+.goal-option-content {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.goal-option-content strong {
+    color: #34473a;
+    font-size: 14px;
+}
+
+.goal-option-content small {
+    color: #829087;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+/* 入力欄 */
+
+.goal-create-form textarea,
+.goal-create-form select {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid #dce6de;
+    border-radius: 10px;
+    outline: none;
+    background: #fcfdfc;
+    color: #34473a;
+    font: inherit;
+    font-size: 14px;
+    transition: .2s ease;
+}
+
+.goal-create-form textarea {
+    min-height: 120px;
+    resize: vertical;
+    line-height: 1.8;
+}
+
+.goal-create-form textarea:focus,
+.goal-create-form select:focus {
+    border-color: #548b63;
+    box-shadow: 0 0 0 3px rgb(84 139 99 / 12%);
+    background: #fff;
+}
+
+.goal-create-form textarea::placeholder {
+    color: #aab4ac;
+}
+
+.goal-create-form select {
+    max-width: 400px;
+    cursor: pointer;
+}
+
+/* ボタン */
+
+.goal-create-actions {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-top: 38px;
+    padding-top: 25px;
+    border-top: 1px solid #edf0ed;
+}
+
+.goal-create-actions .goal-submit-btn {
+    min-width: 190px;
+    min-height: 46px;
+    border: 1px solid #477d57;
+    border-radius: 9px;
+    background: #477d57;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.goal-create-actions .goal-submit-btn:hover {
+    background: #386747;
+    border-color: #386747;
+}
+
+.goal-cancel-link {
+    color: #718078;
+    font-size: 13px;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.goal-cancel-link:hover {
+    color: #34473a;
+    text-decoration: underline;
+}
+
+/* スマホ対応 */
+@media (max-width: 768px) {
+    .goal-type-options {
+        grid-template-columns: 1fr;
+    }
+
+    .goal-type-option {
+        min-height: auto;
+    }
+
+    .goal-create-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .goal-create-actions .goal-submit-btn {
+        width: 100%;
+    }
+
+    .goal-cancel-link {
+        text-align: center;
+        padding: 8px;
+    }
+}
+
+
+/* =================================
+   目標タイプ：アイコンと選択アニメーション
+================================= */
+
+.goal-type-option {
+    position: relative;
+    align-items: center;
+    min-height: 125px;
+    padding: 18px;
+    padding-right: 38px;
+    transition:
+        transform .22s ease,
+        border-color .22s ease,
+        background .22s ease,
+        box-shadow .22s ease;
+}
+
+/* ホバー時 */
+.goal-type-option:hover {
+    transform: translateY(-3px);
+    border-color: #8db69a;
+    box-shadow: 0 5px 14px rgb(40 80 50 / 7%);
+}
+
+/* アイコンと文字 */
+.goal-option-content {
+    gap: 6px;
+}
+
+.goal-option-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    margin-bottom: 5px;
+    border-radius: 11px;
+    background: #edf3ef;
+    font-size: 21px;
+    transition: transform .22s ease;
+}
+
+/* 選択時 */
+.goal-type-option:has(input:checked) {
+    transform: translateY(-2px);
+    border-color: #548b63;
+    background: #f0f7f1;
+    box-shadow: 0 5px 16px rgb(84 139 99 / 12%);
+}
+
+/* 選択時のアイコン */
+.goal-type-option:has(input:checked) .goal-option-icon {
+    transform: scale(1.1);
+    background: #dcecdf;
+}
+
+/* 選択チェックマーク */
+.goal-type-option::after {
+    content: "✓";
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 23px;
+    height: 23px;
+    border-radius: 50%;
+    background: #477d57;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 800;
+    opacity: 0;
+    transform: scale(.6);
+    transition: opacity .2s ease, transform .2s ease;
+}
+
+.goal-type-option:has(input:checked)::after {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* キーボード操作時 */
+.goal-type-option:has(input:focus-visible) {
+    outline: 3px solid rgb(84 139 99 / 25%);
+    outline-offset: 3px;
+}
+
+/* 左側のラジオボタンを非表示 */
+.goal-type-option input[type="radio"] {
+    display: none;
+}
+
+/* 目標プレビュー */
+.goal-preview-section {
+    margin-top: 28px;
+}
+
+.goal-preview-section h3 {
+    margin-bottom: 12px;
+    color: #405b48;
+    font-size: 15px;
+}
+
+.goal-preview-card {
+    padding: 20px;
+    border: 1px solid #dce8df;
+    border-radius: 14px;
+    background: #f7faf7;
+}
+
+.goal-preview-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+#preview-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 11px;
+    background: #e8f1e9;
+    font-size: 21px;
+}
+
+.goal-preview-header strong {
+    color: #365d40;
+}
+
+.goal-preview-status {
+    margin-left: auto;
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: #e8f1e9;
+    color: #548b63;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.goal-preview-card p {
+    margin: 18px 0 12px;
+    color: #344b3a;
+    font-size: 16px;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+#preview-deadline {
+    color: #84938a;
+    font-size: 12px;
+}
+
+/* 作成確認ダイアログ */
+.goal-confirm-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background: rgb(0 0 0 / 45%);
+
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity .2s ease, visibility .2s ease;
+}
+
+.goal-confirm-overlay.is-visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.goal-confirm-modal {
+    width: 100%;
+    max-width: 420px;
+    padding: 25px;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 12px 35px rgb(0 0 0 / 15%);
+    transform: translateY(12px);
+    transition: transform .2s ease;
+}
+
+.goal-confirm-overlay.is-visible .goal-confirm-modal {
+    transform: translateY(0);
+}
+
+.goal-confirm-modal h3 {
+    margin: 0 0 8px;
+    color: #365d40;
+    font-size: 19px;
+}
+
+.goal-confirm-modal>p {
+    margin-bottom: 18px;
+    color: #777;
+    font-size: 13px;
+}
+
+.goal-confirm-preview {
+    padding: 17px;
+    border: 1px solid #dce8df;
+    border-radius: 12px;
+    background: #f7faf7;
+}
+
+.goal-confirm-preview p {
+    margin: 15px 0 10px;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+#confirm-deadline {
+    color: #84938a;
+    font-size: 12px;
+}
+
+.goal-confirm-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 22px;
+}
+
+.goal-confirm-actions button {
+    flex: 1;
+    min-height: 43px;
+    border: none;
+    border-radius: 9px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+#close-confirm {
+    background: #edf1ee;
+    color: #526358;
+}
+
+.goal-confirm-submit {
+    background: #548b63;
+    color: #fff;
+}
+
+.goal-confirm-submit:hover {
+    background: #416f4e;
+}
+
+/* キャンセルボタン */
+.goal-cancel-btn {
+    display: inline-flex;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 190px;
+    min-height: 46px;
+    padding: 12px 22px;
+    box-sizing: border-box;
+
+    border: 1px solid #c5dac9 !important;
+    border-radius: 10px;
+    background: #e7f1e9 !important;
+    color: #3f6849 !important;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none !important;
+    transition: all .2s ease;
+}
+
+.goal-cancel-btn:hover {
+    background: #f1f5f2 !important;
+    border-color: #aabdaf !important;
+    color: #405b48 !important;
+    transform: translateY(-2px);
+}
+
+.goal-cancel-btn:active {
+    transform: translateY(0);
 }
