@@ -928,3 +928,199 @@ h1 {
 .home-friend-status {
     min-height: 84px;
 }
+
+/* カレンダーメニューカード */
+.home-menu-card .card-icon {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    transition: transform 0.3s ease;
+}
+
+/* アイコンの色 */
+.home-menu-card .card-icon.blue {
+    color: #3478db;
+    background: #e8f0ff;
+}
+
+/* ホバー時のアイコン */
+.home-menu-card:hover .card-icon {
+    transform: scale(1.1) rotate(-5deg);
+}
+
+/* カード内文字 */
+.home-menu-card .card-content {
+    width: 100%;
+}
+
+.home-menu-card .card-content h3 {
+    font-size: 0.88rem;
+    font-weight: 800;
+    margin: 0 0 4px;
+    color: #28563b;
+}
+
+.home-menu-card .card-content p {
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: #89998e;
+    margin: 0;
+}
+
+/* 矢印 */
+.home-menu-card .card-arrow {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background: #edf7f0;
+    color: #34865a;
+    font-size: 10px;
+    transition: all 0.3s ease;
+}
+
+/* ホバー時の矢印 */
+.home-menu-card:hover .card-arrow {
+    color: white;
+    background: #278653;
+    transform: translateX(4px);
+}
+
+/* 運動状況確認カード */
+.menu-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 160px;
+    min-height: 150px;
+    padding: 16px 14px 44px;
+    text-decoration: none !important;
+    color: #294b37 !important;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(83, 160, 112, 0.15);
+    border-radius: 22px;
+    box-shadow: 0 8px 25px rgba(46, 100, 67, 0.07);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+/* 上部のアクセントライン */
+.menu-card::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, #248b55, #85d6a4);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* ホバー */
+.menu-card:hover {
+    transform: translateY(-9px);
+    background: #ffffff;
+    border-color: rgba(46, 158, 104, 0.35);
+    box-shadow: 0 18px 38px rgba(46, 120, 76, 0.16);
+}
+
+.menu-card:hover::before {
+    opacity: 1;
+}
+
+/* アイコン */
+.menu-card .card-icon {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    font-size: 16px;
+    margin-bottom: 10px;
+    transition: transform 0.3s ease;
+}
+
+/* 緑色アイコン */
+.menu-card .card-icon.green {
+    color: #278653;
+    background: #e5f5e9;
+}
+
+.menu-card:hover .card-icon {
+    transform: scale(1.1) rotate(-5deg);
+}
+
+/* カード内文字 */
+.menu-card .card-content {
+    width: 100%;
+}
+
+.menu-card .card-content h3 {
+    font-size: 0.88rem;
+    font-weight: 800;
+    margin: 0 0 4px;
+    color: #28563b;
+}
+
+.menu-card .card-content p {
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: #89998e;
+    margin: 0;
+}
+
+/* 矢印 */
+.menu-card .card-arrow {
+    position: absolute;
+    right: 12px;
+    bottom: 12px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    background: #edf7f0;
+    color: #34865a;
+    font-size: 10px;
+    transition: all 0.3s ease;
+}
+
+.menu-card:hover .card-arrow {
+    color: white;
+    background: #278653;
+    transform: translateX(4px);
+}
+
+/* スマホ対応 */
+@media screen and (max-width: 850px) {
+    .menu-card {
+        width: 140px;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .menu-card {
+        width: calc(50% - 5px);
+        min-height: 0;
+        padding: 14px 12px 40px;
+    }
+
+    .menu-card .card-arrow {
+        right: 12px;
+        bottom: 10px;
+    }
+}

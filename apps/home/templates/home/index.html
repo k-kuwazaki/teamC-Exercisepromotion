@@ -112,20 +112,6 @@
                 <i class="fa-solid fa-arrow-right"></i>
             </div>
         </a>
-
-        <a href="{{ url_for('home.history') }}" class="home-menu-card">
-            <div class="home-card-icon green">
-                <i class="fas fa-chart-line"></i>
-            </div>
-            <div class="home-card-content">
-                <h3>履歴機能</h3>
-                <p>日々の運動状況や成果を確認できます。</p>
-            </div>
-            <div class="home-card-arrow">
-                <i class="fa-solid fa-arrow-right"></i>
-            </div>
-        </a>
-
         <a href="{{ url_for('body_input.index') }}" class="home-menu-card">
             <div class="home-card-icon red">
                 <i class="fas fa-heartbeat"></i>
@@ -165,6 +151,30 @@
             </div>
         </a>
 
+        <a href="{{ url_for('home.calendar') }}" class="home-menu-card">
+            <div class="card-icon blue">
+                <i class="fa-solid fa-calendar-days"></i>
+            </div>
+            <div class="card-content">
+                <h3>カレンダー</h3>
+                <p>カレンダーから運動履歴を確認できます。</p>
+            </div>
+            <div class="card-arrow">
+                <i class="fa-solid fa-arrow-right"></i>
+            </div>
+        </a>
+            <a href="{{ url_for('home.situation') }}" class="menu-card">
+                <div class="card-icon green">
+                    <i class="fa-solid fa-chart-line"></i>
+                </div>
+                <div class="card-content">
+                    <h3>運動状況確認</h3>
+                    <p>日々の運動状況や成果を確認できます。</p>
+                </div>
+                <div class="card-arrow">
+                    <i class="fa-solid fa-arrow-right"></i>
+                </div>
+            </a>
     </div>
 </div>
 
