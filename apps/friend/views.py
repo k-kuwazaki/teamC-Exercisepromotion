@@ -387,6 +387,7 @@ def cancel_request(request_id):
     return redirect(url_for("friend.pending"))
 
 
+
 @friend.route("/<int:friend_user_id>/remove", methods=["POST"])
 def remove_friend(friend_user_id):
     actor = _current_user_for_action()
@@ -416,14 +417,12 @@ def remove_friend(friend_user_id):
             )
             return redirect(url_for("friend.index"))
 
-        # 過去の目標（達成済み・未達成）を削除
+        # 過去の目標を削除
         FriendGoal.query.filter(
             FriendGoal.friend_id == relationship.id
         ).delete(synchronize_session=False)
 
-        # フレンド関係を削除
         db.session.delete(relationship)
-
         db.session.commit()
 
         flash("フレンドを解除しました。", "success")
@@ -437,12 +436,10 @@ def remove_friend(friend_user_id):
 
     except Exception:
         db.session.rollback()
-        flash(
-            "予期しないエラーが発生しました。",
-            "error"
-        )
+        flash("予期しないエラーが発生しました。", "error")
 
     return redirect(url_for("friend.index"))
+
 
 @friend.route("/<int:friend_user_id>/confirm_remove", methods=["GET"])
 def confirm_remove_friend(friend_user_id):
@@ -450,14 +447,13 @@ def confirm_remove_friend(friend_user_id):
     if actor is None:
         return redirect(url_for("friend.index"))
 
-    # フレンド関係があるか確認
     relationship = _get_active_friend_relationship(
         actor.id, friend_user_id
     )
     if relationship is None:
         abort(404)
 
-    # 進行中の目標があるか確認
+    # 進行中・承認待ちの目標があるか確認
     goal = FriendGoal.query.filter(
         FriendGoal.friend_id == relationship.id,
         FriendGoal.status.in_(["active", "pending"])
@@ -471,7 +467,6 @@ def confirm_remove_friend(friend_user_id):
         return redirect(url_for("friend.index"))
 
     friend_user = db.session.get(User, friend_user_id)
-
     if friend_user is None:
         abort(404)
 
@@ -553,7 +548,23 @@ def goal_index(friend_user_id):
     friend_user = db.session.get(User, friend_user_id)
     if friend_user is None:
         abort(404)
+    
+    # 期限切れの目標を自動的に失敗にする
+    now = datetime.now()
 
+    expired_goals = FriendGoal.query.filter(
+        FriendGoal.friend_id == relationship.id,
+        FriendGoal.status == "active",
+        FriendGoal.deadline.isnot(None),
+        FriendGoal.deadline < now,
+    ).all()
+
+    for expired_goal in expired_goals:
+        expired_goal.status = "failed"
+
+    if expired_goals:
+        db.session.commit()
+    
     goal = FriendGoal.query.filter(
         FriendGoal.friend_id == relationship.id,
         FriendGoal.status.in_(["active", "pending"]),
@@ -764,3 +775,34 @@ def goal_fail(friend_user_id, goal_id):
     db.session.commit()
     flash("目標を未達成として記録しました。次は頑張りましょう！", "success")
     return redirect(url_for("friend.goal_index", friend_user_id=friend_user_id))
+
+
+@friend.route("/<int:friend_user_id>/goals/<int:goal_id>/delete", methods=["POST"])
+def goal_delete(friend_user_id, goal_id):
+    actor = _current_user_for_action()
+    if actor is None:
+        return redirect(url_for("friend.index"))
+
+    if not _action_form_is_valid():
+        return redirect(url_for("friend.goal_index", friend_user_id=friend_user_id))
+
+    relationship = _get_active_friend_relationship(actor.id, friend_user_id)
+    if relationship is None:
+        abort(404)
+
+    goal = FriendGoal.query.filter(
+        FriendGoal.id == goal_id,
+        FriendGoal.friend_id == relationship.id,
+        FriendGoal.status.in_(["active", "pending", "achieved", "failed"]),
+    ).first_or_404()
+
+    if goal.created_by != actor.id:
+        flash("目標の削除は作成者のみできます。", "error")
+        return redirect(url_for("friend.goal_index", friend_user_id=friend_user_id))
+
+    db.session.delete(goal)
+    db.session.commit()
+
+    flash("目標を削除しました。", "success")
+    return redirect(url_for("friend.goal_index", friend_user_id=friend_user_id))
+

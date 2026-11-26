@@ -2,6 +2,10 @@ from flask import Blueprint, redirect, render_template, request, session, url_fo
 from werkzeug.security import check_password_hash
 from apps.user.models import User
 from apps.login.forms import login_form_data
+from datetime import datetime
+from apps.app import db
+from flask import jsonify
+
 
 login_bp = Blueprint(
     "login",
@@ -23,6 +27,10 @@ def login():
             session["user_id"] = user.id
             session["username"] = user.username
             session["display_mode"] = "simple"
+
+            user.last_seen = datetime.now()
+            db.session.commit()
+
             return redirect(url_for("home.index"))
 
         return render_template(
@@ -33,13 +41,35 @@ def login():
     return render_template("login/login.html")
 
 
-
-@login_bp.route("/logout")
-
 @login_bp.route("/logout", methods=["GET", "POST"])
-
 def logout():
     if request.method == "POST":
+        user_id = session.get("user_id")
+        user = db.session.get(User, user_id) if user_id else None
+
+        if user:
+            user.last_seen = None
+            db.session.commit()
+
         session.clear()
         return render_template("login/logout.html")
+
     return render_template("login/logout_check.html")
+
+@login_bp.route("/heartbeat", methods=["POST"])
+def heartbeat():
+    user_id = session.get("user_id")
+
+    if user_id is None:
+        return jsonify({"status": "unauthorized"}), 401
+
+    user = db.session.get(User, user_id)
+
+    if user is None:
+        session.clear()
+        return jsonify({"status": "unauthorized"}), 401
+
+    user.last_seen = datetime.now()
+    db.session.commit()
+
+    return jsonify({"status": "ok"})
