@@ -1,5 +1,5 @@
 from flask import Blueprint, redirect, render_template, request, session, url_for
-from werkzeug.security import check_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 from apps.user.models import User
 from apps.login.forms import login_form_data
 from datetime import datetime
@@ -39,6 +39,40 @@ def login():
         )
 
     return render_template("login/login.html")
+
+
+@login_bp.route("/change-password", methods=["GET", "POST"])
+def change_password():
+    user_id = session.get("user_id")
+    if user_id is None:
+        return redirect(url_for("login.login"))
+
+    error = None
+    if request.method == "POST":
+        new_password = request.form.get("new_password", "")
+        confirm_password = request.form.get("confirm_password", "")
+        user = db.session.get(User, user_id)
+
+        if user is None:
+            session.clear()
+            return redirect(url_for("login.login"))
+        if not new_password:
+            error = "新しいパスワードを入力してください。"
+        elif new_password != confirm_password:
+            error = "新しいパスワードが一致しません。"
+        else:
+            try:
+                user.password_hash = generate_password_hash(new_password)
+                db.session.commit()
+                return render_template(
+                    "login/change_password.html",
+                    success=True,
+                )
+            except Exception:
+                db.session.rollback()
+                error = "パスワードを変更できませんでした。もう一度お試しください。"
+
+    return render_template("login/change_password.html", error=error)
 
 
 @login_bp.route("/logout", methods=["GET", "POST"])
