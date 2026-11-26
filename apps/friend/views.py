@@ -55,7 +55,11 @@ def _related_user_requests(friend_requests, user_id_attribute):
         for user in User.query.filter(User.id.in_(user_ids)).all()
     }
     return [
-        {"id": item.id, "username": users[getattr(item, user_id_attribute)].username}
+        {
+            "id": item.id,
+            "username": users[getattr(item, user_id_attribute)].username,
+            "request_message": item.request_message,  # 追加
+        }
         for item in friend_requests
         if getattr(item, user_id_attribute) in users
     ]
@@ -260,6 +264,7 @@ def send_request(target_user_id):
             requester_id=actor.id,
             addressee_id=target.id,
             status="pending",
+            request_message=request.form.get("request_message", "").strip() or None,
         )
     )
     try:

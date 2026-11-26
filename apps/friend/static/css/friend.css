@@ -823,3 +823,49 @@ div.friend-avatar {
     border-color: #c0392b !important;
     color: #fff !important;
 }
+
+.request-message-input {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #b8d8c0;
+    border-radius: 8px;
+    background: #f8fdf9;
+    color: #1e3d2a;
+    font: inherit;
+    font-size: 13px;
+    resize: vertical;
+    min-height: 60px;
+    transition: border-color .2s ease, box-shadow .2s ease;
+}
+
+.request-message-input:focus {
+    outline: none;
+    border-color: #4a9060;
+    box-shadow: 0 0 0 3px rgb(74 144 96 / 14%);
+}
+
+.request-message-input::placeholder {
+    color: #8aaa94;
+}
+
+.request-message {
+    width: 100%;
+    margin: 0;
+    padding: 10px 14px;
+    border-left: 3px solid #4a9060;
+    border-radius: 6px;
+    background: #f0f6f0;
+    color: #2d5240;
+    font-size: 13px;
+    line-height: 1.6;
+    word-break: break-all;
+}
+
+.request-message-label {
+    display: block;
+    margin-bottom: 6px;
+    color: #2d5240;
+    font-size: 12px;
+    font-weight: 650;
+}

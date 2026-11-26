@@ -85,18 +85,19 @@
             <!-- フレンド申請 -->
             {% if g.friend_user %}
             <form method="post" action="{{ url_for('friend.send_request', target_user_id=user.id) }}">
-
                 {{ action_form.csrf_token }}
-
                 <input type="hidden" name="habit" value="{{ habit }}">
                 <input type="hidden" name="goal" value="{{ goal_keyword }}">
                 <input type="hidden" name="username" value="{{ username }}">
-
+                <label class="request-message-label" for="request_message_{{ user.id }}">申請メッセージ（任意）</label>
+                <textarea id="request_message_{{ user.id }}" name="request_message" class="request-message-input"
+                    placeholder="一言メッセージを入力できます（200文字以内）" maxlength="200"></textarea>
                 <button type="submit" class="friend-request-btn">
                     <span>＋</span> フレンド申請
                 </button>
             </form>
             {% endif %}
+
 
         </li>
         {% else %}

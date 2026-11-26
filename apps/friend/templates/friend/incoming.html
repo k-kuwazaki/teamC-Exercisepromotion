@@ -22,6 +22,9 @@
                     <span class="friend-username">{{ friend_request.username }}</span>
                     <span class="request-label">フレンド申請が届いています</span>
                 </div>
+                {% if friend_request.request_message %}
+                <p class="request-message">{{ friend_request.request_message }}</p>
+                {% endif %}
             </div>
 
             {% if g.friend_user %}
