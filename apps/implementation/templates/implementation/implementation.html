@@ -3,7 +3,7 @@
 {% block title %}運動実施{% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="{{ url_for('implementation.static', filename='style/implementation.css', v='20261126') }}">
+<link rel="stylesheet" href="{{ url_for('implementation.static', filename='style/implementation.css', v='20261127') }}">
 
 <div class="implementation-page">
     <h1>運動実施</h1>
@@ -54,7 +54,7 @@
             {% endfor %}
         </div>
         {% else %}
-        <p>選択した運動メニューはありません。自主的に行う運動を入力できます。</p>
+        <p>選択した運動メニューはありません。自主運動タブから運動を選べます。</p>
         {% endif %}
     </section>
 
@@ -64,13 +64,35 @@
         <input type="hidden" id="active_tab" name="active_tab" value="{{ default_tab }}">
 
         <section class="tab-panel {% if default_tab == 'self-menu' %}active{% endif %}" id="self-menu">
-            <h2>自主的に行う運動（任意）</h2>
+            <h2>自主運動を選択</h2>
             {% if error and default_tab == 'self-menu' %}
             <p class="error" role="alert">{{ error }}</p>
             {% endif %}
-            <label for="self_exercises">運動内容</label>
-            <textarea id="self_exercises" name="self_exercises" rows="4"
-                placeholder="例：散歩、ストレッチなど">{{ self_exercises|default('') }}</textarea>
+            <p class="exercise-tag-description">当てはまる運動を選んでください。複数選択できます。</p>
+            <fieldset class="exercise-tag-fieldset">
+                <legend class="visually-hidden">自主運動の種類</legend>
+                <div class="exercise-tag-list">
+                    {% for value, label in self_exercise_options.items() %}
+                    <label class="exercise-tag">
+                        <input type="checkbox" name="self_exercise_tags" value="{{ value }}" {% if value in
+                            selected_self_exercise_tags %}checked{% endif %}>
+                        <span>{{ label }}</span>
+                    </label>
+                    {% endfor %}
+                    <label class="exercise-tag">
+                        <input type="checkbox" id="other-exercise-tag" name="self_exercise_tags" value="other"
+                            aria-controls="other-exercise-field" {% if 'other' in selected_self_exercise_tags
+                            %}checked{% endif %}>
+                        <span>その他</span>
+                    </label>
+                </div>
+            </fieldset>
+
+            <div id="other-exercise-field" {% if 'other' not in selected_self_exercise_tags %}hidden{% endif %}>
+                <label for="self_exercises">運動内容を入力してください</label>
+                <textarea id="self_exercises" name="self_exercises" rows="4"
+                    placeholder="例：縄跳び">{{ self_exercises|default('') }}</textarea>
+            </div>
         </section>
 
         <section class="timer-panel">
@@ -115,6 +137,20 @@
 </div>
 
 <script>
+    // 「その他」が選ばれたときだけ自由入力欄を表示
+    const otherExerciseTag = document.getElementById("other-exercise-tag");
+    const otherExerciseField = document.getElementById("other-exercise-field");
+    const otherExerciseInput = document.getElementById("self_exercises");
+
+    function updateOtherExerciseField() {
+        const showOtherField = otherExerciseTag.checked;
+        otherExerciseField.hidden = !showOtherField;
+        otherExerciseInput.required = showOtherField;
+    }
+
+    otherExerciseTag.addEventListener("change", updateOtherExerciseField);
+    updateOtherExerciseField();
+
     // タブ切り替え
     const activeTabInput = document.getElementById("active_tab");
 

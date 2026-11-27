@@ -196,6 +196,80 @@
     box-shadow: 0 0 0 3px rgba(113, 135, 117, 0.14);
 }
 
+/* 自主運動タグ */
+.implementation-page .exercise-tag-description {
+    margin: 0 0 12px;
+    color: #607568;
+}
+
+.implementation-page .exercise-tag-fieldset {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.implementation-page .exercise-tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.implementation-page .exercise-tag {
+    position: relative;
+    margin: 0;
+    cursor: pointer;
+}
+
+.implementation-page .exercise-tag input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+}
+
+.implementation-page .exercise-tag span {
+    display: inline-flex;
+    min-height: 44px;
+    align-items: center;
+    padding: 9px 17px;
+    border: 1px solid #c9dfd2;
+    border-radius: 999px;
+    background: #fff;
+    color: #607568;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.implementation-page .exercise-tag input:checked + span {
+    border-color: #248b55;
+    background: #248b55;
+    color: #fff;
+}
+
+.implementation-page .exercise-tag input:focus-visible + span {
+    outline: 3px solid #8bc9a2;
+    outline-offset: 3px;
+}
+
+.implementation-page #other-exercise-field[hidden] {
+    display: none;
+}
+
+.implementation-page #other-exercise-field {
+    margin-top: 16px;
+}
+
+.implementation-page .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    clip-path: inset(50%);
+}
+
 /* タイマー表示 */
 .implementation-page #timer {
     margin: 20px 0;
