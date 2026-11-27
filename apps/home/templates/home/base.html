@@ -9,6 +9,22 @@
     <link rel="stylesheet" href="{{ url_for('home.static', filename='style/sidebar.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
+    <!-- ファビコン -->
+    <link rel="icon" href="{{ url_for('static', filename='favicon.png') }}">
+
+    <!-- iPhone用ホーム画面アイコン -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='iPhone.png') }}">
+
+    <!-- Android・PWA用設定 -->
+    <link rel="manifest" href="{{ url_for('static', filename='applicable.json') }}">
+
+    <!-- テーマカラー -->
+    <meta name="theme-color" content="#54bd82">
+
+    <!-- iPhone用設定 -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="運動アプリ">
+
 </head>
 
 
