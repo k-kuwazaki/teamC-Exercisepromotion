@@ -1,0 +1,17 @@
+
+{% extends "home/base.html" %}
+
+{% block title %}運動実施登録完了{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('test.static', filename='style/registration.css') }}">
+
+<h1>運動実施登録完了</h1>
+
+<p>運動実施記録を登録しました！</p>
+
+<div class="back">
+    <a href="{{ url_for('home.index') }}">← トップページに戻る</a>
+</div>
+
+{% endblock %}

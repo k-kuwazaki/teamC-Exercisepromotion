@@ -1,0 +1,202 @@
+{% extends "home/base.html" %}
+
+{% block title %}シンプルページ{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('simple.static', filename='style/simple.css') }}">
+
+<!-- ヘッダー -->
+<div class="header-row">
+    <div class="page-header">
+        <h1><i class="fas fa-home"></i> 運動継続促進システム</h1>
+        <p>ようこそ！今日も一緒に運動を続けましょう。</p>
+        <a href="{{ url_for('home.help') }}" class="help-link">
+            <i class="fas fa-circle-question"></i>
+            <span>ヘルプ</span>
+        </a>
+
+    </div>
+    <!-- <a href="{{ url_for('login.logout') }}" class="btn btn-outline-danger logout-btn">
+            <i class="fas fa-sign-out-alt"></i> ログアウト
+        </a> -->
+</div>
+
+<!-- モード切り替え -->
+{% include "home/mode_toggle.html" %}
+
+<!-- ダッシュボード -->
+<div class="dashboard">
+
+    <div class="dashboard-card">
+        <div class="dashboard-icon">
+            <i class="fas fa-fire"></i>
+        </div>
+        <div class="dashboard-info">
+            <span class="dashboard-label">本日の運動</span>
+            <span class="dashboard-value">{{ today_minutes }}分</span>
+        </div>
+    </div>
+
+    <div class="dashboard-card">
+        <div class="dashboard-icon">
+            <i class="fas fa-bullseye"></i>
+        </div>
+        <div class="dashboard-info">
+            <span class="dashboard-label">本日の入力</span>
+            <span class="dashboard-value">
+                {% if today_input %}
+                入力済み
+                {% else %}
+                未入力
+                {% endif %}
+            </span>
+        </div>
+    </div>
+
+    <!-- フレンドの運動状況 -->
+    {% if friend_status %}
+    <details class="home-friend-status">
+        <summary class="home-friend-summary">
+            <div class="home-friend-summary-icon">
+                <i class="fas fa-users"></i>
+            </div>
+            <div class="home-friend-summary-info">
+                <span class="home-friend-summary-label">フレンドの今日の運動状況</span>
+                <span class="home-friend-summary-value">
+                    {{ friend_status | selectattr("done_today") | list | length }} / {{ friend_status | length }}人が実施済み
+                </span>
+            </div>
+        </summary>
+
+        <ul class="home-friend-list">
+            {% for f in friend_status %}
+            <li class="home-friend-item {% if f.done_today %}done{% else %}not-yet{% endif %}">
+                <div class="home-friend-avatar">{{ f.username[0] | upper }}</div>
+                <span class="home-friend-name">{{ f.username }}</span>
+                {% if f.done_today %}
+                <span class="home-friend-badge done">実施済み</span>
+                {% else %}
+                <span class="home-friend-badge not-yet">まだかも...</span>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+        <a href="{{ url_for('friend.index') }}" class="home-friend-link">フレンド一覧を見る →</a>
+    </details>
+    {% endif %}
+
+</div>
+
+<div class="chat-page">
+    <h1>AI運動トレーナー</h1>
+
+    {% if plan_error or chat_error %}
+    <p class="error" role="alert">{{ plan_error or chat_error }}</p>
+    {% endif %}
+
+    <section class="tab-panel {% if not chat_answer %}active{% endif %}" id="tab-plan">
+        <h2>運動カテゴリーを選択</h2>
+        <p class="description">まずは今日取り組みたい運動を選んでください。</p>
+
+        <form method="post" action="{{ url_for('test.index') }}">
+            {{ plan_form.hidden_tag() }}
+            <input type="hidden" name="action" value="plan">
+
+            {{ plan_form.category.label }}
+            {{ plan_form.category() }}
+
+            {{ plan_form.experience.label }}
+            {{ plan_form.experience() }}
+
+            {{ plan_form.duration.label }}
+            {{ plan_form.duration() }}
+
+            {{ plan_form.equipment.label }}
+            {{ plan_form.equipment() }}
+
+            {{ plan_form.submit() }}
+        </form>
+
+        {% if plan_options %}
+        <h2>候補から運動を選択</h2>
+        <p class="description">取り入れたい運動を選んでください。複数選択できます。</p>
+
+        <form method="post" action="{{ url_for('test.index') }}">
+            {{ plan_form.hidden_tag() }}
+            <input type="hidden" name="action" value="select_exercises">
+            <input type="hidden" name="category" value="{{ plan_conditions.category }}">
+            <input type="hidden" name="experience" value="{{ plan_conditions.experience }}">
+            <input type="hidden" name="duration" value="{{ plan_conditions.duration }}">
+            <input type="hidden" name="equipment" value="{{ plan_conditions.equipment }}">
+
+            <div class="exercise-options">
+                {% for option in plan_options %}
+                <label class="exercise-option">
+                    <input type="checkbox" name="selected_exercises" value="{{ option.id }}">
+                    <strong>{{ option.name }}</strong>
+                    <p>目安時間：{{ option.minutes }}分</p>
+                    <p>セット数：{{ option.sets }}セット</p>
+                    <p>標準目標：{{ option.target_value }}{{ option.unit }}</p>
+                    <p>{{ option.description }}</p>
+                    <details>
+                        <summary>やり方を見る</summary>
+                        <div class="movement-guide" aria-label="運動の動き">
+                            <span class="movement-guide-title">動きの流れ</span>
+                            <div class="movement-steps">
+                                {% for step in option.movement_steps %}
+                                <div class="movement-step">
+                                    <span class="movement-step-number">{{ loop.index }}</span>
+                                    <div>
+                                        <strong>{{ step.phase }}</strong>
+                                        <p>{{ step.instruction }}</p>
+                                    </div>
+                                </div>
+                                {% if not loop.last %}
+                                <span class="movement-arrow" aria-hidden="true">→</span>
+                                {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <p>注意点：{{ option.caution }}</p>
+                    </details>
+                </label>
+                {% endfor %}
+            </div>
+
+            <button type="submit">選択した運動を決定</button>
+        </form>
+        {% endif %}
+
+    </section>
+</div>
+
+<div class="back">
+    <a href="{{ url_for('home.index') }}">← トップページに戻る</a>
+</div>
+
+<div id="loading-overlay" aria-hidden="true">
+    <div class="loading-box">
+        <div class="loading-spinner"></div>
+        <p>AIがメニューを考えています…</p>
+    </div>
+</div>
+
+<script>
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+        btn.addEventListener("click", function () {
+            document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+            document.querySelectorAll(".tab-panel").forEach(p => p.classList.remove("active"));
+            this.classList.add("active");
+            document.getElementById(this.dataset.tab).classList.add("active");
+        });
+    });
+
+    document.querySelectorAll("form").forEach(form => {
+        form.addEventListener("submit", function () {
+            document.getElementById("loading-overlay").removeAttribute("aria-hidden");
+        });
+    });
+</script>
+
+{% endblock %}

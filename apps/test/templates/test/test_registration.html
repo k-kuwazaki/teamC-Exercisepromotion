@@ -1,0 +1,39 @@
+{% extends "home/base.html" %}
+
+{% block title %}運動実施登録{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('registration.static', filename='style/registration.css') }}">
+<h1>運動実施登録</h1>
+
+<h2>選択した運動メニュー</h2>
+
+{% if selected_exercises %}
+<ul>
+    {% for exercise in selected_exercises %}
+    <li>
+        <strong>{{ exercise.name }}</strong><br>
+        目安時間：{{ exercise.minutes }}分<br>
+        セット数：{{ exercise.sets }}セット<br>
+        標準目標：{{ exercise.target_value }}{{ exercise.unit }}<br>
+        内容：{{ exercise.description }}<br>
+        注意点：{{ exercise.caution }}
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>選択した運動メニューはありません。</p>
+{% endif %}
+
+<form method="post" action="{{ url_for('test.save_registration') }}">
+    <label for="actual_minutes">本日の運動時間（分）</label>
+    <input type="number" id="actual_minutes" name="actual_minutes" min="1" max="30" step="1" placeholder="例：25"
+        value="{{ actual_minutes }}" required>
+
+    <button type="submit">登録</button>
+</form>
+
+<div class="back">
+    <a href="{{ url_for('home.index') }}">← トップページに戻る</a>
+</div>
+{% endblock %}
