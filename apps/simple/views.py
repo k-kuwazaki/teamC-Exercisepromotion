@@ -11,3 +11,16 @@ def index():
     session.pop("plan_options", None)
     session.pop("plan_conditions", None)
     return render_template("simple/simple_index.html")
+
+from apps.chat.forms import CoachForm, PlanForm
+
+@simple.route("/test")
+def test():
+    coach_form = CoachForm()
+    plan_form = PlanForm()
+
+    return render_template(
+        "test/test_index.html",
+        coach_form=coach_form,
+        plan_form=plan_form
+    )
