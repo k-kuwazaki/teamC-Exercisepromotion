@@ -426,7 +426,6 @@
     text-decoration: underline;
     text-decoration-color: #b58b59;
     text-underline-offset: 4px;
-
     transition: .2s ease;
 }
 
@@ -453,7 +452,6 @@
     font-weight: 600;
     text-align: center;
     text-decoration: none;
-
     transition: 0.2s ease;
 }
 
@@ -479,7 +477,6 @@
     font-weight: 600;
     text-align: center;
     text-decoration: none;
-
     transition: 0.2s ease;
 }
 
@@ -521,4 +518,112 @@
         padding: 13px 12px;
         font-size: 13px;
     }
+}
+
+/* =========================
+   パスワード強度チェック
+========================= */
+
+.password-strength {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin-top: 5px;
+}
+
+.strength-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #78918a;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+#strength-label {
+    font-weight: 700;
+}
+
+.strength-track {
+    width: 100%;
+    height: 7px;
+    background: #e8eee9;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.strength-bar {
+    width: 0;
+    height: 100%;
+    border-radius: 10px;
+    transition:
+        width .25s ease,
+        background-color .25s ease;
+}
+
+/* 低：赤 */
+.password-strength[data-level="low"] .strength-bar {
+    background: #dc6464;
+}
+
+.password-strength[data-level="low"] #strength-label {
+    color: #dc6464;
+}
+
+/* 中：オレンジ */
+.password-strength[data-level="medium"] .strength-bar {
+    background: #e5a33d;
+}
+
+.password-strength[data-level="medium"] #strength-label {
+    color: #d58b24;
+}
+
+/* 高：緑 */
+.password-strength[data-level="high"] .strength-bar {
+    background: #299d69;
+}
+
+.password-strength[data-level="high"] #strength-label {
+    color: #299d69;
+}
+
+/* 判定基準 */
+.strength-guide {
+    margin: 0;
+
+    color: #91a49b;
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+/* パスワード強度メーター */
+.strength-track {
+    display: flex;
+    gap: 5px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.strength-segment {
+    flex: 1;
+    height: 8px;
+    border-radius: 10px;
+    background: #e0e0e0;
+    transition: background 0.2s ease;
+}
+
+/* 強度：低 */
+.password-strength[data-level="low"] .strength-segment.active {
+    background: #dc5555;
+}
+
+/* 強度：中 */
+.password-strength[data-level="medium"] .strength-segment.active {
+    background: #e6a23c;
+}
+
+/* 強度：高 */
+.password-strength[data-level="high"] .strength-segment.active {
+    background: #269b62;
 }
