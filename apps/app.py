@@ -36,6 +36,7 @@ def create_app():
     from apps.situation.views import situation
     from apps.help.views import help
     from apps.simple.views import simple
+    from apps.test.views import test
 
     
     app.register_blueprint(home)
@@ -55,5 +56,6 @@ def create_app():
     app.register_blueprint(situation)
     app.register_blueprint(help)
     app.register_blueprint(simple)
+    app.register_blueprint(test)
     
     return app
