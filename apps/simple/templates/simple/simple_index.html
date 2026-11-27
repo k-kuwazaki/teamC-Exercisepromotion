@@ -104,7 +104,7 @@
 
             <!-- AIチャット -->
             <a href="{{ url_for('chat.index') }}" class="menu-card">
-                <div class="card-icon green">
+                <div class="card-icon blue">
                     <i class="fas fa-robot"></i>
                 </div>
                 <div class="card-content">
@@ -119,7 +119,7 @@
             <!-- 運動実施 -->
             <a href="{{ url_for('implementation.index', source='home') }}" class="menu-card">
                 <div class="card-icon blue">
-                    <i class="fa-solid fa-calendar-days"></i>
+                    <i class="fas fa-running"></i>
                 </div>
                 <div class="card-content">
                     <h3>運動実施</h3>
@@ -131,18 +131,18 @@
             </a>
 
 
-            <a href="{{ url_for('home.history') }}" class="menu-card">
-                <div class="card-icon orange">
-                    <i class="fas fa-chart-line"></i>
-                </div>
-                <div class="card-content">
-                    <h3>履歴機能</h3>
-                    <p>日々の運動状況や成果を確認できます。</p>
-                </div>
-                <div class="card-arrow">
-                    <i class="fa-solid fa-arrow-right"></i>
-                </div>
-            </a>
+     <a href="{{ url_for('home.calendar') }}" class="menu-card">
+            <div class="card-icon blue">
+                <i class="fa-solid fa-calendar-days"></i>
+            </div>
+            <div class="card-content">
+                <h3>カレンダー</h3>
+                <p>カレンダーから運動履歴を確認できます。</p>
+            </div>
+            <div class="card-arrow">
+                <i class="fa-solid fa-arrow-right"></i>
+            </div>
+        </a>
 
             <!-- <a href="{{ url_for('home.index') }}" class="menu-card">
                 <div class="card-icon orange">
