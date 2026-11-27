@@ -22,6 +22,37 @@ implementation = Blueprint(
     static_url_path="/implementation_static",
 )
 
+SELF_EXERCISE_OPTIONS = {
+    "walking": "ウォーキング",
+    "jogging": "ジョギング",
+    "running": "ランニング",
+    "stretching": "ストレッチ",
+    "strength": "筋トレ",
+}
+
+
+def restore_self_exercise_selection(value):
+    """Restore yesterday's tags when possible; keep legacy free text under Other."""
+    if not value:
+        return [], ""
+
+    label_to_tag = {label: tag for tag, label in SELF_EXERCISE_OPTIONS.items()}
+    tags = []
+    other_parts = []
+
+    for part in value.split("、"):
+        part = part.strip()
+        if part in label_to_tag:
+            tags.append(label_to_tag[part])
+        elif part.startswith("その他："):
+            tags.append("other")
+            other_parts.append(part.removeprefix("その他：").strip())
+        elif part:
+            tags.append("other")
+            other_parts.append(part)
+
+    return list(dict.fromkeys(tags)), "、".join(other_parts)
+
 
 @implementation.route("/implementation/run", methods=["GET", "POST"])
 def index():
@@ -94,7 +125,20 @@ def index():
     )
 
     if request.method == "POST":
-        self_exercises = request.form.get("self_exercises", "").strip()
+        selected_self_exercise_tags = list(dict.fromkeys(
+            tag
+            for tag in request.form.getlist("self_exercise_tags")
+            if tag in SELF_EXERCISE_OPTIONS or tag == "other"
+        ))
+        other_self_exercise = request.form.get("self_exercises", "").strip()
+        self_exercise_names = [
+            SELF_EXERCISE_OPTIONS[tag]
+            for tag in selected_self_exercise_tags
+            if tag in SELF_EXERCISE_OPTIONS
+        ]
+        if "other" in selected_self_exercise_tags and other_self_exercise:
+            self_exercise_names.append(f"その他：{other_self_exercise}")
+        self_exercises = "、".join(self_exercise_names)
         manual_minutes_text = request.form.get("manual_minutes", "").strip()
 
         # タイマー開始時の目標時間チェック。範囲外なら再読み込みしてエラーを表示する。
@@ -114,10 +158,12 @@ def index():
                 plan_conditions=conditions,
                 goal_minutes=goal_minutes,
                 goal_minutes_input=goal_minutes_text,
-                self_exercises=self_exercises,
                 manual_minutes=manual_minutes_text,
                 error=error,
                 default_tab=default_tab,
+                self_exercise_options=SELF_EXERCISE_OPTIONS,
+                selected_self_exercise_tags=selected_self_exercise_tags,
+                self_exercises=other_self_exercise,
                 source=source,
                 can_repeat_yesterday=can_repeat_yesterday,
             )
@@ -126,7 +172,11 @@ def index():
         actual_minutes = None
         duration_seconds = None
 
-        if not selected_exercises and not self_exercises:
+        if "other" in selected_self_exercise_tags and not other_self_exercise:
+            error = "「その他」の運動内容を入力してください。"
+        elif default_tab == "self-menu" and not selected_self_exercise_tags:
+            error = "自主運動のタグを1つ以上選択してください。"
+        elif not selected_exercises and not self_exercises:
             error = "メニューを選ぶか、自主運動の内容を入力してください。"
 
         elif request.form.get("use_manual_time") == "1":
@@ -160,10 +210,12 @@ def index():
                 selected_exercises=selected_exercises,
                 plan_conditions=conditions,
                 goal_minutes=goal_minutes,
-                self_exercises=self_exercises,
                 manual_minutes=manual_minutes_text,
                 error=error,
                 default_tab=default_tab,
+                self_exercise_options=SELF_EXERCISE_OPTIONS,
+                selected_self_exercise_tags=selected_self_exercise_tags,
+                self_exercises=other_self_exercise,
                 source=source,
                 can_repeat_yesterday=can_repeat_yesterday,
             )
@@ -176,7 +228,10 @@ def index():
 
         return redirect(url_for("registration.save_registration"))
 
-    self_exercises = session.pop("repeat_self_exercises", "")
+    previous_self_exercises = session.pop("repeat_self_exercises", "")
+    selected_self_exercise_tags, self_exercises = restore_self_exercise_selection(
+        previous_self_exercises
+    )
 
     return render_template(
         "implementation/implementation.html",
@@ -184,6 +239,8 @@ def index():
         plan_conditions=conditions,
         goal_minutes=goal_minutes,
         self_exercises=self_exercises,
+        self_exercise_options=SELF_EXERCISE_OPTIONS,
+        selected_self_exercise_tags=selected_self_exercise_tags,
         manual_minutes="",
         default_tab=default_tab,
         source=source,
