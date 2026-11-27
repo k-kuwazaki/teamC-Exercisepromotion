@@ -10,50 +10,92 @@
     {% if error %}
     <p style="color: red;">{{ error }}</p>
     {% endif %}
-    
+
     <div>
         <label for="name">名前</label>
-        <input type="text" id="name" name="name" required>
+        <input type="text" id="name" name="username" value="{{ name or '' }}" required>
     </div>
 
     <div>
         <label for="height">身長</label>
-        <input type="number" id="height" name="height" step="any" min="0" required>
+        <input type="number" id="height" name="height" value="{{ height or '' }}" step="any" min="0" required>
     </div>
 
     <div>
         <label for="weight">体重</label>
-        <input type="number" id="weight" name="weight" step="any" min="0" required>
+        <input type="number" id="weight" name="weight" value="{{ weight or '' }}" step="any" min="0" required>
     </div>
 
     <div>
         <label for="birthday">生年月日</label>
-        <input type="date" id="birthday" name="birthday" required>
+        <input type="date" id="birthday" name="birthday" value="{{ birthday or '' }}" required>
     </div>
 
     <div>
         <label for="email">メールアドレス</label>
-        <input type="email" id="email" name="email" required>
+        <input type="email" id="email" name="email" value="{{ email or '' }}" required>
     </div>
 
     <div>
         <label for="password">パスワード</label>
-        <input type="password" id="password" name="password" required>
-    </div>
+        <input type="password" id="password" name="password" autocomplete="new-password" minlength="8" maxlength="128"
+            required>
 
-    <div>
-        <label for="exercise_habit">運動習慣</label>
-        <select id="exercise_habit" name="exercise_habit">
-            <option value="" disabled selected>選択してください</option>
-            <option value="rarely">ほとんどしない</option>
-            <option value="sometimes">週に1〜2回</option>
-            <option value="often">週に3回以上</option>
-        </select>
+        <!-- パスワード強度表示 -->
+        <div class="password-strength" id="password-strength" hidden>
+            <div class="strength-header">
+                <span>パスワード強度</span>
+                <span id="strength-label"></span>
+            </div>
+
+            <div class="strength-track">
+                <div class="strength-segment"></div>
+                <div class="strength-segment"></div>
+                <div class="strength-segment"></div>
+                <div class="strength-segment"></div>
+                <div class="strength-segment"></div>
+            </div>
+
+            <p class="strength-guide">
+                8文字以上・英大文字と小文字・数字・記号(!@#$%^&*()_+-=[]{}|;:,.<>?)
+            </p>
+        </div>
+
+        <!-- パスワード確認 -->
+        <div>
+            <label for="password-confirm">パスワード（確認）</label>
+            <input type="password" id="password-confirm" name="password_confirm" autocomplete="new-password" required>
+
+            <p id="password-match-message"></p>
+        </div>
+
+        <div>
+            <label for="exercise_habit">運動習慣</label>
+            <select id="exercise_habit" name="exercise_habit">
+
+                <option value="" disabled {% if not exercise_habit %}selected{% endif %}>
+                    選択してください
+                </option>
+
+                <option value="rarely" {% if exercise_habit=="rarely" %}selected{% endif %}>
+                    ほとんどしない
+                </option>
+
+                <option value="sometimes" {% if exercise_habit=="sometimes" %}selected{% endif %}>
+                    週に1〜2回
+                </option>
+
+                <option value="often" {% if exercise_habit=="often" %}selected{% endif %}>
+                    週に3回以上
+                </option>
+
+            </select>
+        </div>
     </div>
 
     <div>
         <label for="goal">目標</label>
-        <textarea id="goal" name="goal"></textarea>
+        <textarea id="goal" name="goal">{{ goal or '' }}</textarea>
     </div>
 
     <button type="submit">登録</button>
@@ -63,5 +105,91 @@
         <a href="{{ url_for('login.login') }}">ログイン</a>
     </p>
 </form>
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const password = document.getElementById("password");
+        const confirmPassword = document.getElementById("password-confirm");
+        const strength = document.getElementById("password-strength");
+        const label = document.getElementById("strength-label");
+        const matchMessage = document.getElementById("password-match-message");
+        const segments = document.querySelectorAll(".strength-segment");
+
+        // パスワード強度チェック
+        password.addEventListener("input", () => {
+            const value = password.value;
+
+            if (value.length === 0) {
+                strength.hidden = true;
+                label.textContent = "";
+
+                segments.forEach(segment => {
+                    segment.classList.remove("active");
+                });
+            } else {
+                strength.hidden = false;
+
+                let score = 0;
+
+                if (value.length >= 8) score++;
+                if (value.length >= 12) score++;
+                if (/[a-z]/.test(value) && /[A-Z]/.test(value)) score++;
+                if (/[0-9]/.test(value)) score++;
+                if (/[^a-zA-Z0-9]/.test(value)) score++;
+
+                let level;
+
+                if (score <= 2) {
+                    level = "low";
+                    label.textContent = "低";
+                } else if (score <= 4) {
+                    level = "medium";
+                    label.textContent = "中";
+                } else {
+                    level = "high";
+                    label.textContent = "高";
+                }
+
+                strength.dataset.level = level;
+
+                // 5本のゲージを更新
+                segments.forEach((segment, index) => {
+                    segment.classList.toggle("active", index < score);
+                });
+            }
+
+            checkPasswordMatch();
+        });
+
+        // 確認用パスワードの入力時にもチェック
+        confirmPassword.addEventListener("input", checkPasswordMatch);
+
+        // パスワード一致チェック
+        function checkPasswordMatch() {
+            const passwordValue = password.value;
+            const confirmValue = confirmPassword.value;
+
+            if (confirmValue.length === 0) {
+                matchMessage.textContent = "";
+                confirmPassword.setCustomValidity("");
+                return;
+            }
+
+            if (passwordValue === confirmValue) {
+                matchMessage.textContent = "✓ パスワードが一致しています";
+                matchMessage.style.color = "#269b62";
+                confirmPassword.setCustomValidity("");
+            } else {
+                matchMessage.textContent = "✕ パスワードが一致しません";
+                matchMessage.style.color = "#dc3545";
+                confirmPassword.setCustomValidity(
+                    "パスワードが一致しません。"
+                );
+            }
+        }
+    });
+
+</script>
 
 {% endblock %}
