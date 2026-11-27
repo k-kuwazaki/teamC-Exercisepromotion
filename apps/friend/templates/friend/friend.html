@@ -80,7 +80,7 @@
                 <form method="get" action="{{ url_for('friend.confirm_remove_friend', friend_user_id=item.user.id) }}">
                     <form method="get"
                         action="{{ url_for('friend.confirm_remove_friend', friend_user_id=item.user.id) }}">
-                        <button type="submit">フレンド解除</button>
+                        <button type="submit" class="remove-friend-btn">フレンド解除</button>
                     </form>
             </div>
             {% endif %}
